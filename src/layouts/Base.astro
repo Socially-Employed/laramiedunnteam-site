@@ -5,6 +5,8 @@ import Seo from "../components/Seo.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import StickyCta from "../components/StickyCta.astro";
+import JsonLd from "../components/JsonLd.astro";
+import { SITE_URL } from "../config/site";
 export interface Props {
   title: string;
   description: string;
@@ -12,8 +14,16 @@ export interface Props {
   ogImage?: string;
   type?: string;
   stickyCta?: boolean;
+  /** Trail below Home, e.g. [{ name: "Communities", href: "/communities/" }, { name: "Erda", href: "/communities/erda/" }]. */
+  breadcrumbs?: { name: string; href: string }[];
 }
-const { title, description, canonical, ogImage, type, stickyCta = false } = Astro.props;
+const { title, description, canonical, ogImage, type, stickyCta = false, breadcrumbs } = Astro.props;
+const trail = breadcrumbs ? [{ name: "Home", href: "/" }, ...breadcrumbs] : null;
+const breadcrumbSchema = trail && {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: trail.map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c.name, item: `${SITE_URL}${c.href}` })),
+};
 ---
 <!doctype html>
 <html lang="en">
@@ -23,12 +33,29 @@ const { title, description, canonical, ogImage, type, stickyCta = false } = Astr
     <meta name="theme-color" content="#faf7f2" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <Seo title={title} description={description} canonical={canonical} ogImage={ogImage} type={type} />
+    {breadcrumbSchema && <JsonLd data={breadcrumbSchema} />}
     <slot name="head" />
   </head>
   <body>
     <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:bg-white focus:text-ink focus:px-4 focus:py-2 focus:rounded-lg focus:border focus:border-hairline">Skip to content</a>
     <Header />
     <main id="main">
+      {trail && (
+        <nav aria-label="Breadcrumb" class="bg-paper text-ink">
+          <ol class="w-[min(100%,72rem)] mx-auto px-5 pt-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[.82rem] text-muted">
+            {trail.map((c, i) => (
+              <li class="flex items-center gap-2">
+                {i > 0 && <span aria-hidden="true">/</span>}
+                {i < trail.length - 1 ? (
+                  <a href={c.href} class="underline underline-offset-2 hover:text-ink">{c.name}</a>
+                ) : (
+                  <span aria-current="page" class="text-ink">{c.name}</span>
+                )}
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
       <slot />
     </main>
     <Footer />
