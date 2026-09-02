@@ -1,12 +1,69 @@
 ---
-// contact.astro — SCAFFOLD placeholder. Real copy lands in the next step (pages from CONTENT_BRIEF).
+// contact.astro — full lead form + contact details. Shows a friendly banner on ?error= (Worker no-JS redirect).
 import Base from "../layouts/Base.astro";
 import Section from "../components/Section.astro";
+import LeadForm from "../components/LeadForm.astro";
+import JsonLd from "../components/JsonLd.astro";
+import Icon from "../components/Icon.astro";
+import { AGENTS, BROKERAGE, BUSINESS_EMAIL, COUNTY, SITE_URL, SERVICE_AREA } from "../config/site";
+
+const agentSchema = {
+  "@context": "https://schema.org",
+  "@type": "RealEstateAgent",
+  name: "Laramie Dunn Team",
+  url: new URL("/contact/", SITE_URL).href,
+  email: BUSINESS_EMAIL,
+  areaServed: SERVICE_AREA.map((a) => `${a}, Utah`),
+  parentOrganization: { "@type": "Organization", name: "RealtyPath LLC" },
+};
 ---
-<Base title="Contact" description="Placeholder — content step. Contact page for the Laramie Dunn Team.">
+<Base
+  title="Contact the Laramie Dunn Team"
+  description="Get in touch with the Laramie Dunn Team — a real estate team with RealtyPath serving Tooele County, Utah. Call, text, email, or send us a note."
+>
+  <JsonLd slot="head" data={agentSchema} />
+
   <Section tone="paper">
-    <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">Placeholder — content step</p>
-    <h1 class="mt-2 text-[clamp(1.7rem,6vw,2.4rem)]">Contact</h1>
-    <p class="mt-3 text-muted max-w-[560px]">This page is a scaffold placeholder. The next build step writes the real Contact copy from the content brief.</p>
+    <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">Contact</p>
+    <h1 class="mt-2 text-[clamp(1.8rem,6vw,2.6rem)]">Get in touch</h1>
+    <p class="mt-4 text-lg leading-relaxed max-w-[620px]">Call or text either of us, send an email, or use the form below. Whatever's easiest for you.</p>
+
+    <div id="contact-error" role="alert" hidden class="mt-6 rounded-[12px] border border-copper bg-white px-4 py-3 text-ink">
+      <span class="font-semibold">We couldn't send that.</span> <span id="contact-error-msg"></span> You can also call or text us directly.
+    </div>
+
+    <div class="mt-8 grid gap-6 md:grid-cols-2">
+      {AGENTS.map((a) => (
+        <div class="rounded-[16px] border border-hairline bg-white p-5">
+          <p class="font-display text-[1.2rem]">{a.name}</p>
+          <p class="text-muted text-[.9rem]">{a.role}</p>
+          <p class="mt-3 flex flex-col gap-1.5 text-[.95rem]">
+            <a href={a.phoneHref} class="inline-flex items-center gap-2 text-copper-dark no-underline hover:underline"><Icon name="phone" size={16} /> {a.phone}</a>
+            <a href={`mailto:${a.email}`} class="inline-flex items-center gap-2 text-copper-dark no-underline hover:underline break-all"><Icon name="mail" size={16} /> {a.email}</a>
+          </p>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-6 text-muted text-[.95rem] space-y-1">
+      <p class="flex items-center gap-2"><Icon name="mail" size={16} /> {BUSINESS_EMAIL}</p>
+      <p class="flex items-center gap-2"><Icon name="map-pin" size={16} /> Serving {COUNTY}</p>
+      <p class="flex items-center gap-2"><Icon name="shield-check" size={16} /> {BROKERAGE}</p>
+    </div>
+  </Section>
+
+  <Section tone="panel" narrow>
+    <LeadForm src="contact" heading="Send us a note" intent="other" />
   </Section>
 </Base>
+
+<script>
+  const params = new URLSearchParams(location.search);
+  const err = params.get("error");
+  if (err) {
+    const box = document.getElementById("contact-error");
+    const msg = document.getElementById("contact-error-msg");
+    if (msg) msg.textContent = err.slice(0, 200);
+    if (box) box.hidden = false;
+  }
+</script>

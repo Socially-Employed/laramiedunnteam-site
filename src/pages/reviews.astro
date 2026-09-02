@@ -1,12 +1,50 @@
 ---
-// reviews.astro — SCAFFOLD placeholder. Real copy lands in the next step (pages from CONTENT_BRIEF).
+// reviews.astro — honest shell. Renders quotes only if TESTIMONIALS is populated (empty now);
+// shows the Google review CTA only if GBP_REVIEW_URL is set. No invented quotes (CONTENT_BRIEF §6).
 import Base from "../layouts/Base.astro";
 import Section from "../components/Section.astro";
+import Button from "../components/Button.astro";
+import Testimonial from "../components/Testimonial.astro";
+import Icon from "../components/Icon.astro";
+import { TESTIMONIALS, GBP_REVIEW_URL } from "../config/site";
 ---
-<Base title="Reviews" description="Placeholder — content step. Reviews page for the Laramie Dunn Team.">
+<Base
+  title="Reviews · Laramie Dunn Team"
+  description="Where to read reviews of the Laramie Dunn Team, a real estate team with RealtyPath in Tooele County, Utah."
+  stickyCta={true}
+>
   <Section tone="paper">
-    <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">Placeholder — content step</p>
-    <h1 class="mt-2 text-[clamp(1.7rem,6vw,2.4rem)]">Reviews</h1>
-    <p class="mt-3 text-muted max-w-[560px]">This page is a scaffold placeholder. The next build step writes the real Reviews copy from the content brief.</p>
+    <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">Reviews</p>
+    <h1 class="mt-2 text-[clamp(1.8rem,6vw,2.6rem)]">Reviews</h1>
+    <p class="mt-4 text-lg leading-relaxed max-w-[640px]">We keep our reviews where anyone can verify them for themselves — on Google — rather than reprinting hand-picked quotes here.</p>
+  </Section>
+
+  {TESTIMONIALS.length > 0 && (
+    <Section tone="white" labelledby="quotes-h">
+      <h2 id="quotes-h" class="text-[clamp(1.5rem,5vw,2rem)]">What clients say</h2>
+      <div class="mt-8 grid gap-5 md:grid-cols-2">
+        {TESTIMONIALS.map((t) => (
+          <Testimonial quote={t.quote} author={t.author} detail={t.detail} rating={t.rating} />
+        ))}
+      </div>
+    </Section>
+  )}
+
+  <Section tone="white" narrow>
+    <div class="rounded-[16px] border border-hairline bg-paper p-6">
+      {GBP_REVIEW_URL ? (
+        <>
+          <h2 class="text-[1.3rem] font-display">Read our reviews on Google</h2>
+          <p class="mt-2 text-muted">See what people have said about working with us.</p>
+          <div class="mt-4"><Button href={GBP_REVIEW_URL} variant="primary">Read our reviews on Google <Icon name="arrow-right" size={16} /></Button></div>
+        </>
+      ) : (
+        <>
+          <h2 class="text-[1.3rem] font-display">We're gathering our reviews on Google</h2>
+          <p class="mt-2 text-muted">We're collecting reviews on our Google Business Profile. If you've worked with us and want to share your experience, reach out and we'll send you the link.</p>
+          <div class="mt-4"><Button href="/contact/" variant="primary">Get in touch <Icon name="arrow-right" size={16} /></Button></div>
+        </>
+      )}
+    </div>
   </Section>
 </Base>

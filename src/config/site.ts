@@ -56,6 +56,10 @@ export const SOCIAL = {
   zillow: null, // NOT ON FILE
 } as const;
 
+// Reviews: aggregate-only per CONTENT_BRIEF §6. No quotes exist on file — keep empty; do not invent.
+// When real, consented reviews are collected, add { quote, author, detail?, rating? } objects here.
+export const TESTIMONIALS: { quote: string; author: string; detail?: string; rating?: number }[] = [];
+
 export const LEAD_ENDPOINT = "/api/lead";
 export const GBP_REVIEW_URL = null; // NOT ON FILE — Google Business Profile review link
 export const ANALYTICS = null; // none shipped (spec convention)

@@ -13,7 +13,8 @@
     "prepare:images": "node scripts/prepare-images.mjs",
     "check:links": "node scripts/check-links.mjs",
     "check:fairhousing": "node scripts/check-fairhousing.mjs",
-    "check": "npm run build && npm run check:links && npm run check:fairhousing"
+    "check": "npm run build && npm run check:links && npm run check:fairhousing",
+    "deploy:manifest": "node ../deploy/make-manifest.mjs dist > ../deploy/manifest.json"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",

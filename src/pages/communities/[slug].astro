@@ -1,0 +1,59 @@
+---
+// communities/[slug].astro — one neutral guide per community, generated from src/content/communities.ts.
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import Card from "../../components/Card.astro";
+import Button from "../../components/Button.astro";
+import LeadForm from "../../components/LeadForm.astro";
+import Icon from "../../components/Icon.astro";
+import { COMMUNITIES } from "../../content/communities";
+
+export function getStaticPaths() {
+  return COMMUNITIES.map((c) => ({ params: { slug: c.slug }, props: { community: c } }));
+}
+
+const { community } = Astro.props;
+---
+<Base
+  title={community.title}
+  description={community.description}
+  canonical={`/communities/${community.slug}/`}
+  stickyCta={true}
+>
+  <Section tone="paper">
+    <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">Community guide · Tooele County</p>
+    <h1 class="mt-2 text-[clamp(1.8rem,6vw,2.6rem)]">{community.name}</h1>
+    <p class="mt-4 text-lg leading-relaxed max-w-[680px]">{community.intro}</p>
+  </Section>
+
+  <Section tone="white">
+    <div class="grid gap-6 md:grid-cols-3">
+      <Card>
+        <Icon name="map-pin" size={24} class="text-copper-dark" />
+        <p class="mt-3 font-display text-[1.2rem]">Getting around</p>
+        <p class="mt-2 text-muted text-[.95rem]">{community.gettingAround}</p>
+      </Card>
+      <Card>
+        <Icon name="home" size={24} class="text-copper-dark" />
+        <p class="mt-3 font-display text-[1.2rem]">What the housing looks like</p>
+        <p class="mt-2 text-muted text-[.95rem]">{community.housing}</p>
+      </Card>
+      <Card>
+        <Icon name="star" size={24} class="text-copper-dark" />
+        <p class="mt-3 font-display text-[1.2rem]">Things to do</p>
+        <ul class="mt-2 space-y-2 text-muted text-[.95rem]">
+          {community.thingsToDo.map((t) => (
+            <li class="flex gap-2"><Icon name="check" size={16} class="text-copper-dark flex-none mt-1" /> {t}</li>
+          ))}
+        </ul>
+      </Card>
+    </div>
+    <div class="mt-8">
+      <Button href="/listings/" variant="ghost">See our listings <Icon name="arrow-right" size={16} /></Button>
+    </div>
+  </Section>
+
+  <Section tone="panel" narrow>
+    <LeadForm src={`community-${community.slug}`} heading={`Thinking about ${community.name}?`} intent="both" />
+  </Section>
+</Base>

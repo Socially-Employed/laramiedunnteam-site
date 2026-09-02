@@ -51,6 +51,7 @@ const uid = "lf-" + Math.random().toString(36).slice(2, 8);
       <label>Company <input name="company" tabindex="-1" autocomplete="off" /></label>
     </div>
     <input type="hidden" name="src" value={src} />
+    <input type="hidden" name="page" value={Astro.url.pathname} />
 
     <div class="md:col-span-2">
       <Button type="submit" variant="primary" class="w-full">Send</Button>

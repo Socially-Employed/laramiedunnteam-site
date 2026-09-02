@@ -1,0 +1,20 @@
+# wrangler.toml — Laramie Dunn Team site Worker (static assets + /api/lead).
+#
+# NOTE: deploys currently go through the Cloudflare API path documented in ../deploy/DEPLOY.md
+# (an uploader Worker + MCP execute), NOT `wrangler deploy` — CT910 has no stored Cloudflare API
+# token (credential rule). This file documents the intended binding config and supports local
+# tooling; it is the source of truth for the Worker's shape.
+
+name = "ldt-site"
+main = "worker/index.js"
+compatibility_date = "2026-06-01"
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+html_handling = "auto-trailing-slash"
+not_found_handling = "404-page"
+
+[[r2_buckets]]
+binding = "LDT_LEADS"
+bucket_name = "ldt-leads"

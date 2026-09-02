@@ -1,12 +1,89 @@
 ---
-// about.astro — SCAFFOLD placeholder. Real copy lands in the next step (pages from CONTENT_BRIEF).
+// about.astro — the team. Real photo for Lisa; initials avatar for Laramie (no headshot on file).
+// Bios are NOT ON FILE (CONTENT_BRIEF §1) — copy is written to read fine without an invented bio.
 import Base from "../layouts/Base.astro";
 import Section from "../components/Section.astro";
+import Card from "../components/Card.astro";
+import Button from "../components/Button.astro";
+import LeadForm from "../components/LeadForm.astro";
+import JsonLd from "../components/JsonLd.astro";
+import Icon from "../components/Icon.astro";
+import { AGENTS, BROKERAGE, BUSINESS_EMAIL, COUNTY, SITE_URL, SERVICE_AREA } from "../config/site";
+
+const initials = (name: string) => name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+
+const agentSchema = {
+  "@context": "https://schema.org",
+  "@type": "RealEstateAgent",
+  name: "Laramie Dunn Team",
+  url: new URL("/about/", SITE_URL).href,
+  email: BUSINESS_EMAIL,
+  areaServed: SERVICE_AREA.map((a) => `${a}, Utah`),
+  parentOrganization: { "@type": "Organization", name: "RealtyPath LLC" },
+};
 ---
-<Base title="About the team" description="Placeholder — content step. About the team page for the Laramie Dunn Team.">
+<Base
+  title="About the Laramie Dunn Team"
+  description="Meet Laramie Dunn and Lisa Neil — a mother-and-daughter real estate team with RealtyPath, serving Tooele County, Utah."
+  stickyCta={true}
+>
+  <JsonLd slot="head" data={agentSchema} />
+
   <Section tone="paper">
-    <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">Placeholder — content step</p>
-    <h1 class="mt-2 text-[clamp(1.7rem,6vw,2.4rem)]">About the team</h1>
-    <p class="mt-3 text-muted max-w-[560px]">This page is a scaffold placeholder. The next build step writes the real About the team copy from the content brief.</p>
+    <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">About us</p>
+    <h1 class="mt-2 text-[clamp(1.8rem,6vw,2.6rem)] max-w-[760px]">A mother-and-daughter team working the Tooele Valley.</h1>
+    <p class="mt-4 text-lg leading-relaxed max-w-[680px]">The Laramie Dunn Team is Laramie Dunn and her daughter, Lisa Neil — two licensed Utah real estate agents with RealtyPath. We work across {COUNTY}, we know the builders here, and we treat every sale like it matters, because to the person we're working with, it does.</p>
+  </Section>
+
+  <Section tone="white">
+    <div class="grid gap-8 md:grid-cols-2">
+      {AGENTS.map((a) => (
+        <Card>
+          <div class="flex items-center gap-4">
+            {a.headshot ? (
+              <picture>
+                <source srcset={a.headshot} type="image/webp" />
+                <img src={a.headshot.replace(".webp", ".jpg")} alt={`${a.name}, ${a.role}`} width="96" height="96" loading="lazy" class="w-24 h-24 rounded-full object-cover border border-hairline" />
+              </picture>
+            ) : (
+              <div class="w-24 h-24 rounded-full flex items-center justify-center bg-panel text-white font-display text-[1.6rem] border border-hairline" aria-hidden="true">{initials(a.name)}</div>
+            )}
+            <div>
+              <p class="font-display text-[1.4rem] text-ink">{a.name}</p>
+              <p class="text-muted text-[.9rem]">{a.role}</p>
+              {a.licenseNumber && <p class="text-muted text-[.85rem]">UT License #{a.licenseNumber}</p>}
+            </div>
+          </div>
+          {/* NEEDS MIKE: written bio for this agent (none on file). NEEDS MIKE: UT license number. */}
+          <div class="mt-4 space-y-2 text-[.95rem] text-muted">
+            {a.name === "Laramie Dunn" && (
+              <p>Laramie owns Rose Springs Realty and has spent years working real estate in the Tooele Valley, including new-construction relationships with local builders.</p>
+            )}
+            {a.name === "Lisa Neil" && (
+              <p>Lisa owns Lisa Neil Real Estate and works alongside her mother on the team, from first tours through closing.</p>
+            )}
+            <p class="flex flex-wrap gap-x-4 gap-y-1">
+              <a href={a.phoneHref} class="inline-flex items-center gap-1.5 text-copper-dark no-underline hover:underline"><Icon name="phone" size={15} /> {a.phone}</a>
+              <a href={`mailto:${a.email}`} class="inline-flex items-center gap-1.5 text-copper-dark no-underline hover:underline break-all"><Icon name="mail" size={15} /> {a.email}</a>
+            </p>
+          </div>
+        </Card>
+      ))}
+    </div>
+  </Section>
+
+  <Section tone="paper" narrow>
+    <h2 class="text-[clamp(1.5rem,5vw,2rem)]">Why a team</h2>
+    <div class="mt-4 space-y-4 text-[1.02rem] leading-relaxed">
+      <p>Real estate rewards two things that are hard to do alone: being available, and knowing the ground. A two-person team means there is almost always someone who can pick up the phone, get to a showing, or answer a builder's question the same day.</p>
+      <p>It also means two sets of eyes on your pricing, your paperwork, and your marketing. We would rather catch a problem early than explain one later.</p>
+    </div>
+    <div class="mt-6 rounded-[16px] border border-hairline bg-white p-5 text-[.95rem] text-muted">
+      <p><span class="font-semibold text-ink">Brokerage:</span> {BROKERAGE}. Every one of our listings and ads carries our brokerage name, as Utah requires.</p>
+    </div>
+  </Section>
+
+  <Section tone="panel" narrow>
+    <LeadForm src="about" heading="Reach the team" intent="both" />
   </Section>
 </Base>

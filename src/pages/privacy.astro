@@ -1,12 +1,53 @@
 ---
-// privacy.astro — SCAFFOLD placeholder. Real copy lands in the next step (pages from CONTENT_BRIEF).
+// privacy.astro — plain-language privacy policy for a small-business lead-capture site.
 import Base from "../layouts/Base.astro";
 import Section from "../components/Section.astro";
+import { BUSINESS_EMAIL, BRAND_STRING, BROKERAGE } from "../config/site";
 ---
-<Base title="Privacy" description="Placeholder — content step. Privacy page for the Laramie Dunn Team.">
-  <Section tone="paper">
-    <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">Placeholder — content step</p>
-    <h1 class="mt-2 text-[clamp(1.7rem,6vw,2.4rem)]">Privacy</h1>
-    <p class="mt-3 text-muted max-w-[560px]">This page is a scaffold placeholder. The next build step writes the real Privacy copy from the content brief.</p>
+<Base
+  title="Privacy Policy · Laramie Dunn Team"
+  description="How the Laramie Dunn Team collects, uses, and stores the information you send through this website."
+  canonical="/privacy/"
+>
+  <Section tone="paper" narrow>
+    <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">Privacy</p>
+    <h1 class="mt-2 text-[clamp(1.7rem,6vw,2.4rem)]">Privacy Policy</h1>
+    {/* NEEDS MIKE: legal effective date for this policy. */}
+    <p class="mt-2 text-muted text-[.9rem]">Last updated: September 2026</p>
+
+    <div class="mt-6 space-y-6 text-[1.02rem] leading-relaxed">
+      <p>This policy explains what happens to the information you share with the {BRAND_STRING} through this website. We've kept it plain on purpose.</p>
+
+      <div>
+        <h2 class="font-display text-[1.3rem]">What we collect</h2>
+        <p class="mt-2">If you fill out a form on this site, we collect what you type into it: your name, and whichever of your email address and phone number you provide, plus any message you send. Our server also records the page you submitted from and basic technical details of the request (such as the time and your network address) to help prevent spam.</p>
+        <p class="mt-2">This site does not run analytics, advertising trackers, or third-party cookies.</p>
+      </div>
+
+      <div>
+        <h2 class="font-display text-[1.3rem]">How we use it</h2>
+        <p class="mt-2">We use what you send to respond to you about buying or selling real estate. When you submit a form, a copy is stored securely and forwarded to us so we can follow up. We do not sell your information, and we don't share it except as needed to work with you (for example, with our brokerage, {BROKERAGE}, or service providers who help us operate) or where the law requires it.</p>
+      </div>
+
+      <div>
+        <h2 class="font-display text-[1.3rem]">Text and email</h2>
+        <p class="mt-2">If you give us your phone number or email, you're agreeing that we may contact you there about your inquiry. You can ask us to stop at any time and we will.</p>
+      </div>
+
+      <div>
+        <h2 class="font-display text-[1.3rem]">Seeing or deleting your information</h2>
+        <p class="mt-2">You can ask us what we have on file for you, or ask us to delete it. Email <a href={`mailto:${BUSINESS_EMAIL}`} class="text-copper-dark no-underline hover:underline break-all">{BUSINESS_EMAIL}</a> and we'll take care of it.</p>
+      </div>
+
+      <div>
+        <h2 class="font-display text-[1.3rem]">Changes</h2>
+        <p class="mt-2">If we update this policy, we'll change the date at the top of this page.</p>
+      </div>
+
+      <div>
+        <h2 class="font-display text-[1.3rem]">Contact</h2>
+        <p class="mt-2">Questions about privacy? Email <a href={`mailto:${BUSINESS_EMAIL}`} class="text-copper-dark no-underline hover:underline break-all">{BUSINESS_EMAIL}</a>.</p>
+      </div>
+    </div>
   </Section>
 </Base>

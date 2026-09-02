@@ -1,58 +1,129 @@
 ---
-// index.astro — SCAFFOLD placeholder exercising the design system. Real copy lands in the next step.
+// index.astro — home. Brand statement, featured listing, how we work, communities, lead form.
 import Base from "../layouts/Base.astro";
 import Hero from "../components/Hero.astro";
 import FactStrip from "../components/FactStrip.astro";
 import Section from "../components/Section.astro";
 import Card from "../components/Card.astro";
 import Button from "../components/Button.astro";
+import ListingCard from "../components/ListingCard.astro";
 import LeadForm from "../components/LeadForm.astro";
 import JsonLd from "../components/JsonLd.astro";
 import Icon from "../components/Icon.astro";
-import { BRAND_STRING, COUNTY } from "../config/site";
+import { AGENTS, BRAND_STRING, BUSINESS_EMAIL, COUNTY, SITE_URL, SERVICE_AREA, GBP_REVIEW_URL } from "../config/site";
+import { COMMUNITIES } from "../content/communities";
 
 const agentSchema = {
   "@context": "https://schema.org",
   "@type": "RealEstateAgent",
   name: "Laramie Dunn Team",
-  areaServed: COUNTY,
+  url: SITE_URL,
+  email: BUSINESS_EMAIL,
+  areaServed: SERVICE_AREA.map((a) => `${a}, Utah`),
   parentOrganization: { "@type": "Organization", name: "RealtyPath LLC" },
 };
 ---
 <Base
   title="Laramie Dunn Team · RealtyPath LLC (Tooele Valley)"
-  description="Placeholder — content step. Laramie Dunn Team scaffold homepage."
+  description="A mother-and-daughter real estate team with RealtyPath, helping people buy and sell across Tooele County, Utah."
   stickyCta={true}
 >
   <JsonLd slot="head" data={agentSchema} />
 
   <Hero
-    eyebrow="Placeholder — content step"
-    title="Placeholder headline — content step"
-    lede={BRAND_STRING}
-    image={{ src: "/images/hero.jpg", alt: "Placeholder hero image", width: 1600, height: 900 }}
+    eyebrow="Tooele County, Utah"
+    title="Real estate handled by people who actually live here."
+    lede="Laramie Dunn and Lisa Neil are a mother-and-daughter team with RealtyPath. We help you buy and sell across the Tooele Valley — and we put professional video behind every listing."
+    image={{ src: "/images/hero.jpg", alt: "The Tooele Valley in Utah", width: 1600, height: 900 }}
   >
-    <Button slot="ctas" href="#contact" variant="primary">Placeholder CTA <Icon name="arrow-right" size={16} /></Button>
-    <Button slot="ctas" href="/listings" variant="dark">View listings</Button>
+    <Button slot="ctas" href="/contact/" variant="primary">Talk to us <Icon name="arrow-right" size={16} /></Button>
+    <Button slot="ctas" href="/listings/521-e-gilmour-st-grantsville/" variant="dark">See 521 E Gilmour</Button>
   </Hero>
 
   <FactStrip items={[
-    { value: "Placeholder", label: "Fact one" },
-    { value: "Placeholder", label: "Fact two" },
-    { value: "Placeholder", label: "Fact three" },
+    { value: "Tooele County", label: "Where we work" },
+    { value: "RealtyPath LLC", label: "Our brokerage" },
+    { value: AGENTS[0].phone, label: "Call or text" },
   ]} />
 
-  <Section tone="paper">
-    <h2 class="text-[clamp(1.6rem,6vw,2.2rem)]">Placeholder section — content step</h2>
-    <p class="mt-2 text-muted max-w-[640px]">Placeholder body text. This scaffold demonstrates the token system, layout, and shared components; the next step writes real page copy from the content brief.</p>
-    <div class="mt-8 grid gap-5 md:grid-cols-3">
-      <Card><p class="font-display text-[1.2rem]">Placeholder card</p><p class="mt-2 text-muted text-[.9rem]">Placeholder — content step.</p></Card>
-      <Card><p class="font-display text-[1.2rem]">Placeholder card</p><p class="mt-2 text-muted text-[.9rem]">Placeholder — content step.</p></Card>
-      <Card><p class="font-display text-[1.2rem]">Placeholder card</p><p class="mt-2 text-muted text-[.9rem]">Placeholder — content step.</p></Card>
+  <Section tone="paper" labelledby="featured-h">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">Featured listing</p>
+        <h2 id="featured-h" class="mt-2 text-[clamp(1.6rem,6vw,2.2rem)]">521 E Gilmour, Grantsville</h2>
+      </div>
+      <Button href="/listings/" variant="ghost">All listings</Button>
+    </div>
+    <div class="mt-8 grid gap-8 md:grid-cols-2 md:items-center">
+      <ListingCard listing={{
+        address: "521 E Gilmour St",
+        city: "Grantsville, UT",
+        price: "$1,299,000",
+        beds: 7,
+        baths: 5,
+        status: "For sale",
+        href: "/listings/521-e-gilmour-st-grantsville/",
+      }} />
+      <div>
+        <p class="text-lg leading-relaxed">A custom estate in the Heritage Farms subdivision, built by Heritage Homes and featured as Home #29 in the 2026 Salt Lake Parade of Homes. It includes a separate-entrance basement apartment.</p>
+        <p class="mt-4 text-muted">Take the 3D Matterport walkthrough, watch the full video tour, and request pricing on the listing page.</p>
+        <div class="mt-6">
+          <Button href="/listings/521-e-gilmour-st-grantsville/" variant="primary">View the listing <Icon name="arrow-right" size={16} /></Button>
+        </div>
+      </div>
     </div>
   </Section>
 
+  <Section tone="white" labelledby="how-h">
+    <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">How we work</p>
+    <h2 id="how-h" class="mt-2 text-[clamp(1.6rem,6vw,2.2rem)]">Three ways we help</h2>
+    <div class="mt-8 grid gap-5 md:grid-cols-3">
+      <Card href="/buy/">
+        <Icon name="key" size={26} class="text-copper-dark" />
+        <p class="mt-3 font-display text-[1.3rem]">Buying</p>
+        <p class="mt-2 text-muted text-[.95rem]">We walk you through the whole process, from your first tour to the keys — including the written buyer agreement Utah requires before showings.</p>
+        <p class="mt-4 inline-flex items-center gap-1 text-copper-dark font-semibold text-[.9rem]">How buying works <Icon name="arrow-right" size={16} /></p>
+      </Card>
+      <Card href="/sell/">
+        <Icon name="home" size={26} class="text-copper-dark" />
+        <p class="mt-3 font-display text-[1.3rem]">Selling</p>
+        <p class="mt-2 text-muted text-[.95rem]">A straight pricing conversation, real prep advice, and a marketing plan built around your home — not a template.</p>
+        <p class="mt-4 inline-flex items-center gap-1 text-copper-dark font-semibold text-[.9rem]">How selling works <Icon name="arrow-right" size={16} /></p>
+      </Card>
+      <Card href="/sell/#video">
+        <Icon name="video" size={26} class="text-copper-dark" />
+        <p class="mt-3 font-display text-[1.3rem]">Video package</p>
+        <p class="mt-2 text-muted text-[.95rem]">Every listing gets a professional video package in multiple formats, so your home is shown well online from the first day.</p>
+        <p class="mt-4 inline-flex items-center gap-1 text-copper-dark font-semibold text-[.9rem]">See the video package <Icon name="arrow-right" size={16} /></p>
+      </Card>
+    </div>
+  </Section>
+
+  <Section tone="paper" labelledby="areas-h">
+    <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">Where we work</p>
+    <h2 id="areas-h" class="mt-2 text-[clamp(1.6rem,6vw,2.2rem)]">Communities across the Tooele Valley</h2>
+    <p class="mt-3 text-muted max-w-[640px]">Neutral guides to getting around, what the housing looks like, and public places to visit in each town we serve.</p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      {COMMUNITIES.map((c) => (
+        <a href={`/communities/${c.slug}/`} class="inline-flex items-center gap-2 rounded-full border border-hairline bg-white px-4 py-2.5 text-[.95rem] font-medium text-ink no-underline hover:border-copper hover:text-copper-dark">
+          <Icon name="map-pin" size={16} /> {c.name}
+        </a>
+      ))}
+    </div>
+    <div class="mt-6">
+      <Button href="/communities/" variant="ghost">Explore all communities</Button>
+    </div>
+  </Section>
+
+  {GBP_REVIEW_URL && (
+    <Section tone="white" narrow labelledby="reviews-h">
+      <h2 id="reviews-h" class="text-[clamp(1.6rem,6vw,2.2rem)]">Reviews</h2>
+      <p class="mt-3 text-muted">Our clients leave reviews on Google. Read them there.</p>
+      <div class="mt-6"><Button href={GBP_REVIEW_URL} variant="primary">Read our reviews on Google</Button></div>
+    </Section>
+  )}
+
   <Section tone="panel" narrow id="contact">
-    <LeadForm src="website:home" heading="Placeholder — get in touch" intent="both" />
+    <LeadForm src="home" heading="Tell us what you're thinking about" intent="both" />
   </Section>
 </Base>
