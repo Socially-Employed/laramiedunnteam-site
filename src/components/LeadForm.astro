@@ -52,6 +52,10 @@ const uid = "lf-" + Math.random().toString(36).slice(2, 8);
     </div>
     <input type="hidden" name="src" value={src} />
     <input type="hidden" name="page" value={Astro.url.pathname} />
+    <!-- attribution (filled from sessionStorage by the script below; empty without JS) -->
+    {["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "ref", "landing"].map((k) => (
+      <input type="hidden" name={k} value="" data-attr={k} />
+    ))}
 
     <div class="md:col-span-2">
       <Button type="submit" variant="primary" class="w-full">Send</Button>
@@ -71,6 +75,13 @@ const uid = "lf-" + Math.random().toString(36).slice(2, 8);
     const success = root.querySelector<HTMLElement>(".lead-form-success");
     const endpoint = root.dataset.endpoint || "/api/lead";
     if (!form) return;
+    // Fill the hidden attribution fields so both the JS and the no-JS submit paths carry them.
+    try {
+      const attr = JSON.parse(sessionStorage.getItem("ldt_attr") || "{}");
+      form.querySelectorAll<HTMLInputElement>("input[data-attr]").forEach((i) => {
+        i.value = String(attr[i.dataset.attr || ""] || "");
+      });
+    } catch {}
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       if (msg) msg.textContent = "";

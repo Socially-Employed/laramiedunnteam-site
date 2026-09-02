@@ -33,5 +33,24 @@ const { title, description, canonical, ogImage, type, stickyCta = false } = Astr
     </main>
     <Footer />
     {stickyCta && <StickyCta />}
+    <script>
+      // First-touch attribution for the lead form: utm_* from the URL, the referrer and the landing page,
+      // kept in sessionStorage for this visit only. Nothing is sent anywhere until a form is submitted.
+      try {
+        const KEY = "ldt_attr";
+        if (!sessionStorage.getItem(KEY)) {
+          const q = new URLSearchParams(location.search);
+          const a: Record<string, string> = {};
+          for (const k of ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"]) {
+            const v = q.get(k);
+            if (v) a[k] = v.slice(0, 120);
+          }
+          if (q.has("fbclid") && !a.utm_source) a.utm_source = "facebook";
+          if (document.referrer) a.ref = document.referrer.slice(0, 300);
+          a.landing = (location.pathname + location.search).slice(0, 300);
+          sessionStorage.setItem(KEY, JSON.stringify(a));
+        }
+      } catch {}
+    </script>
   </body>
 </html>
