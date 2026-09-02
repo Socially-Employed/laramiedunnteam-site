@@ -1,0 +1,58 @@
+---
+// index.astro — SCAFFOLD placeholder exercising the design system. Real copy lands in the next step.
+import Base from "../layouts/Base.astro";
+import Hero from "../components/Hero.astro";
+import FactStrip from "../components/FactStrip.astro";
+import Section from "../components/Section.astro";
+import Card from "../components/Card.astro";
+import Button from "../components/Button.astro";
+import LeadForm from "../components/LeadForm.astro";
+import JsonLd from "../components/JsonLd.astro";
+import Icon from "../components/Icon.astro";
+import { BRAND_STRING, COUNTY } from "../config/site";
+
+const agentSchema = {
+  "@context": "https://schema.org",
+  "@type": "RealEstateAgent",
+  name: "Laramie Dunn Team",
+  areaServed: COUNTY,
+  parentOrganization: { "@type": "Organization", name: "RealtyPath LLC" },
+};
+---
+<Base
+  title="Laramie Dunn Team · RealtyPath LLC (Tooele Valley)"
+  description="Placeholder — content step. Laramie Dunn Team scaffold homepage."
+  stickyCta={true}
+>
+  <JsonLd slot="head" data={agentSchema} />
+
+  <Hero
+    eyebrow="Placeholder — content step"
+    title="Placeholder headline — content step"
+    lede={BRAND_STRING}
+    image={{ src: "/images/hero.jpg", alt: "Placeholder hero image", width: 1600, height: 900 }}
+  >
+    <Button slot="ctas" href="#contact" variant="primary">Placeholder CTA <Icon name="arrow-right" size={16} /></Button>
+    <Button slot="ctas" href="/listings" variant="dark">View listings</Button>
+  </Hero>
+
+  <FactStrip items={[
+    { value: "Placeholder", label: "Fact one" },
+    { value: "Placeholder", label: "Fact two" },
+    { value: "Placeholder", label: "Fact three" },
+  ]} />
+
+  <Section tone="paper">
+    <h2 class="text-[clamp(1.6rem,6vw,2.2rem)]">Placeholder section — content step</h2>
+    <p class="mt-2 text-muted max-w-[640px]">Placeholder body text. This scaffold demonstrates the token system, layout, and shared components; the next step writes real page copy from the content brief.</p>
+    <div class="mt-8 grid gap-5 md:grid-cols-3">
+      <Card><p class="font-display text-[1.2rem]">Placeholder card</p><p class="mt-2 text-muted text-[.9rem]">Placeholder — content step.</p></Card>
+      <Card><p class="font-display text-[1.2rem]">Placeholder card</p><p class="mt-2 text-muted text-[.9rem]">Placeholder — content step.</p></Card>
+      <Card><p class="font-display text-[1.2rem]">Placeholder card</p><p class="mt-2 text-muted text-[.9rem]">Placeholder — content step.</p></Card>
+    </div>
+  </Section>
+
+  <Section tone="panel" narrow id="contact">
+    <LeadForm src="website:home" heading="Placeholder — get in touch" intent="both" />
+  </Section>
+</Base>

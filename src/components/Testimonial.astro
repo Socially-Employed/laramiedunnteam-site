@@ -1,0 +1,26 @@
+---
+// Testimonial.astro — review/quote card. Aggregate-only per CONTENT_BRIEF §6; no invented quotes.
+import Icon from "./Icon.astro";
+export interface Props {
+  quote?: string;
+  author?: string;
+  detail?: string;
+  rating?: number;
+}
+const { quote, author, detail, rating } = Astro.props;
+---
+<figure class="rounded-[16px] border border-hairline bg-white p-6">
+  {rating && (
+    <div class="flex gap-0.5 text-copper mb-3" aria-label={`${rating} out of 5`}>
+      {Array.from({ length: Math.round(rating) }).map(() => <Icon name="star" size={18} />)}
+    </div>
+  )}
+  {quote && <blockquote class="font-display text-[1.15rem] leading-snug text-ink">{quote}</blockquote>}
+  <slot />
+  {(author || detail) && (
+    <figcaption class="mt-4 text-[.9rem] text-muted">
+      {author && <span class="font-semibold text-ink">{author}</span>}
+      {detail && <span> · {detail}</span>}
+    </figcaption>
+  )}
+</figure>

@@ -1,0 +1,39 @@
+---
+// ListingCard.astro — single listing summary card.
+import Icon from "./Icon.astro";
+export interface Props {
+  listing: {
+    address: string;
+    city: string;
+    price?: string;
+    beds?: number | string;
+    baths?: number | string;
+    status?: string;
+    image?: string;
+    href: string;
+  };
+}
+const { listing } = Astro.props;
+---
+<a href={listing.href} class="group block rounded-[16px] overflow-hidden border border-hairline bg-white no-underline transition-shadow hover:shadow-[var(--shadow-lift)]">
+  <div class="relative aspect-[4/3] bg-hairline">
+    {listing.image && (
+      <img src={listing.image} alt={`${listing.address}, ${listing.city}`} width="800" height="600" loading="lazy" class="w-full h-full object-cover" />
+    )}
+    {listing.status && (
+      <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-copper text-white text-[.7rem] font-bold uppercase tracking-[.05em]">{listing.status}</span>
+    )}
+  </div>
+  <div class="p-5">
+    {listing.price && <p class="font-display text-[1.35rem] text-copper-dark">{listing.price}</p>}
+    <p class="mt-1 font-semibold text-ink">{listing.address}</p>
+    <p class="text-muted text-[.9rem]">{listing.city}</p>
+    {(listing.beds || listing.baths) && (
+      <p class="mt-3 flex items-center gap-4 text-[.85rem] text-muted">
+        {listing.beds && <span class="inline-flex items-center gap-1"><Icon name="home" size={16} /> {listing.beds} bd</span>}
+        {listing.baths && <span class="inline-flex items-center gap-1"><Icon name="key" size={16} /> {listing.baths} ba</span>}
+        <span class="inline-flex items-center gap-1 text-copper-dark font-semibold ml-auto">View <Icon name="arrow-right" size={16} /></span>
+      </p>
+    )}
+  </div>
+</a>

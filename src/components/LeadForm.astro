@@ -1,0 +1,96 @@
+---
+// LeadForm.astro — progressive-enhancement lead form.
+// No-JS: native POST to LEAD_ENDPOINT. JS: fetch JSON + inline success/error.
+// Honeypot `company` is off-screen. `src` identifies the originating page.
+import { LEAD_ENDPOINT } from "../config/site";
+import Button from "./Button.astro";
+export interface Props {
+  src: string;
+  heading?: string;
+  intent?: "buy" | "sell" | "both" | "other";
+}
+const { src, heading = "Get in touch", intent = "other" } = Astro.props;
+const uid = "lf-" + Math.random().toString(36).slice(2, 8);
+---
+<div class="lead-form-root rounded-[16px] border border-panel-border bg-panel text-panel-text p-6 md:p-8 shadow-[var(--shadow-lift)]" data-endpoint={LEAD_ENDPOINT}>
+  <h2 class="text-white text-[clamp(1.4rem,5vw,1.9rem)]">{heading}</h2>
+  <form
+    id={uid}
+    class="lead-form mt-5 grid gap-4 md:grid-cols-2"
+    method="post"
+    action={LEAD_ENDPOINT}
+  >
+    <label class="flex flex-col gap-1.5 text-[.86rem] font-semibold md:col-span-2">
+      Name
+      <input name="name" required autocomplete="name" class="w-full rounded-[8px] border border-panel-border bg-white text-ink px-3 py-2.5" />
+    </label>
+    <label class="flex flex-col gap-1.5 text-[.86rem] font-semibold">
+      Email
+      <input name="email" type="email" required autocomplete="email" class="w-full rounded-[8px] border border-panel-border bg-white text-ink px-3 py-2.5" />
+    </label>
+    <label class="flex flex-col gap-1.5 text-[.86rem] font-semibold">
+      Phone <span class="font-normal text-panel-text">(optional)</span>
+      <input name="phone" type="tel" autocomplete="tel" class="w-full rounded-[8px] border border-panel-border bg-white text-ink px-3 py-2.5" />
+    </label>
+    <label class="flex flex-col gap-1.5 text-[.86rem] font-semibold md:col-span-2">
+      I'm interested in
+      <select name="intent" class="w-full rounded-[8px] border border-panel-border bg-white text-ink px-3 py-2.5">
+        <option value="buy" selected={intent === "buy"}>Buying</option>
+        <option value="sell" selected={intent === "sell"}>Selling</option>
+        <option value="both" selected={intent === "both"}>Buying and selling</option>
+        <option value="other" selected={intent === "other"}>Something else</option>
+      </select>
+    </label>
+    <label class="flex flex-col gap-1.5 text-[.86rem] font-semibold md:col-span-2">
+      Message <span class="font-normal text-panel-text">(optional)</span>
+      <textarea name="message" rows="3" class="w-full rounded-[8px] border border-panel-border bg-white text-ink px-3 py-2.5"></textarea>
+    </label>
+
+    <!-- honeypot -->
+    <div class="absolute -left-[9999px] -top-[9999px] h-px w-px overflow-hidden" aria-hidden="true">
+      <label>Company <input name="company" tabindex="-1" autocomplete="off" /></label>
+    </div>
+    <input type="hidden" name="src" value={src} />
+
+    <div class="md:col-span-2">
+      <Button type="submit" variant="primary" class="w-full">Send</Button>
+      <p class="mt-2 text-center text-[.78rem] text-panel-text">No spam. One follow-up from the Laramie Dunn Team.</p>
+    </div>
+    <p class="lead-form-msg md:col-span-2 min-h-[1.4em] text-[.9rem] font-semibold text-white" role="alert" aria-live="polite"></p>
+  </form>
+  <div class="lead-form-success rounded-[16px] border border-copper bg-panel p-6 text-panel-text" hidden>
+    <h2 class="text-white">You're in — one follow-up from the Laramie Dunn Team, no spam.</h2>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>(".lead-form-root").forEach((root) => {
+    const form = root.querySelector<HTMLFormElement>(".lead-form");
+    const msg = root.querySelector<HTMLElement>(".lead-form-msg");
+    const success = root.querySelector<HTMLElement>(".lead-form-success");
+    const endpoint = root.dataset.endpoint || "/api/lead";
+    if (!form) return;
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (msg) msg.textContent = "";
+      const btn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+      const fd = new FormData(form);
+      const payload: Record<string, string> = {};
+      fd.forEach((v, k) => (payload[k] = String(v)));
+      if (btn) { btn.disabled = true; }
+      try {
+        const res = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error("bad status " + res.status);
+        form.hidden = true;
+        if (success) success.hidden = false;
+      } catch (err) {
+        if (msg) msg.textContent = "Something went wrong — please call or text us instead.";
+        if (btn) btn.disabled = false;
+      }
+    });
+  });
+</script>

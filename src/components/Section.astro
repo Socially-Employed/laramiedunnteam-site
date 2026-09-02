@@ -1,0 +1,22 @@
+---
+// Section.astro — tone: paper | white | panel; narrow constrains width.
+export interface Props {
+  tone?: "paper" | "white" | "panel";
+  narrow?: boolean;
+  id?: string;
+  class?: string;
+  labelledby?: string;
+}
+const { tone = "paper", narrow = false, id, class: cls = "", labelledby } = Astro.props;
+const tones: Record<string, string> = {
+  paper: "bg-paper text-ink",
+  white: "bg-white text-ink",
+  panel: "bg-panel text-panel-text",
+};
+const inner = narrow ? "w-[min(100%,44rem)]" : "w-[min(100%,72rem)]";
+---
+<section id={id} aria-labelledby={labelledby} class={`py-12 md:py-[68px] ${tones[tone]} ${cls}`}>
+  <div class={`${inner} mx-auto px-5`}>
+    <slot />
+  </div>
+</section>

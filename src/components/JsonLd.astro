@@ -1,0 +1,7 @@
+---
+// JsonLd.astro — emits a <script type="application/ld+json"> from a data object.
+export interface Props { data: Record<string, any>; }
+const { data } = Astro.props;
+const json = JSON.stringify(data);
+---
+<script type="application/ld+json" is:inline set:html={json} />

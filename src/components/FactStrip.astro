@@ -1,0 +1,13 @@
+---
+// FactStrip.astro — the 521 three-fact strip (grid 1.35fr 1fr 1fr).
+export interface Props { items: { label: string; value: string }[]; }
+const { items } = Astro.props;
+---
+<div class="grid grid-cols-[1.35fr_1fr_1fr] bg-white border-b border-hairline" aria-label="Key facts">
+  {items.map((it, i) => (
+    <div class={`min-w-0 px-1.5 py-4 text-center ${i > 0 ? "border-l border-hairline" : ""}`}>
+      <b class="block font-display text-[clamp(1.02rem,4.5vw,1.35rem)] leading-tight text-copper-dark">{it.value}</b>
+      <span class="block mt-1 text-muted text-[.67rem] uppercase tracking-[.07em]">{it.label}</span>
+    </div>
+  ))}
+</div>

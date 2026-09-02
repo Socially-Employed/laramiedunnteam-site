@@ -1,0 +1,11 @@
+---
+// Card.astro — neutral surface panel with hairline border.
+export interface Props { class?: string; href?: string; }
+const { class: cls = "", href } = Astro.props;
+const klass = `block rounded-[16px] border border-hairline bg-white text-ink p-6 ${cls}`;
+---
+{href ? (
+  <a href={href} class={`${klass} no-underline transition-shadow hover:shadow-[var(--shadow-lift)]`}><slot /></a>
+) : (
+  <div class={klass}><slot /></div>
+)}

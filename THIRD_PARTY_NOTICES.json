@@ -1,0 +1,68 @@
+{
+  "entries": [
+    {
+      "attribution_text": null,
+      "cautions": [
+        "OFL Reserved Font Names: a MODIFIED font may not use the reserved name(s); font software may not be sold standalone."
+      ],
+      "id": "fraunces",
+      "license": "OFL-1.1",
+      "license_file": "licenses/fraunces/LICENSE",
+      "license_url": "https://github.com/undercasetype/Fraunces/blob/master/OFL.txt",
+      "modification_note": "",
+      "modified": true,
+      "name": "Fraunces (display serif)",
+      "obligations": [
+        "copyright_notice_required",
+        "license_text_required",
+        "reserved_font_names_apply"
+      ],
+      "reserved_font_names": [],
+      "source_url": "https://fonts.google.com/specimen/Fraunces",
+      "third_party": true,
+      "version": "5.3.0"
+    },
+    {
+      "attribution_text": null,
+      "cautions": [
+        "OFL Reserved Font Names: a MODIFIED font may not use the reserved name(s); font software may not be sold standalone."
+      ],
+      "id": "inter",
+      "license": "OFL-1.1",
+      "license_file": "licenses/inter/LICENSE",
+      "license_url": "https://github.com/rsms/inter/blob/master/LICENSE.txt",
+      "modification_note": "",
+      "modified": true,
+      "name": "Inter (variable font)",
+      "obligations": [
+        "copyright_notice_required",
+        "license_text_required",
+        "reserved_font_names_apply"
+      ],
+      "reserved_font_names": [],
+      "source_url": "https://rsms.me/inter/",
+      "third_party": true,
+      "version": "5.3.0"
+    },
+    {
+      "attribution_text": null,
+      "cautions": [],
+      "id": "lucide",
+      "license": "ISC",
+      "license_file": "licenses/lucide/LICENSE",
+      "license_url": "https://github.com/lucide-icons/lucide/blob/main/LICENSE",
+      "modification_note": "",
+      "modified": false,
+      "name": "Lucide Icons",
+      "obligations": [
+        "copyright_notice_required",
+        "license_text_required"
+      ],
+      "reserved_font_names": [],
+      "source_url": "https://lucide.dev",
+      "third_party": true,
+      "version": "1.31.0"
+    }
+  ],
+  "notice_schema": 1
+}

@@ -1,0 +1,13 @@
+---
+// StatBand.astro — evenly spaced stat items on a subtle band.
+export interface Props { items: { label: string; value: string }[]; }
+const { items } = Astro.props;
+---
+<div class="grid gap-px bg-hairline border-y border-hairline" style={`grid-template-columns:repeat(${items.length},minmax(0,1fr))`}>
+  {items.map((it) => (
+    <div class="bg-white text-center px-3 py-5">
+      <b class="block font-display text-[clamp(1.1rem,4vw,1.5rem)] text-copper-dark">{it.value}</b>
+      <span class="block mt-1 text-muted text-[.68rem] uppercase tracking-[.07em]">{it.label}</span>
+    </div>
+  ))}
+</div>

@@ -1,0 +1,34 @@
+---
+// StickyCta.astro — mobile-only sticky pill. Hides when a LeadForm is on screen (IntersectionObserver).
+import { AGENTS } from "../config/site";
+const primary = AGENTS[0];
+---
+<a
+  id="sticky-cta"
+  href={primary.phoneHref}
+  class="sticky-cta md:hidden fixed left-1/2 z-50 px-6 py-3 rounded-full bg-copper text-white text-[.92rem] font-bold no-underline whitespace-nowrap shadow-[0_7px_25px_rgba(0,0,0,.3)]"
+  style="bottom:max(14px,env(safe-area-inset-bottom));transform:translateX(-50%) translateY(170%);transition:transform .28s ease;"
+>Text or call</a>
+
+<script>
+  const cta = document.getElementById("sticky-cta");
+  if (cta) {
+    const show = () => (cta.style.transform = "translateX(-50%) translateY(0)");
+    const hide = () => (cta.style.transform = "translateX(-50%) translateY(170%)");
+    // reveal after a small scroll
+    let revealed = false;
+    window.addEventListener("scroll", () => {
+      if (!revealed && window.scrollY > 300) { revealed = true; show(); }
+    }, { passive: true });
+    // hide while a lead form is visible
+    const forms = document.querySelectorAll(".lead-form-root");
+    if (forms.length && "IntersectionObserver" in window) {
+      const io = new IntersectionObserver((entries) => {
+        const anyVisible = entries.some((en) => en.isIntersecting);
+        if (anyVisible) hide();
+        else if (revealed) show();
+      }, { threshold: 0.2 });
+      forms.forEach((f) => io.observe(f));
+    }
+  }
+</script>
