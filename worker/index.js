@@ -105,6 +105,11 @@ async function handleLead(req, env, ctx) {
 export default {
   async fetch(req, env, ctx) {
     const url = new URL(req.url);
+    // www -> apex (301) so the purchased domain has ONE canonical host (canonical tags/sitemap use SITE_URL).
+    if (url.hostname.startsWith("www.")) {
+      url.hostname = url.hostname.slice(4);
+      return Response.redirect(url.toString(), 301);
+    }
     if (url.pathname === "/api/lead") {
       if (req.method !== "POST") return new Response("Method Not Allowed", { status: 405, headers: { allow: "POST" } });
       return handleLead(req, env, ctx);
