@@ -1,7 +1,7 @@
 // Every fact here traces to website/CONTENT_BRIEF.md; null = NOT ON FILE.
 // Rename the brand in ONE place: BRAND_NAME (per plan.md risk note).
 
-export const SITE_URL = "https://laramiedunnteam.com"; // placeholder — production domain attaches later
+export const SITE_URL = "https://ldt.vivare.io"; // PREVIEW host. At cutover set the purchased domain here (canonical, sitemap, robots, OG all follow).
 export const BRAND_NAME = "Laramie Dunn Team";
 export const BROKERAGE = "RealtyPath LLC (Tooele Valley)";
 export const BRAND_STRING = "Laramie Dunn Team · RealtyPath LLC (Tooele Valley)";

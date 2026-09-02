@@ -9,6 +9,8 @@
 // Future upgrade (documented, not done here): extend the hub to accept `message` + dynamic title.
 
 const HUB_LEAD_URL = "https://laramiedunnteam.vivare.io/api/lead";
+// Preview hostnames must never be indexed; the purchased domain will not match this and is indexable.
+const PREVIEW_HOST = /\.(vivare\.io|workers\.dev)$/i;
 const MAX_BODY = 8 * 1024;
 
 const clip = (v, n) => (typeof v === "string" ? v.trim().slice(0, n) : "");
@@ -92,6 +94,7 @@ export default {
     h.set("x-content-type-options", "nosniff");
     h.set("referrer-policy", "strict-origin-when-cross-origin");
     h.set("x-frame-options", "SAMEORIGIN");
+    if (PREVIEW_HOST.test(url.hostname)) h.set("x-robots-tag", "noindex");
     return new Response(res.body, { status: res.status, headers: h });
   },
 };
