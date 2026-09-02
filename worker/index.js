@@ -5,7 +5,8 @@
 // - GET /api/health: liveness.
 // Hub contract (upload-worker/src/index.js L55-95): name<=120, phone<=40, email<=160, budget<=40,
 // timeline<=40, src<=60; honeypot field `company`; needs name + (phone|email). It does NOT accept
-// a free-text message, so the message is truncated into `budget` and intent goes into `timeline`.
+// a free-text message, so the message (or the property address, when given) is truncated into
+// `budget` and intent goes into `timeline`.
 // Attribution: the site captures first-touch utm_* + referrer + landing page (BaseLayout script) and the
 // form posts them; they are stored in the R2 copy under `attr` and utm_source is folded into the hub `src`.
 // Future upgrade (documented, not done here): extend the hub to accept `message` + dynamic title.
@@ -58,6 +59,7 @@ async function handleLead(req, env, ctx) {
     phone: clip(body.phone, 40),
     intent: clip(body.intent, 20) || "other",       // buy | sell | both | other
     message: clip(body.message, 2000),
+    address: clip(body.address, 200),           // home-value requests (optional elsewhere)
     src: clip(body.src, 60) || "website",
     page: clip(body.page, 200),
     attr,
@@ -88,7 +90,7 @@ async function handleLead(req, env, ctx) {
     name: lead.name,
     phone: lead.phone,
     email: lead.email,
-    budget: clip(lead.message, 40),
+    budget: clip(lead.address || lead.message, 40),   // address wins so it reaches Lisa's push
     timeline: lead.intent,
     src: clip(`website:${lead.src}${attr.utm_source ? ":" + attr.utm_source : ""}`, 60),
   };

@@ -8,8 +8,10 @@ export interface Props {
   src: string;
   heading?: string;
   intent?: "buy" | "sell" | "both" | "other";
+  /** Show a required "Property address" field (home-value requests). */
+  address?: boolean;
 }
-const { src, heading = "Get in touch", intent = "other" } = Astro.props;
+const { src, heading = "Get in touch", intent = "other", address = false } = Astro.props;
 const uid = "lf-" + Math.random().toString(36).slice(2, 8);
 ---
 <div class="lead-form-root rounded-[16px] border border-panel-border bg-panel text-panel-text p-6 md:p-8 shadow-[var(--shadow-lift)]" data-endpoint={LEAD_ENDPOINT}>
@@ -24,6 +26,12 @@ const uid = "lf-" + Math.random().toString(36).slice(2, 8);
       Name
       <input name="name" required autocomplete="name" class="w-full rounded-[8px] border border-panel-border bg-white text-ink px-3 py-2.5" />
     </label>
+    {address && (
+      <label class="flex flex-col gap-1.5 text-[.86rem] font-semibold md:col-span-2">
+        <span>Property address</span>
+        <input name="address" required autocomplete="street-address" placeholder="Street, city" class="w-full rounded-[8px] border border-panel-border bg-white text-ink px-3 py-2.5" />
+      </label>
+    )}
     <label class="flex flex-col gap-1.5 text-[.86rem] font-semibold">
       Email
       <input name="email" type="email" required autocomplete="email" class="w-full rounded-[8px] border border-panel-border bg-white text-ink px-3 py-2.5" />

@@ -1,0 +1,79 @@
+---
+// /home-value/ — seller lead magnet. A real number from recent nearby sales, not an algorithm's guess.
+// Copy rules: Fair Housing safe (property + process only), no invented market stats.
+import Base from "../layouts/Base.astro";
+import Section from "../components/Section.astro";
+import Card from "../components/Card.astro";
+import Button from "../components/Button.astro";
+import LeadForm from "../components/LeadForm.astro";
+import Icon from "../components/Icon.astro";
+import { AGENTS } from "../config/site";
+
+const primary = AGENTS[0];
+const steps = [
+  { icon: "home", title: "Tell us the address", body: "Add the property address and how to reach you. A sentence about updates or timing helps, but it is optional." },
+  { icon: "check", title: "We pull the comparable sales", body: "We look at what has actually closed near you recently, what is pending, and what is sitting, using the MLS data we work in every day." },
+  { icon: "phone", title: "You get a range and the reasoning", body: "We call or text with a realistic range and explain what drives it. No obligation to list, and we do not hand your info to anyone else." },
+];
+const whyNot = [
+  { title: "Online estimates guess", body: "Automated estimates never see the inside of a home, the lot, the view, or the finish level. They can miss by a lot in either direction." },
+  { title: "We know the streets", body: `We sell across Tooele County and know which comparable sales are actually comparable, and which ones only look that way on paper.` },
+  { title: "You decide what happens next", body: "Some people use the number to plan a move, some to refinance, some just to know. Any of those is a fine reason to ask." },
+];
+---
+<Base
+  breadcrumbs={[{ name: "Selling", href: "/sell/" }, { name: "Home value", href: "/home-value/" }]}
+  title="What is my Tooele County home worth?"
+  description="Request a free, no-obligation home value from the Laramie Dunn Team. A real range based on recent nearby sales in Tooele County, with the reasoning behind it."
+  stickyCta={true}
+>
+  <Section tone="paper">
+    <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">Home value</p>
+    <h1 class="mt-2 text-[clamp(1.8rem,6vw,2.6rem)] max-w-[720px]">What is your Tooele County home worth?</h1>
+    <p class="mt-4 text-lg leading-relaxed max-w-[680px]">
+      Get a real number, not an algorithm's guess. Send us the address and we will pull the recent sales around you and come back with a
+      realistic range and the reasoning behind it. Free, and no obligation to list.
+    </p>
+    <div class="mt-6 flex flex-wrap gap-3">
+      <Button href="#start" variant="primary">Request your home value <Icon name="arrow-right" size={16} /></Button>
+      <Button href={`tel:${primary.phone.replace(/[^0-9+]/g, "")}`} variant="ghost">Or call {primary.phone}</Button>
+    </div>
+  </Section>
+
+  <Section tone="white" labelledby="hv-how-h">
+    <h2 id="hv-how-h" class="text-[clamp(1.5rem,4vw,2rem)]">How it works</h2>
+    <ol class="mt-8 grid gap-5 md:grid-cols-3 list-none p-0 m-0">
+      {steps.map((s, i) => (
+        <li class="m-0">
+          <Card>
+            <div class="flex items-center gap-3">
+              <span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-copper text-white font-semibold text-[.9rem]" aria-hidden="true">{i + 1}</span>
+              <Icon name={s.icon} size={22} class="text-copper-dark" />
+            </div>
+            <p class="mt-4 font-display text-[1.2rem]">{s.title}</p>
+            <p class="mt-2 text-muted text-[.95rem]">{s.body}</p>
+          </Card>
+        </li>
+      ))}
+    </ol>
+  </Section>
+
+  <Section tone="paper" labelledby="hv-why-h">
+    <h2 id="hv-why-h" class="text-[clamp(1.5rem,4vw,2rem)]">Why ask a person instead of a website</h2>
+    <div class="mt-8 grid gap-5 md:grid-cols-3">
+      {whyNot.map((w) => (
+        <Card>
+          <p class="font-display text-[1.2rem]">{w.title}</p>
+          <p class="mt-2 text-muted text-[.95rem]">{w.body}</p>
+        </Card>
+      ))}
+    </div>
+    <p class="mt-8 text-[.95rem] text-muted max-w-[680px]">
+      Thinking further ahead? <a href="/sell/" class="text-copper-dark font-semibold">See how selling with us works</a>, including the video package every listing gets.
+    </p>
+  </Section>
+
+  <Section tone="panel" narrow id="start">
+    <LeadForm src="home-value" heading="Request your home value" intent="sell" address={true} />
+  </Section>
+</Base>
