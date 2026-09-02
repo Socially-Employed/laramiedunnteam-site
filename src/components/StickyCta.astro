@@ -3,12 +3,14 @@
 import { AGENTS } from "../config/site";
 const primary = AGENTS[0];
 ---
+<aside aria-label="Quick contact">
 <a
   id="sticky-cta"
   href={primary.phoneHref}
   class="sticky-cta md:hidden fixed left-1/2 z-50 px-6 py-3 rounded-full bg-copper text-white text-[.92rem] font-bold no-underline whitespace-nowrap shadow-[0_7px_25px_rgba(0,0,0,.3)]"
   style="bottom:max(14px,env(safe-area-inset-bottom));transform:translateX(-50%) translateY(170%);transition:transform .28s ease;"
 >Text or call</a>
+</aside>
 
 <script>
   const cta = document.getElementById("sticky-cta");
