@@ -1,0 +1,98 @@
+---
+// faq.astro — common questions from buyers and sellers. Every answer restates facts already on the
+// site (buy/sell/contact/site.ts); no figures, response-time promises, or market stats are invented.
+import Base from "../layouts/Base.astro";
+import Section from "../components/Section.astro";
+import Button from "../components/Button.astro";
+import LeadForm from "../components/LeadForm.astro";
+import JsonLd from "../components/JsonLd.astro";
+import Icon from "../components/Icon.astro";
+import { BRAND_NAME, BROKERAGE, COUNTY, SERVICE_AREA, AGENTS } from "../config/site";
+
+const towns = SERVICE_AREA.join(", ");
+const names = AGENTS.map((a) => a.name).join(" and ");
+
+const groups = [
+  {
+    id: "general",
+    h: "Working with us",
+    items: [
+      { q: "Where do you work?", a: `All of ${COUNTY}. Most of our work is in ${towns}, and we cover the rest of the county too.` },
+      { q: "Who is on the team?", a: `${names}. Both are licensed Utah real estate agents with ${BROKERAGE}.` },
+      { q: "How do I get started?", a: "Call or text either of us, send an email, or use the form on any page. A conversation is the first step whether you're buying, selling, or just thinking about it." },
+      { q: "Can you help me buy and sell at the same time?", a: "Yes. Plenty of people sell one home and buy the next in the same move. We talk through the timing and the order of operations with you before anything goes live, so the two sides line up." },
+    ],
+  },
+  {
+    id: "buying",
+    h: "Buying",
+    items: [
+      { q: "Do I have to sign something before we tour homes?", a: "In Utah, buyers sign a written buyer-broker agreement before touring homes. It spells out who represents you, what we'll do for you, and how our work is paid for. We go through it with you in plain language and answer every question before you sign." },
+      { q: "What does it cost to work with you as a buyer?", a: "The terms are written into the buyer agreement, and we walk through them with you before you sign anything. Nothing is assumed, and the numbers are yours to review." },
+      { q: "Do I need a lender before we start looking?", a: "If you'll need financing, it helps to know your numbers before you fall for a house. We can point you toward a lender so that conversation happens early." },
+      { q: "What should I bring to a first conversation?", a: "A sense of the areas you're considering, a rough budget or a willingness to find one with a lender, your must-haves and deal-breakers, and questions. The more questions, the better." },
+      { q: "What is the commute like from the Tooele Valley?", a: "Most of the valley connects to Salt Lake County to the northeast by way of State Route 36 and Interstate 80. Where you land in the valley changes that drive, so it's worth weighing alongside the house itself. We can talk through it town by town." },
+    ],
+  },
+  {
+    id: "selling",
+    h: "Selling",
+    items: [
+      { q: "How do you decide on a list price?", a: "We look at what's actually selling near you and talk through a price that fits the home and the market, not a number picked to win the listing." },
+      { q: "Should I fix things up before I list?", a: "We tell you what's worth doing before you list and what isn't. Sometimes the honest answer is to leave it." },
+      { q: "How do you market a listing?", a: "Every listing gets a professional video package plus photography, so your home looks its best online from day one. Then we put it in front of buyers, manage showings, and keep you posted on what we're hearing." },
+      { q: "Can you tell me what my home is worth?", a: "Yes. Use the home-value page or just ask. We look at what's actually selling near you and give you a number with the reasoning behind it, not an automated estimate." },
+    ],
+  },
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: groups.flatMap((g) => g.items.map((i) => ({
+    "@type": "Question",
+    name: i.q,
+    acceptedAnswer: { "@type": "Answer", text: i.a },
+  }))),
+};
+---
+<Base
+  breadcrumbs={[{ name: "FAQ", href: "/faq/" }]}
+  title="Frequently asked questions"
+  description={`Common questions about buying and selling a home in ${COUNTY} with the ${BRAND_NAME}: the buyer agreement, lenders, pricing, prep, and marketing.`}
+  stickyCta={true}
+>
+  <JsonLd slot="head" data={faqSchema} />
+
+  <Section tone="paper">
+    <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">FAQ</p>
+    <h1 class="mt-2 text-[clamp(1.8rem,6vw,2.6rem)] max-w-[720px]">Questions we hear most.</h1>
+    <p class="mt-4 text-lg leading-relaxed max-w-[680px]">Straight answers about how buying and selling work with us. If yours isn't here, ask. We would rather answer it than have you guess.</p>
+    <nav aria-label="FAQ sections" class="mt-6 flex flex-wrap gap-3">
+      {groups.map((g) => (
+        <Button href={`#${g.id}`} variant="ghost">{g.h}</Button>
+      ))}
+    </nav>
+  </Section>
+
+  {groups.map((g, gi) => (
+    <Section tone={gi % 2 === 0 ? "white" : "paper"} narrow id={g.id} labelledby={`${g.id}-h`}>
+      <h2 id={`${g.id}-h`} class="text-[clamp(1.5rem,5vw,2rem)]">{g.h}</h2>
+      <div class="mt-6 divide-y divide-hairline border-y border-hairline">
+        {g.items.map((i) => (
+          <details class="group py-4">
+            <summary class="flex cursor-pointer items-start justify-between gap-4 list-none font-display text-[1.15rem] leading-snug [&::-webkit-details-marker]:hidden">
+              <span>{i.q}</span>
+              <Icon name="chevron-down" size={20} class="flex-none mt-1 text-copper-dark transition-transform group-open:rotate-180" />
+            </summary>
+            <p class="mt-3 text-[1.02rem] leading-relaxed text-muted max-w-[640px]">{i.a}</p>
+          </details>
+        ))}
+      </div>
+    </Section>
+  ))}
+
+  <Section tone="panel" narrow id="start">
+    <LeadForm src="faq" heading="Still have a question?" intent="other" />
+  </Section>
+</Base>
