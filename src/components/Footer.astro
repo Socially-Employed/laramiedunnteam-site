@@ -6,7 +6,7 @@ const year = new Date().getFullYear();
 ---
 <footer class="bg-paper border-t border-hairline text-muted text-[.85rem]">
   <div class="w-[min(100%,72rem)] mx-auto px-5 py-10 md:py-12">
-    <div class="grid gap-8 md:grid-cols-3">
+    <div class="grid gap-8 md:grid-cols-[1fr_1.5fr_1fr]">
       <div>
         <p class="font-display text-[1.15rem] text-ink">Laramie Dunn Team</p>
         <p class="mt-1">{BRAND_STRING}</p>
@@ -17,9 +17,9 @@ const year = new Date().getFullYear();
         <p class="font-semibold text-ink mb-2">Contact</p>
         {AGENTS.map((a) => (
           <p class="leading-7">
-            <span class="text-ink font-medium">{a.name}</span> ·
-            <a href={a.phoneHref} class="text-copper-dark no-underline hover:underline"> {a.phone}</a> ·
-            <a href={`mailto:${a.email}`} class="text-copper-dark no-underline hover:underline inline-block"> {a.email}</a>
+            <span class="text-ink font-medium whitespace-nowrap">{a.name}</span> ·
+            <a href={a.phoneHref} class="text-copper-dark no-underline hover:underline whitespace-nowrap"> {a.phone}</a> ·
+            <a href={`mailto:${a.email}`} class="text-copper-dark no-underline hover:underline whitespace-nowrap"> {a.email}</a>
             {a.licenseNumber && <span class="block text-[.8rem]">UT License #{a.licenseNumber}</span>}
           </p>
         ))}
