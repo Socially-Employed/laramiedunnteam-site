@@ -40,7 +40,7 @@ export const AGENTS: Agent[] = [
   {
     name: "Laramie Dunn",
     role: "Licensed Utah real estate agent",
-    phone: "(435) 224-4000",
+    phone: "435-224-4000",
     phoneHref: "tel:+14352244000",
     email: "ldunn.ut@gmail.com",
     licenseNumber: null, // NOT ON FILE — do not invent

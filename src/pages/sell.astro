@@ -11,7 +11,7 @@ import Icon from "../components/Icon.astro";
 const steps = [
   { n: "1", h: "Pricing conversation", b: "We look at what's actually selling near you and talk through a price that fits the home and the market — not a number picked to win the listing." },
   { n: "2", h: "Prep and repairs", b: "We tell you what's worth doing before you list and what isn't. Sometimes the honest answer is 'leave it.'" },
-  { n: "3", h: "The video package", b: "Every listing gets a professional video package plus photography, so your home looks its best online from day one." },
+  { n: "3", h: "The video package", b: "Every listing gets a professional video package, so your home is shown well online from the day it lists." },
   { n: "4", h: "Go live and show", b: "We put it in front of buyers, manage showings, and keep you posted on what we're hearing." },
   { n: "5", h: "Offers and negotiation", b: "We walk through each offer with you and negotiate terms, not just price." },
   { n: "6", h: "Under contract to closing", b: "We manage inspections, appraisal, and deadlines through to the closing table." },
@@ -46,7 +46,7 @@ const steps = [
   <Section tone="paper" id="video" labelledby="video-h">
     <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">The video package</p>
     <h2 id="video-h" class="mt-2 text-[clamp(1.6rem,6vw,2.2rem)] max-w-[720px]">Professional video on every listing.</h2>
-    <p class="mt-3 text-muted max-w-[680px]">We produce a full video package for each home — a walkthrough tour plus short-form cuts sized for social feeds — so your listing is shown well everywhere buyers are looking. Two examples of our work:</p>
+    <p class="mt-3 text-muted max-w-[680px]">We produce a full video package for each home — a walkthrough tour plus short-form cuts sized for social feeds — so your listing is shown well where buyers are looking. Two examples of our work:</p>
 
     <div class="mt-8 grid gap-8 md:grid-cols-2 md:items-start">
       <div>
@@ -59,7 +59,7 @@ const steps = [
           <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">Showcase sample</p>
           <p class="mt-2 font-display text-[1.3rem]">5673 N Sagewood Dr, Stansbury Park</p>
           <p class="mt-1 text-muted">$485,000 · 4 bd · 4 ba · 2,579 sqft · built 2022 · MLS# 2151309</p>
-          <p class="mt-3 text-[.95rem] text-muted">A previously marketed home we produced a four-format video package for. Shown here as a sample of our marketing work, not as a home currently for sale.</p>
+          <p class="mt-3 text-[.95rem] text-muted">A previously marketed home we produced a four-format video package for. Shown here as a sample of our marketing work.</p>
         </Card>
       </div>
     </div>
@@ -68,12 +68,12 @@ const steps = [
   <Section tone="white" narrow labelledby="pricing-h">
     <h2 id="pricing-h" class="text-[clamp(1.5rem,5vw,2rem)]">The pricing conversation</h2>
     <div class="mt-4 space-y-4 text-[1.02rem] leading-relaxed">
-      <p>Pricing is the single most important decision when you sell, and it's easy to get talked into a number that feels good but doesn't hold up. We'd rather show you the recent sales, explain what they mean for your home, and land on a price together.</p>
+      <p>Pricing is one of the biggest decisions when you sell, and it's easy to get talked into a number that feels good but doesn't hold up. We'd rather show you the recent sales, explain what they mean for your home, and land on a price together.</p>
       <p>If the market says something you don't want to hear, we'll say it anyway. That's the job.</p>
     </div>
   </Section>
 
   <Section tone="panel" narrow id="start">
-    <LeadForm src="sell" heading="Thinking about selling?" intent="sell" />
+    <LeadForm src="sell" heading="Thinking about selling?" intent="sell" button="Talk about selling" />
   </Section>
 </Base>

@@ -12,8 +12,8 @@ import { AGENTS } from "../config/site";
 const primary = AGENTS[0];
 const steps = [
   { icon: "home", title: "Tell us the address", body: "Add the property address and how to reach you. A sentence about updates or timing helps, but it is optional." },
-  { icon: "check", title: "We pull the comparable sales", body: "We look at what has actually closed near you recently, what is pending, and what is sitting, using the MLS data we work in every day." },
-  { icon: "phone", title: "You get a range and the reasoning", body: "We call or text with a realistic range and explain what drives it. No obligation to list, and we do not hand your info to anyone else." },
+  { icon: "check", title: "We pull the comparable sales", body: "We look at what has actually closed near you recently, what is pending, and what is sitting, using MLS data." },
+  { icon: "phone", title: "You get a range and the reasoning", body: "We follow up with a realistic range and explain what drives it. No obligation to list, and we use your information only to respond to you." },
 ];
 const whyNot = [
   { title: "Online estimates guess", body: "Automated estimates never see the inside of a home, the lot, the view, or the finish level. They can miss by a lot in either direction." },
@@ -31,7 +31,7 @@ const whyNot = [
     <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">Home value</p>
     <h1 class="mt-2 text-[clamp(1.8rem,6vw,2.6rem)] max-w-[720px]">What is your Tooele County home worth?</h1>
     <p class="mt-4 text-lg leading-relaxed max-w-[680px]">
-      Get a real number, not an algorithm's guess. Send us the address and we will pull the recent sales around you and come back with a
+      Get a real range, not an algorithm's guess. Send us the address and we will pull the recent sales around you and come back with a
       realistic range and the reasoning behind it. Free, and no obligation to list.
     </p>
     <div class="mt-6 flex flex-wrap gap-3">
@@ -74,6 +74,6 @@ const whyNot = [
   </Section>
 
   <Section tone="panel" narrow id="start">
-    <LeadForm src="home-value" heading="Request your home value" intent="sell" address={true} />
+    <LeadForm src="home-value" heading="Request your home value" intent="sell" address={true} button="Get my home value" />
   </Section>
 </Base>

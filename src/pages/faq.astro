@@ -17,7 +17,7 @@ const groups = [
     id: "general",
     h: "Working with us",
     items: [
-      { q: "Where do you work?", a: `All of ${COUNTY}. Most of our work is in ${towns}, and we cover the rest of the county too.` },
+      { q: "Where do you work?", a: `All of ${COUNTY}, including ${towns}.` },
       { q: "Who is on the team?", a: `${names}. Both are licensed Utah real estate agents with ${BROKERAGE}.` },
       { q: "How do I get started?", a: "Call or text either of us, send an email, or use the form on any page. A conversation is the first step whether you're buying, selling, or just thinking about it." },
       { q: "Can you help me buy and sell at the same time?", a: "Yes. Plenty of people sell one home and buy the next in the same move. We talk through the timing and the order of operations with you before anything goes live, so the two sides line up." },
@@ -40,8 +40,8 @@ const groups = [
     items: [
       { q: "How do you decide on a list price?", a: "We look at what's actually selling near you and talk through a price that fits the home and the market, not a number picked to win the listing." },
       { q: "Should I fix things up before I list?", a: "We tell you what's worth doing before you list and what isn't. Sometimes the honest answer is to leave it." },
-      { q: "How do you market a listing?", a: "Every listing gets a professional video package plus photography, so your home looks its best online from day one. Then we put it in front of buyers, manage showings, and keep you posted on what we're hearing." },
-      { q: "Can you tell me what my home is worth?", a: "Yes. Use the home-value page or just ask. We look at what's actually selling near you and give you a number with the reasoning behind it, not an automated estimate." },
+      { q: "How do you market a listing?", a: "Every listing gets a professional video package, so your home is shown well online from the day it lists. Then we put it in front of buyers, manage showings, and keep you posted on what we're hearing." },
+      { q: "Can you tell me what my home is worth?", a: "Yes. Use the home-value page or just ask. We look at what's actually selling near you and give you a range with the reasoning behind it, not an automated estimate." },
     ],
   },
 ];
@@ -66,7 +66,7 @@ const faqSchema = {
 
   <Section tone="paper">
     <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">FAQ</p>
-    <h1 class="mt-2 text-[clamp(1.8rem,6vw,2.6rem)] max-w-[720px]">Questions we hear most.</h1>
+    <h1 class="mt-2 text-[clamp(1.8rem,6vw,2.6rem)] max-w-[720px]">Common questions.</h1>
     <p class="mt-4 text-lg leading-relaxed max-w-[680px]">Straight answers about how buying and selling work with us. If yours isn't here, ask. We would rather answer it than have you guess.</p>
     <nav aria-label="FAQ sections" class="mt-6 flex flex-wrap gap-3">
       {groups.map((g) => (
@@ -93,6 +93,6 @@ const faqSchema = {
   ))}
 
   <Section tone="panel" narrow id="start">
-    <LeadForm src="faq" heading="Still have a question?" intent="other" />
+    <LeadForm src="faq" heading="Still have a question?" intent="other" button="Ask the question" />
   </Section>
 </Base>

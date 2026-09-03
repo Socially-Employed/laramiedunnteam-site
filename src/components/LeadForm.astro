@@ -10,8 +10,10 @@ export interface Props {
   intent?: "buy" | "sell" | "both" | "other";
   /** Show a required "Property address" field (home-value requests). */
   address?: boolean;
+  /** Submit button label — outcome verb, page-specific. */
+  button?: string;
 }
-const { src, heading = "Get in touch", intent = "other", address = false } = Astro.props;
+const { src, heading = "Get in touch", intent = "other", address = false, button = "Send" } = Astro.props;
 const uid = "lf-" + Math.random().toString(36).slice(2, 8);
 ---
 <div class="lead-form-root rounded-[16px] border border-panel-border bg-panel text-panel-text p-6 md:p-8 shadow-[var(--shadow-lift)]" data-endpoint={LEAD_ENDPOINT}>
@@ -66,7 +68,7 @@ const uid = "lf-" + Math.random().toString(36).slice(2, 8);
     ))}
 
     <div class="md:col-span-2">
-      <Button type="submit" variant="primary" class="w-full">Send</Button>
+      <Button type="submit" variant="primary" class="w-full">{button}</Button>
       <p class="mt-2 text-center text-[.78rem] text-panel-text">No spam. One follow-up from the Laramie Dunn Team.</p>
     </div>
     <p class="lead-form-msg md:col-span-2 min-h-[1.4em] text-[.9rem] font-semibold text-white" role="alert" aria-live="polite"></p>

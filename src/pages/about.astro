@@ -58,10 +58,10 @@ const agentSchema = {
           {/* NEEDS MIKE: written bio for this agent (none on file). NEEDS MIKE: UT license number. */}
           <div class="mt-4 space-y-2 text-[.95rem] text-muted">
             {a.name === "Laramie Dunn" && (
-              <p>Laramie owns Rose Springs Realty and has spent years working real estate in the Tooele Valley, including new-construction relationships with local builders.</p>
+              <p>Laramie has spent years working real estate in the Tooele Valley, including new-construction relationships with local builders.</p>
             )}
             {a.name === "Lisa Neil" && (
-              <p>Lisa owns Lisa Neil Real Estate and works alongside her mother on the team, from first tours through closing.</p>
+              <p>Lisa works alongside her mother on the team, from first tours through closing.</p>
             )}
             <p class="flex flex-wrap gap-x-4 gap-y-1">
               <a href={a.phoneHref} class="inline-flex items-center gap-1.5 text-copper-dark no-underline hover:underline"><Icon name="phone" size={15} /> {a.phone}</a>
@@ -76,15 +76,15 @@ const agentSchema = {
   <Section tone="paper" narrow>
     <h2 class="text-[clamp(1.5rem,5vw,2rem)]">Why a team</h2>
     <div class="mt-4 space-y-4 text-[1.02rem] leading-relaxed">
-      <p>Real estate rewards two things that are hard to do alone: being available, and knowing the ground. A two-person team means there is almost always someone who can pick up the phone, get to a showing, or answer a builder's question the same day.</p>
-      <p>It also means two sets of eyes on your pricing, your paperwork, and your marketing. We would rather catch a problem early than explain one later.</p>
+      <p>Real estate rewards two things that are hard to do alone: being available, and knowing the ground. A two-person team means two people you can reach, and two people who can get to a showing or answer a builder's question.</p>
+      <p>It also means a second opinion on your pricing, your paperwork, and your marketing. We would rather catch a problem early than explain one later.</p>
     </div>
     <div class="mt-6 rounded-[16px] border border-hairline bg-white p-5 text-[.95rem] text-muted">
-      <p><span class="font-semibold text-ink">Brokerage:</span> {BROKERAGE}. Every one of our listings and ads carries our brokerage name, as Utah requires.</p>
+      <p><span class="font-semibold text-ink">Brokerage:</span> {BROKERAGE}.</p>
     </div>
   </Section>
 
   <Section tone="panel" narrow>
-    <LeadForm src="about" heading="Reach the team" intent="both" />
+    <LeadForm src="about" heading="Reach the team" intent="both" button="Send to the team" />
   </Section>
 </Base>

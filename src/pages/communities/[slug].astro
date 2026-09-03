@@ -55,6 +55,6 @@ const { community } = Astro.props;
   </Section>
 
   <Section tone="panel" narrow>
-    <LeadForm src={`community-${community.slug}`} heading={`Thinking about ${community.name}?`} intent="both" />
+    <LeadForm src={`community-${community.slug}`} heading={`Thinking about ${community.name}?`} intent="both" button={`Ask about ${community.name}`} />
   </Section>
 </Base>

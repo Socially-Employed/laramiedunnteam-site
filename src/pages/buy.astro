@@ -11,7 +11,7 @@ import { COUNTY } from "../config/site";
 const steps = [
   { n: "1", h: "Talk first", b: "Tell us what you're looking for and where. We'll be honest about what's realistic in the current Tooele Valley market." },
   { n: "2", h: "Get set up", b: "If you'll need financing, we'll point you toward a lender so you know your numbers before you fall for a house." },
-  { n: "3", h: "Sign the buyer agreement", b: "Before we tour homes, Utah has buyers sign a written buyer-broker agreement. We'll walk through it with you so it's clear." },
+  { n: "3", h: "Sign the buyer agreement", b: "Before we tour homes together, we sign a written buyer-broker agreement, which Utah requires before we represent you. We'll walk through it with you so it's clear." },
   { n: "4", h: "Tour and compare", b: "We show you homes, point out the things that photos hide, and help you weigh one against another." },
   { n: "5", h: "Write the offer", b: "When you find the one, we write a clean offer and negotiate on your behalf." },
   { n: "6", h: "Inspect and close", b: "We manage inspections, deadlines, and paperwork through to the day you get the keys." },
@@ -26,7 +26,8 @@ const steps = [
   <Section tone="paper">
     <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">Buying</p>
     <h1 class="mt-2 text-[clamp(1.8rem,6vw,2.6rem)] max-w-[720px]">Buying a home, without the guesswork.</h1>
-    <p class="mt-4 text-lg leading-relaxed max-w-[680px]">Whether it's your first home or your fifth, the steps are the same and we'll be with you for each one. Here is how it goes.</p>
+    <p class="mt-4 text-lg leading-relaxed max-w-[680px]">Whether it's your first home or your fifth, the core steps are similar and we'll be with you for each one. Here is how it goes.</p>
+    <p class="mt-3 text-muted max-w-[680px]">Looking at new construction? We have working relationships with Tooele Valley builders and can help you weigh a new build against a resale.</p>
     <div class="mt-6"><Button href="#start" variant="primary">Start with a conversation <Icon name="arrow-right" size={16} /></Button></div>
   </Section>
 
@@ -46,7 +47,7 @@ const steps = [
   <Section tone="paper" narrow labelledby="agreement-h">
     <h2 id="agreement-h" class="text-[clamp(1.5rem,5vw,2rem)]">About the buyer agreement</h2>
     <div class="mt-4 space-y-4 text-[1.02rem] leading-relaxed">
-      <p>In Utah, buyers now sign a written buyer-broker agreement before touring homes. It spells out who represents you, what we'll do for you, and how our work is paid for. It's a normal part of the process, not fine print to rush past.</p>
+      <p>Utah requires a written agreement before an agent represents a buyer, so we sign a buyer-broker agreement before touring homes together. It spells out who represents you, what we'll do for you, and how our work is paid for. It's a normal part of the process, not fine print to rush past.</p>
       <p>We go through it with you in plain language and answer every question before you sign anything. The numbers and terms are yours to review — nothing is assumed.</p>
     </div>
   </Section>
@@ -71,6 +72,6 @@ const steps = [
   </Section>
 
   <Section tone="panel" narrow id="start">
-    <LeadForm src="buy" heading="Tell us what you're looking for" intent="buy" />
+    <LeadForm src="buy" heading="Tell us what you're looking for" intent="buy" button="Start the conversation" />
   </Section>
 </Base>
