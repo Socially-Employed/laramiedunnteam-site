@@ -14,7 +14,7 @@ const SRC = {
   logo: "/tank/work/Organized/Documents/Vivare/LNRE_Branding/realtypath_official.png",
   // Hero: Oquirrh Mountains above the Tooele Valley (CC0, Justin Luebke via Unsplash/Wikimedia Commons), 4000x2670
   // downscale committed under assets-src/. See assets-src/README.md.
-  hero: new URL("../assets-src/hero-oquirrh-tooele.jpg", import.meta.url).pathname,
+  hero: new URL("../assets-src/hero-house-gray-craftsman.jpg", import.meta.url).pathname,
 };
 
 async function run() {
@@ -26,13 +26,13 @@ async function run() {
   // RealtyPath logo — keep transparency, cap width at 600px, strip metadata.
   await sharp(SRC.logo).resize({ width: 600, withoutEnlargement: true }).png().toFile(`${OUT}/realtypath-logo.png`);
 
-  // Oquirrhs → hero (1600x900 webp + jpg). Left 2960px drops the power poles; band y=770..2435 keeps sky, peaks and the valley floor.
-  const hero = sharp(SRC.hero).extract({ left: 0, top: 770, width: 2960, height: 1665 }).resize(1600, 900);
+  // Stock house → hero (1600x900 webp + jpg). Band y=399..2649 keeps sky, roofline and lawn; house sits upper-middle so the bottom-left text lands on grass.
+  const hero = sharp(SRC.hero).extract({ left: 0, top: 399, width: 4000, height: 2250 }).resize(1600, 900);
   await hero.clone().webp({ quality: 80 }).toFile(`${OUT}/hero.webp`);
   await hero.clone().jpeg({ quality: 82, mozjpeg: true }).toFile(`${OUT}/hero.jpg`);
 
   // OG default 1200x630.
-  await sharp(SRC.hero).extract({ left: 0, top: 900, width: 2960, height: 1554 }).resize(1200, 630).jpeg({ quality: 82, mozjpeg: true }).toFile(`${OUT}/og-default.jpg`);
+  await sharp(SRC.hero).extract({ left: 0, top: 450, width: 4000, height: 2100 }).resize(1200, 630).jpeg({ quality: 82, mozjpeg: true }).toFile(`${OUT}/og-default.jpg`);
 
   console.log("images written to", OUT);
 }
