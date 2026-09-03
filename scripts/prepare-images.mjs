@@ -12,8 +12,9 @@ mkdirSync(OUT, { recursive: true });
 const SRC = {
   headshot: "/tank/work/Organized/Documents/Vivare/LNRE_Branding/lisa_headshot_original.jpeg",
   logo: "/tank/work/Organized/Documents/Vivare/LNRE_Branding/realtypath_official.png",
-  // Hero: MLS great-room photo of 521 E Gilmour (2048x1536), committed under assets-src/. See assets-src/README.md.
-  hero: new URL("../assets-src/hero-521-great-room.jpg", import.meta.url).pathname,
+  // Hero: Oquirrh Mountains above the Tooele Valley (CC0, Justin Luebke via Unsplash/Wikimedia Commons), 4000x2670
+  // downscale committed under assets-src/. See assets-src/README.md.
+  hero: new URL("../assets-src/hero-oquirrh-tooele.jpg", import.meta.url).pathname,
 };
 
 async function run() {
@@ -25,13 +26,13 @@ async function run() {
   // RealtyPath logo — keep transparency, cap width at 600px, strip metadata.
   await sharp(SRC.logo).resize({ width: 600, withoutEnlargement: true }).png().toFile(`${OUT}/realtypath-logo.png`);
 
-  // Great room → hero (1600x900 webp + jpg). Crop band y=200..1352 keeps the clerestory windows and the chairs.
-  const hero = sharp(SRC.hero).extract({ left: 0, top: 200, width: 2048, height: 1152 }).resize(1600, 900);
+  // Oquirrhs → hero (1600x900 webp + jpg). Left 2960px drops the power poles; band y=770..2435 keeps sky, peaks and the valley floor.
+  const hero = sharp(SRC.hero).extract({ left: 0, top: 770, width: 2960, height: 1665 }).resize(1600, 900);
   await hero.clone().webp({ quality: 80 }).toFile(`${OUT}/hero.webp`);
   await hero.clone().jpeg({ quality: 82, mozjpeg: true }).toFile(`${OUT}/hero.jpg`);
 
   // OG default 1200x630.
-  await sharp(SRC.hero).extract({ left: 0, top: 250, width: 2048, height: 1075 }).resize(1200, 630).jpeg({ quality: 82, mozjpeg: true }).toFile(`${OUT}/og-default.jpg`);
+  await sharp(SRC.hero).extract({ left: 0, top: 900, width: 2960, height: 1554 }).resize(1200, 630).jpeg({ quality: 82, mozjpeg: true }).toFile(`${OUT}/og-default.jpg`);
 
   console.log("images written to", OUT);
 }

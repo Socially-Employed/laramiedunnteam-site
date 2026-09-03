@@ -1,3 +1,4 @@
 # assets-src — source photos for `scripts/prepare-images.mjs`
 
 - `hero-521-great-room.jpg` — MLS photo of the great room at 521 E Gilmour St, Grantsville (listing 2135169; Lisa Neil / Laramie Dunn are the listing agents). Source: assets.utahrealestate.com photo set, downloaded 2026-09-03. Cropped to 16:9 for `public/images/hero.{jpg,webp}` and 1.9:1 for `og-default.jpg`.
+- `hero-oquirrh-tooele.jpg` — Oquirrh Mountains in East Tooele County, Utah, photographed 2016-03-30 by Justin Luebke (Unsplash photo wJYswijstcE, published under the pre-2017 Unsplash terms = CC0 1.0 public domain; mirrored at commons.wikimedia.org File:Oquirrh_Mountains_in_East_Tooele_County,_Utah,_United_States_(Unsplash).jpg). Original 7277x4857; committed as a 4000px-wide q90 downscale, EXIF stripped. No attribution required; credited in README anyway. Cropped to drop the power poles on the right.
