@@ -36,7 +36,7 @@ const whyNot = [
     </p>
     <div class="mt-6 flex flex-wrap gap-3">
       <Button href="#start" variant="primary">Request your home value <Icon name="arrow-right" size={16} /></Button>
-      <Button href={`tel:${primary.phone.replace(/[^0-9+]/g, "")}`} variant="ghost">Or call {primary.phone}</Button>
+      <Button href={`tel:${primary.phone.replace(/[^0-9+]/g, "")}`} variant="ghost">Or call {primary.name.split(" ")[0]} at {primary.phone}</Button>
     </div>
   </Section>
 

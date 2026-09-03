@@ -13,6 +13,7 @@ const nav = [
   { label: "Contact", href: "/contact" },
 ];
 const primary = AGENTS[0];
+const first = primary.name.split(" ")[0];
 ---
 <header class="sticky top-0 z-40 bg-paper/95 backdrop-blur border-b border-hairline">
   <div class="w-[min(100%,72rem)] mx-auto px-5 flex items-center justify-between gap-4 h-[68px]">
@@ -28,8 +29,8 @@ const primary = AGENTS[0];
     </nav>
 
     <div class="hidden lg:block">
-      <Button href={primary.phoneHref} variant="primary" class="!min-h-[44px] !py-2 text-[.9rem]">
-        <Icon name="phone" size={16} /> {primary.phone}
+      <Button href={primary.phoneHref} variant="primary" class="!min-h-[44px] !py-2 text-[.9rem]" aria-label={`Call ${primary.name} at ${primary.phone}`}>
+        <Icon name="phone" size={16} /> Call {first} · {primary.phone}
       </Button>
     </div>
 
@@ -42,7 +43,7 @@ const primary = AGENTS[0];
           {nav.map((n) => (
             <a href={n.href} class="px-3 py-2.5 rounded-lg text-ink no-underline hover:bg-paper">{n.label}</a>
           ))}
-          <a href={primary.phoneHref} class="mt-2 px-3 py-2.5 rounded-lg bg-copper text-white font-semibold no-underline text-center">Call {primary.phone}</a>
+          <a href={primary.phoneHref} class="mt-2 px-3 py-2.5 rounded-lg bg-copper text-white font-semibold no-underline text-center">Call {first} at {primary.phone}</a>
         </nav>
       </div>
     </details>
