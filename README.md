@@ -25,7 +25,7 @@ Laramie's headshot, socials, etc.). Rename the brand in one place: `BRAND_NAME`.
 
 - **Fair Housing:** `FAIR_HOUSING_RULES.md` holds the verbatim rule lines + a banned-phrase list;
   `npm run check:fairhousing` greps the built HTML and fails on any hit.
-- **No external CDN:** fonts (Fraunces + Inter, self-hosted woff2 in `public/fonts`) and icons (Lucide,
+- **No external CDN:** fonts (Zilla Slab + Work Sans, self-hosted woff2 in `public/fonts`) and icons (Lucide,
   inlined in `src/components/Icon.astro`) come from the Asset Library. See `THIRD_PARTY_NOTICES.md`.
 - **No analytics shipped** (spec convention).
 

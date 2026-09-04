@@ -5,20 +5,20 @@
       "cautions": [
         "OFL Reserved Font Names: a MODIFIED font may not use the reserved name(s); font software may not be sold standalone."
       ],
-      "id": "fraunces",
+      "id": "zilla-slab",
       "license": "OFL-1.1",
-      "license_file": "licenses/fraunces/LICENSE",
-      "license_url": "https://github.com/undercasetype/Fraunces/blob/master/OFL.txt",
-      "modification_note": "",
+      "license_file": "licenses/zilla-slab/LICENSE",
+      "license_url": "https://github.com/mozilla/zilla-slab/blob/master/LICENSE.txt",
+      "modification_note": "Subset to latin/latin-ext woff2 by Fontsource 5.3.0; pulled directly from Fontsource (not in the Asset Library fonts collection, see GAPS.md 2026-09-04).",
       "modified": true,
-      "name": "Fraunces (display serif)",
+      "name": "Zilla Slab (display slab serif)",
       "obligations": [
         "copyright_notice_required",
         "license_text_required",
         "reserved_font_names_apply"
       ],
       "reserved_font_names": [],
-      "source_url": "https://fonts.google.com/specimen/Fraunces",
+      "source_url": "https://fonts.google.com/specimen/Zilla+Slab",
       "third_party": true,
       "version": "5.3.0"
     },
@@ -27,20 +27,20 @@
       "cautions": [
         "OFL Reserved Font Names: a MODIFIED font may not use the reserved name(s); font software may not be sold standalone."
       ],
-      "id": "inter",
+      "id": "work-sans",
       "license": "OFL-1.1",
-      "license_file": "licenses/inter/LICENSE",
-      "license_url": "https://github.com/rsms/inter/blob/master/LICENSE.txt",
-      "modification_note": "",
+      "license_file": "licenses/work-sans/LICENSE",
+      "license_url": "https://github.com/weiweihuanghuang/Work-Sans/blob/master/OFL.txt",
+      "modification_note": "Subset to latin/latin-ext woff2 by Fontsource 5.3.0; pulled directly from Fontsource (not in the Asset Library fonts collection, see GAPS.md 2026-09-04).",
       "modified": true,
-      "name": "Inter (variable font)",
+      "name": "Work Sans (variable font)",
       "obligations": [
         "copyright_notice_required",
         "license_text_required",
         "reserved_font_names_apply"
       ],
       "reserved_font_names": [],
-      "source_url": "https://rsms.me/inter/",
+      "source_url": "https://fonts.google.com/specimen/Work+Sans",
       "third_party": true,
       "version": "5.3.0"
     },
