@@ -1,7 +1,6 @@
 ---
 // Header.astro — text wordmark + nav; mobile menu via <details>/<summary> (works without JS).
 import { AGENTS } from "../config/site";
-import Button from "./Button.astro";
 import Icon from "./Icon.astro";
 const nav = [
   { label: "Buy", href: "/buy" },
@@ -12,8 +11,8 @@ const nav = [
   { label: "Reviews", href: "/reviews" },
   { label: "Contact", href: "/contact" },
 ];
-const primary = AGENTS[0];
-const first = primary.name.split(" ")[0];
+// Both agents are reachable from the header: a "Call the team" menu on desktop, two links in the mobile drawer.
+const firstName = (n: string) => n.split(" ")[0];
 ---
 <header class="sticky top-0 z-40 bg-paper/95 backdrop-blur border-b border-hairline">
   <div class="w-[min(100%,72rem)] mx-auto px-5 flex items-center justify-between gap-4 h-[68px]">
@@ -28,11 +27,19 @@ const first = primary.name.split(" ")[0];
       ))}
     </nav>
 
-    <div class="hidden lg:block">
-      <Button href={primary.phoneHref} variant="primary" class="!min-h-[44px] !py-2 text-[.9rem]" aria-label={`Call ${primary.name} at ${primary.phone}`}>
-        <Icon name="phone" size={16} /> Call {first} · {primary.phone}
-      </Button>
-    </div>
+    <details class="hidden lg:block relative group">
+      <summary class="list-none cursor-pointer inline-flex items-center justify-center gap-2 min-h-[44px] px-[22px] py-2 rounded-[9px] bg-copper text-white text-[.9rem] font-semibold hover:bg-copper-dark shadow-[0_8px_24px_rgba(0,0,0,.18)] transition-colors" aria-label="Call the team — shows both agents' phone numbers">
+        <Icon name="phone" size={16} /> Call the team <Icon name="chevron-down" size={14} />
+      </summary>
+      <div class="absolute right-0 top-[calc(100%+8px)] w-[280px] rounded-[16px] border border-hairline bg-white shadow-[var(--shadow-lift)] p-2">
+        {AGENTS.map((a) => (
+          <a href={a.phoneHref} class="flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-ink no-underline hover:bg-paper" aria-label={`Call ${a.name} at ${a.phone}`}>
+            <span class="font-semibold">{a.name}</span>
+            <span class="text-copper-dark whitespace-nowrap">{a.phone}</span>
+          </a>
+        ))}
+      </div>
+    </details>
 
     <details class="lg:hidden relative">
       <summary class="list-none cursor-pointer p-2 -mr-2" aria-label="Menu">
@@ -43,7 +50,9 @@ const first = primary.name.split(" ")[0];
           {nav.map((n) => (
             <a href={n.href} class="px-3 py-2.5 rounded-lg text-ink no-underline hover:bg-paper">{n.label}</a>
           ))}
-          <a href={primary.phoneHref} class="mt-2 px-3 py-2.5 rounded-lg bg-copper text-white font-semibold no-underline text-center">Call {first} at {primary.phone}</a>
+          {AGENTS.map((a, i) => (
+            <a href={a.phoneHref} class={`${i === 0 ? "mt-2 bg-copper" : "mt-1.5 bg-ink"} px-3 py-2.5 rounded-lg text-white font-semibold no-underline text-center text-[.92rem] whitespace-nowrap`}>{`Call ${firstName(a.name)} · ${a.phone}`}</a>
+          ))}
         </nav>
       </div>
     </details>

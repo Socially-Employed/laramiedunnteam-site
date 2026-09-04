@@ -43,7 +43,7 @@ const agentSchema = {
   <FactStrip stack items={[
     { value: "Tooele County", label: "Where we work" },
     { value: "RealtyPath LLC", label: "Our brokerage" },
-    { value: AGENTS[0].phone, label: `Call or text ${AGENTS[0].name}` },
+    { lines: AGENTS.map((a) => ({ text: `${a.name.split(" ")[0]} · ${a.phone}`, href: a.phoneHref })), label: "Call or text" },
   ]} />
 
   <Section tone="paper" labelledby="featured-h">
