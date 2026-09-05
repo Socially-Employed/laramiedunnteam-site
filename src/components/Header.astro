@@ -1,5 +1,5 @@
 ---
-// Header.astro — text wordmark + nav; mobile menu via <details>/<summary> (works without JS).
+// Header.astro — Ridge horizontal lockup (brokerage variant) + nav; mobile menu via <details>/<summary> (works without JS).
 import { AGENTS } from "../config/site";
 import Icon from "./Icon.astro";
 const nav = [
@@ -16,9 +16,8 @@ const firstName = (n: string) => n.split(" ")[0];
 ---
 <header class="sticky top-0 z-40 bg-paper/95 backdrop-blur border-b border-hairline">
   <div class="w-[min(100%,72rem)] mx-auto px-5 flex items-center justify-between gap-4 h-[68px]">
-    <a href="/" class="no-underline leading-tight">
-      <span class="block font-display text-[1.25rem] tracking-[-.01em] text-ink">Laramie Dunn Team</span>
-      <span class="block text-[.66rem] uppercase tracking-[.14em] text-muted">RealtyPath LLC</span>
+    <a href="/" class="no-underline flex items-center min-w-0" aria-label="Laramie Dunn Team — home">
+      <img src="/images/brand/ldt-horizontal-brokerage.svg" alt="Laramie Dunn Team · RealtyPath LLC · Tooele Valley" width="1021" height="100" fetchpriority="high" decoding="sync" class="block h-auto w-[min(64vw,300px)] sm:w-auto sm:h-[36px] lg:h-[34px]" />
     </a>
 
     <nav class="hidden lg:flex items-center gap-6" aria-label="Primary">
@@ -28,7 +27,7 @@ const firstName = (n: string) => n.split(" ")[0];
     </nav>
 
     <details class="hidden lg:block relative group">
-      <summary class="list-none cursor-pointer inline-flex items-center justify-center gap-2 min-h-[44px] px-[22px] py-2 rounded-[9px] bg-copper text-white text-[.9rem] font-semibold hover:bg-copper-dark shadow-[0_8px_24px_rgba(0,0,0,.18)] transition-colors" aria-label="Call the team — shows both agents' phone numbers">
+      <summary class="list-none cursor-pointer inline-flex items-center justify-center gap-2 min-h-[44px] px-[22px] py-2 rounded-[9px] whitespace-nowrap bg-copper text-white text-[.9rem] font-semibold hover:bg-copper-dark shadow-[0_8px_24px_rgba(0,0,0,.18)] transition-colors" aria-label="Call the team — shows both agents' phone numbers">
         <Icon name="phone" size={16} /> Call the team <Icon name="chevron-down" size={14} />
       </summary>
       <div class="absolute right-0 top-[calc(100%+8px)] w-[280px] rounded-[16px] border border-hairline bg-white shadow-[var(--shadow-lift)] p-2">
