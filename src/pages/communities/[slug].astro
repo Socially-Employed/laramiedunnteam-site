@@ -22,9 +22,28 @@ const { community } = Astro.props;
   stickyCta={true}
 >
   <Section tone="paper">
-    <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">Community guide · Tooele County</p>
-    <h1 class="mt-2 text-[clamp(1.8rem,6vw,2.6rem)]">{community.name}</h1>
-    <p class="mt-4 text-lg leading-relaxed max-w-[680px]">{community.intro}</p>
+    <div class="grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-center">
+      <div>
+        <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">Community guide · Tooele County</p>
+        <h1 class="mt-2 text-[clamp(1.8rem,6vw,2.6rem)]">{community.name}</h1>
+        <p class="mt-4 text-lg leading-relaxed max-w-[680px]">{community.intro}</p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <Button href={`/search/?area=${encodeURIComponent(community.name)}`}>Search homes in {community.name}</Button>
+          <Button href="/contact/" variant="ghost">Ask the team</Button>
+        </div>
+      </div>
+      <figure class="m-0">
+        <img
+          src={community.photo.src}
+          srcset={`${community.photo.small} 640w, ${community.photo.src} 1200w`}
+          sizes="(min-width: 1024px) 560px, 100vw"
+          alt={community.photo.alt}
+          width="1200" height="800" fetchpriority="high"
+          class="w-full aspect-[3/2] object-cover rounded-[12px] border border-hairline"
+        />
+        <figcaption class="mt-2 text-[.75rem] text-muted">Photo: {community.photo.credit.author}, {community.photo.credit.license}. <a href="/credits/">Credits</a></figcaption>
+      </figure>
+    </div>
   </Section>
 
   <Section tone="white">

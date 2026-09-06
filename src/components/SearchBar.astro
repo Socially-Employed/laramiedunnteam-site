@@ -1,0 +1,31 @@
+---
+// SearchBar.astro — the white hero search bar. Plain GET form → /search/?area=&min=&max=.
+// It does NOT query the MLS; /search/ turns the criteria into a request the team runs in the MLS.
+import Icon from "./Icon.astro";
+import { SERVICE_AREA } from "../config/site";
+import { PRICE_STEPS, fmtPrice } from "../content/searches";
+
+export interface Props { class?: string }
+const { class: cls = "" } = Astro.props;
+const sel = "min-h-[52px] w-full rounded-[9px] border border-hairline bg-white px-3 text-ink text-[.95rem] font-sans";
+---
+<form action="/search/" method="get" class:list={["rounded-[12px] bg-white p-3 shadow-lift grid gap-2 md:grid-cols-[1.6fr_1fr_1fr_auto]", cls]} aria-label="Search homes">
+  <label class="sr-only" for="sb-area">Area</label>
+  <select id="sb-area" name="area" class={sel}>
+    <option value="">Anywhere in Tooele County</option>
+    {SERVICE_AREA.map((a) => <option value={a}>{a}</option>)}
+  </select>
+  <label class="sr-only" for="sb-min">Minimum price</label>
+  <select id="sb-min" name="min" class={sel}>
+    <option value="">Min price</option>
+    {PRICE_STEPS.map((p) => <option value={p}>{fmtPrice(p)}</option>)}
+  </select>
+  <label class="sr-only" for="sb-max">Maximum price</label>
+  <select id="sb-max" name="max" class={sel}>
+    <option value="">Max price</option>
+    {PRICE_STEPS.map((p) => <option value={p}>{fmtPrice(p)}</option>)}
+  </select>
+  <button type="submit" class="inline-flex items-center justify-center gap-2 min-h-[52px] px-6 rounded-[9px] bg-copper text-white font-semibold uppercase tracking-[.1em] text-[.8rem] hover:bg-copper-dark">
+    Search homes <Icon name="arrow-right" size={16} />
+  </button>
+</form>

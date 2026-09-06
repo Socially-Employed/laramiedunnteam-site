@@ -1,0 +1,32 @@
+---
+// CommunityTile.astro — photo tile with the place name overlaid. Used in 3-up grids.
+import type { CommunityPhoto } from "../content/communities";
+import Icon from "./Icon.astro";
+export interface Props {
+  href: string;
+  name: string;
+  photo: CommunityPhoto;
+  kicker?: string;
+  tall?: boolean;
+}
+const { href, name, photo, kicker, tall = false } = Astro.props;
+---
+<a href={href} class:list={["group relative block overflow-hidden rounded-[12px] bg-ink no-underline", tall ? "aspect-[3/2] md:aspect-[4/3]" : "aspect-[3/2]"]}>
+  <img
+    src={photo.src}
+    srcset={`${photo.small} 640w, ${photo.src} 1200w`}
+    sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw"
+    alt={photo.alt}
+    width="1200" height="800"
+    loading="lazy" decoding="async"
+    class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+  />
+  <span class="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/20 to-transparent" aria-hidden="true"></span>
+  <span class="absolute inset-x-0 bottom-0 p-4 md:p-5 flex items-end justify-between gap-3 text-white">
+    <span>
+      {kicker && <span class="block text-[.68rem] uppercase tracking-[.14em] text-paper/80">{kicker}</span>}
+      <span class="block font-display text-[1.45rem] leading-tight">{name}</span>
+    </span>
+    <span class="inline-flex items-center justify-center w-9 h-9 rounded-full border border-white/50 group-hover:bg-copper group-hover:border-copper"><Icon name="arrow-right" size={16} /></span>
+  </span>
+</a>

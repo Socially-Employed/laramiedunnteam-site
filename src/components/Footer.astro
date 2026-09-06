@@ -1,53 +1,92 @@
 ---
-// Footer.astro — brand string, agents' contact, Equal Housing Opportunity mark, brokerage line.
-import { AGENTS, BRAND_STRING, COUNTY } from "../config/site";
+// Footer.astro — large dark link footer: reversed lockup, four columns, legal bar.
+// Brokerage line + Equal Housing mark on every page (RealtyPath / Fair Housing rules).
 import Icon from "./Icon.astro";
+import { AGENTS, BRAND_STRING, BROKERAGE, COUNTY, BUSINESS_EMAIL } from "../config/site";
+import { COMMUNITIES } from "../content/communities";
+import { SPECIALTY_SEARCHES } from "../content/searches";
+
 const year = new Date().getFullYear();
+const nav = [
+  { href: "/search/", label: "Search homes" },
+  { href: "/listings/", label: "Our listings" },
+  { href: "/buy/", label: "Buyers" },
+  { href: "/sell/", label: "Sellers" },
+  { href: "/home-value/", label: "What's my home worth?" },
+  { href: "/communities/", label: "Communities" },
+  { href: "/about/", label: "About the team" },
+  { href: "/reviews/", label: "Reviews" },
+  { href: "/faq/", label: "FAQ" },
+  { href: "/contact/", label: "Contact" },
+];
+const linkCls = "no-underline text-panel-text hover:text-white";
+const headCls = "font-display text-white text-[1.05rem] tracking-[.02em]";
 ---
-<footer class="bg-paper border-t border-hairline text-muted text-[.85rem]">
-  <div class="w-[min(100%,72rem)] mx-auto px-5 py-10 md:py-12">
-    <div class="grid gap-8 md:grid-cols-[1fr_1.5fr_1fr]">
+<footer class="bg-panel text-panel-text text-[.9rem] border-t border-panel-border">
+  <div class="w-[min(100%,72rem)] mx-auto px-5 pt-12 pb-8">
+    <div class="flex flex-col items-center text-center gap-3 pb-10 border-b border-panel-border">
+      <img src="/images/brand/ldt-horizontal-reversed.svg" alt="Laramie Dunn Team" width="1021" height="100" class="h-[44px] w-auto" />
+      <p class="text-[.85rem] tracking-[.02em]">{BRAND_STRING}</p>
+      <p class="text-[.85rem]">Serving {COUNTY}</p>
+    </div>
+
+    <div class="grid gap-10 pt-10 sm:grid-cols-2 lg:grid-cols-4">
       <div>
-        <a href="/" class="inline-block no-underline" aria-label="Laramie Dunn Team — home">
-          <img src="/images/brand/ldt-horizontal.svg" alt="Laramie Dunn Team · Real Estate · Tooele County" width="1021" height="100" loading="lazy" class="block h-auto w-[260px] max-w-full" />
-        </a>
-        <p class="mt-3">{BRAND_STRING}</p>
-        <p class="mt-3">Serving {COUNTY}</p>
+        <p class={headCls}>Get in touch</p>
+        <ul class="mt-4 space-y-3">
+          {AGENTS.map((a) => (
+            <li>
+              <p class="text-white font-semibold">{a.name}</p>
+              <p class="text-[.82rem]">{a.role}</p>
+              <a href={a.phoneHref} class={`${linkCls} inline-flex items-center gap-1.5`}><Icon name="phone" size={14} /> {a.phone}</a><br />
+              <a href={`mailto:${a.email}`} class={`${linkCls} inline-flex items-center gap-1.5 break-all`}><Icon name="mail" size={14} /> {a.email}</a>
+              {a.licenseNumber && <p class="text-[.8rem]">Utah license {a.licenseNumber}</p>}
+            </li>
+          ))}
+          <li class="pt-1 text-[.82rem]">Team inbox: <a href={`mailto:${BUSINESS_EMAIL}`} class={linkCls}>{BUSINESS_EMAIL}</a></li>
+          <li class="text-[.82rem]">Brokerage: {BROKERAGE}</li>
+        </ul>
       </div>
 
       <div>
-        <p class="font-semibold text-ink mb-2">Contact</p>
-        {AGENTS.map((a) => (
-          <p class="leading-7">
-            <span class="text-ink font-medium whitespace-nowrap">{a.name}</span> ·
-            <a href={a.phoneHref} class="text-copper-dark no-underline hover:underline whitespace-nowrap"> {a.phone}</a> ·
-            <a href={`mailto:${a.email}`} class="text-copper-dark no-underline hover:underline whitespace-nowrap"> {a.email}</a>
-            {a.licenseNumber && <span class="block text-[.8rem]">UT License #{a.licenseNumber}</span>}
-          </p>
-        ))}
+        <p class={headCls}>Navigation</p>
+        <ul class="mt-4 space-y-2">
+          {nav.map((l) => <li><a href={l.href} class={linkCls}>{l.label}</a></li>)}
+        </ul>
       </div>
 
       <div>
-        <p class="font-semibold text-ink mb-2">Equal Housing</p>
-        <div class="flex items-center gap-3">
-          <svg width="40" height="40" viewBox="0 0 40 40" role="img" aria-label="Equal Housing Opportunity" class="flex-none text-ink">
-            <rect x="1.5" y="1.5" width="37" height="37" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>
-            <path d="M20 8 L31 17 L28.5 17 L28.5 28 L11.5 28 L11.5 17 L9 17 Z" fill="currentColor"/>
-            <rect x="14" y="30.5" width="12" height="2.2" fill="currentColor"/>
-            <rect x="14" y="34.2" width="12" height="2.2" fill="currentColor"/>
-          </svg>
-          <span>Equal Housing Opportunity</span>
-        </div>
+        <p class={headCls}>Communities</p>
+        <ul class="mt-4 space-y-2">
+          {COMMUNITIES.map((c) => <li><a href={`/communities/${c.slug}/`} class={linkCls}>{c.name} homes</a></li>)}
+          <li><a href="/communities/" class={linkCls}>All of {COUNTY.replace(", Utah", "")}</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class={headCls}>Specialty searches</p>
+        <ul class="mt-4 space-y-2">
+          {SPECIALTY_SEARCHES.map((s) => <li><a href={`/search/?type=${s.key}`} class={linkCls}>{s.label}</a></li>)}
+        </ul>
+        <p class="mt-3 text-[.78rem] leading-snug">Searches are run for you by the team in the Utah MLS. This site does not display MLS listings.</p>
       </div>
     </div>
 
-    <div class="mt-10 pt-6 border-t border-hairline space-y-2">
-      <p>Laramie Dunn Team is a team of licensed Utah real estate agents with RealtyPath LLC.</p>
-      <p class="flex flex-wrap items-center gap-x-4 gap-y-1">
-        <a href="/faq" class="text-copper-dark no-underline hover:underline">FAQ</a>
-        <a href="/privacy" class="text-copper-dark no-underline hover:underline">Privacy</a>
-        <span>&copy; {year} Laramie Dunn Team</span>
-      </p>
+    <div class="mt-10 pt-6 border-t border-panel-border flex flex-col gap-4 md:flex-row md:items-center md:justify-between text-[.8rem]">
+      <div class="flex items-center gap-3">
+        <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true" class="shrink-0 text-panel-text">
+          <rect x="2" y="2" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2" />
+          <path d="M20 8 L31 17 L28.5 17 L28.5 28 L11.5 28 L11.5 17 L9 17 Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+          <path d="M15 20.5h10M15 24h10" stroke="currentColor" stroke-width="1.6" />
+        </svg>
+        <p>Equal Housing Opportunity. The Laramie Dunn Team is a team of licensed Utah real estate agents with RealtyPath LLC.</p>
+      </div>
+      <ul class="flex flex-wrap items-center gap-x-4 gap-y-1">
+        <li><a href="/faq/" class={linkCls}>FAQ</a></li>
+        <li><a href="/privacy/" class={linkCls}>Privacy</a></li>
+        <li><a href="/credits/" class={linkCls}>Photo credits</a></li>
+        <li>© {year} Laramie Dunn Team</li>
+      </ul>
     </div>
   </div>
 </footer>

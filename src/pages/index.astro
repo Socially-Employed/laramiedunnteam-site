@@ -1,17 +1,19 @@
 ---
-// index.astro — home. Brand statement, featured listing, how we work, communities, lead form.
+// index.astro — search-first home page. Structure: full-bleed hero + search bar → community photo
+// tiles → featured listing strip → Sellers band (dark) → Buyers band (tint) → market report + reviews
+// → SEO text → contact form. No MLS data is displayed; "search" = a request the team runs in the MLS.
 import Base from "../layouts/Base.astro";
-import Hero from "../components/Hero.astro";
-import FactStrip from "../components/FactStrip.astro";
 import Section from "../components/Section.astro";
-import Card from "../components/Card.astro";
 import Button from "../components/Button.astro";
 import ListingCard from "../components/ListingCard.astro";
 import LeadForm from "../components/LeadForm.astro";
 import JsonLd from "../components/JsonLd.astro";
 import Icon from "../components/Icon.astro";
-import { AGENTS, BRAND_STRING, BUSINESS_EMAIL, COUNTY, SITE_URL, SERVICE_AREA, GBP_REVIEW_URL } from "../config/site";
-import { COMMUNITIES } from "../content/communities";
+import SearchBar from "../components/SearchBar.astro";
+import CommunityTile from "../components/CommunityTile.astro";
+import { AGENTS, BUSINESS_EMAIL, COUNTY, SITE_URL, SERVICE_AREA, GBP_REVIEW_URL } from "../config/site";
+import { COMMUNITIES, COUNTY_PHOTOS } from "../content/communities";
+import { SPECIALTY_SEARCHES } from "../content/searches";
 
 const agentSchema = {
   "@context": "https://schema.org",
@@ -22,108 +24,197 @@ const agentSchema = {
   areaServed: SERVICE_AREA.map((a) => `${a}, Utah`),
   parentOrganization: { "@type": "Organization", name: "RealtyPath LLC" },
 };
+
+// Market report: FRED publishes Tooele County series (MEDLISPRI49045 median listing price,
+// MEDDAYONMAR49045 days on market, ACTLISCOU49045 active listings, NEWLISCOU49045 new listings).
+// The build host could not reach fred.stlouisfed.org, so no figures are rendered here — the section
+// captures a report request instead. Do not hand-type numbers into this page.
+
+const sellerCards = [
+  { href: "/sell/", title: "Why list with us", body: "A straight pricing conversation, real prep advice, and a marketing plan built around your home.", icon: "key" },
+  { href: "/home-value/", title: "What's my home worth?", body: "Tell us the address and we'll pull comparable sales and walk you through where it lands.", icon: "home" },
+  { href: "/sell/#video", title: "Video on every listing", body: "Every listing gets a professional video package in multiple formats, so your home is shown well online from the day it lists.", icon: "video" },
+];
+const buyerCards = [
+  { href: "/search/", title: "Get new-listing alerts", body: "Tell us what you're looking for. We run the search in the MLS and send you matches as they hit.", icon: "mail" },
+  { href: "/buy/", title: "How buying works here", body: "From your first tour to the keys, including the written buyer-broker agreement Utah requires before we represent you.", icon: "check" },
+  { href: "#market", title: "Monthly market report", body: "Where prices and inventory are moving across the Tooele Valley, in plain language.", icon: "clock" },
+];
+const cardIconCls = "inline-flex w-11 h-11 items-center justify-center rounded-[9px] bg-copper/15 text-copper-dark";
 ---
 <Base
   title="Laramie Dunn Team · RealtyPath LLC (Tooele Valley)"
-  description="A mother-and-daughter real estate team with RealtyPath, helping people buy and sell across Tooele County, Utah."
-  stickyCta={true}
+  description="Search homes across Tooele County, Utah with the Laramie Dunn Team at RealtyPath. Grantsville, Stansbury Park, Tooele, Erda, Lake Point, and Stockton."
+  stickyCta
 >
   <JsonLd slot="head" data={agentSchema} />
 
-  <Hero
-    eyebrow="Tooele County, Utah"
-    title="Tooele County real estate, from a mother-and-daughter team."
-    lede="Laramie Dunn and Lisa Neil are licensed Utah agents with RealtyPath. Decades in the Tooele Valley, working relationships with the builders here, and professional video on every listing."
-    image={{ src: "/images/hero.jpg", alt: "Gray two-story craftsman home with a stone base and a green front lawn under a blue sky", width: 1600, height: 900 }}
-  >
-    <Button slot="ctas" href="/buy/" variant="primary">I'm buying <Icon name="arrow-right" size={16} /></Button>
-    <Button slot="ctas" href="/sell/" variant="dark">I'm selling</Button>
-  </Hero>
+  <!-- HERO -->
+  <section class="relative bg-ink text-white" aria-labelledby="hero-h">
+    <img src="/images/hero.jpg" alt="" width="1600" height="900" fetchpriority="high" class="absolute inset-0 h-full w-full object-cover opacity-70" />
+    <div class="absolute inset-0 bg-gradient-to-b from-ink/70 via-ink/40 to-ink/80" aria-hidden="true"></div>
+    <div class="relative w-[min(100%,72rem)] mx-auto px-5 pt-16 pb-14 md:pt-24 md:pb-20">
+      <p class="text-copper text-[.8rem] font-semibold uppercase tracking-[.2em] [text-shadow:0_1px_2px_rgba(0,0,0,.6)]">Tooele County, Utah</p>
+      <h1 id="hero-h" class="mt-3 max-w-[16ch] text-white text-[clamp(2.1rem,6vw,3.6rem)] [text-shadow:0_2px_12px_rgba(0,0,0,.45)]">Find your place in the Tooele Valley.</h1>
+      <p class="mt-4 max-w-[52ch] text-paper/90 text-[1.05rem] md:text-[1.15rem] [text-shadow:0_1px_6px_rgba(0,0,0,.5)]">Laramie Dunn and Lisa Neil, a mother-and-daughter team with RealtyPath. Tell us what you want and we run the search in the MLS for you.</p>
+      <SearchBar class="mt-8 max-w-[62rem]" />
+      <ul class="mt-4 flex flex-wrap gap-x-5 gap-y-1 text-[.82rem] text-paper/85">
+        {SPECIALTY_SEARCHES.slice(0, 5).map((s) => (
+          <li><a href={`/search/?type=${s.key}`} class="no-underline text-paper/85 hover:text-white underline-offset-4 hover:underline">{s.label}</a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
 
-  <FactStrip stack items={[
-    { value: "Tooele County", label: "Where we work" },
-    { value: "RealtyPath LLC", label: "Our brokerage" },
-    { lines: AGENTS.map((a) => ({ text: `${a.name.split(" ")[0]} · ${a.phone}`, href: a.phoneHref })), label: "Call or text" },
-  ]} />
-
-  <Section tone="paper" labelledby="featured-h">
+  <!-- COMMUNITIES -->
+  <Section tone="paper" labelledby="comm-h">
     <div class="flex flex-wrap items-end justify-between gap-4">
       <div>
-        <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">Featured listing</p>
-        <h2 id="featured-h" class="mt-2 text-[clamp(1.6rem,6vw,2.2rem)]">521 E Gilmour, Grantsville</h2>
+        <p class="text-copper-dark text-[.78rem] font-semibold uppercase tracking-[.18em]">Neighborhoods &amp; communities</p>
+        <h2 id="comm-h" class="mt-2 text-[clamp(1.7rem,4.5vw,2.4rem)]">Where in the valley?</h2>
       </div>
-      <Button href="/listings/" variant="ghost">All listings</Button>
+      <p class="max-w-[46ch] text-muted">Six towns, one county, very different feels. Start with a place, then tell us what you're after.</p>
     </div>
-    <div class="mt-8 grid gap-8 md:grid-cols-2 md:items-center">
-      <ListingCard listing={{
-        address: "521 E Gilmour St",
-        city: "Grantsville, UT",
-        price: "$1,299,000",
-        beds: 7,
-        baths: 5,
-        status: "For sale",
-        href: "/listings/521-e-gilmour-st-grantsville/",
-        image: "https://assets.utahrealestate.com/photos/640x480/2135169_871b90f3a3f3c9ddd9700724b179b692_6a60eedf29d38.jpg",
-      }} />
-      <div>
-        <p class="text-lg leading-relaxed">Seven bedrooms, five baths, and a separate-entrance basement apartment for extended family or a tenant. A custom Heritage Homes build in the Heritage Farms subdivision, featured as Home #29 in the 2026 Salt Lake Parade of Homes.</p>
-        <p class="mt-4 text-muted">Take the 3D Matterport walkthrough, watch the full video tour, and request pricing on the listing page.</p>
-        <div class="mt-6">
-          <Button href="/listings/521-e-gilmour-st-grantsville/" variant="primary">View the listing <Icon name="arrow-right" size={16} /></Button>
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {COMMUNITIES.map((c) => <CommunityTile href={`/communities/${c.slug}/`} name={c.name} photo={c.photo} kicker="Area guide" />)}
+      <CommunityTile href="/search/" name="Anywhere in the county" photo={COUNTY_PHOTOS.stansburyIsland} kicker="Run a search" />
+      <div class="flex flex-col justify-center rounded-[12px] border border-hairline bg-white p-6 sm:col-span-2 lg:col-span-2">
+        <p class="font-display text-[1.4rem] text-ink">Trying to choose between towns?</p>
+        <p class="mt-2 text-muted">We live here. Ask us what a commute, a lot size, or a builder is really like before you narrow it down.</p>
+        <div class="mt-5 flex flex-wrap gap-3">
+          <Button href="/communities/" variant="ghost">Browse all area guides</Button>
+          <Button href="/contact/">Ask the team</Button>
         </div>
       </div>
     </div>
   </Section>
 
-  <Section tone="white" labelledby="how-h">
-    <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">How we work</p>
-    <h2 id="how-h" class="mt-2 text-[clamp(1.6rem,6vw,2.2rem)]">Three ways we help</h2>
+  <!-- FEATURED LISTING STRIP -->
+  <Section tone="white" labelledby="feat-h">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="text-copper-dark text-[.78rem] font-semibold uppercase tracking-[.18em]">On the market</p>
+        <h2 id="feat-h" class="mt-2 text-[clamp(1.7rem,4.5vw,2.4rem)]">Featured listing</h2>
+      </div>
+      <a href="/listings/" class="inline-flex items-center gap-1 font-semibold no-underline text-copper-dark">All our listings <Icon name="arrow-right" size={16} /></a>
+    </div>
     <div class="mt-8 grid gap-5 md:grid-cols-3">
-      <Card href="/buy/">
-        <Icon name="key" size={26} class="text-copper-dark" />
-        <p class="mt-3 font-display text-[1.3rem]">Buying</p>
-        <p class="mt-2 text-muted text-[.95rem]">We walk you through the whole process, from your first tour to the keys — including the written buyer-broker agreement Utah requires before we represent you.</p>
-        <p class="mt-4 inline-flex items-center gap-1 text-copper-dark font-semibold text-[.9rem]">How buying works <Icon name="arrow-right" size={16} /></p>
-      </Card>
-      <Card href="/sell/">
-        <Icon name="home" size={26} class="text-copper-dark" />
-        <p class="mt-3 font-display text-[1.3rem]">Selling</p>
-        <p class="mt-2 text-muted text-[.95rem]">A straight pricing conversation, real prep advice, and a marketing plan built around your home.</p>
-        <p class="mt-4 inline-flex items-center gap-1 text-copper-dark font-semibold text-[.9rem]">How selling works <Icon name="arrow-right" size={16} /></p>
-      </Card>
-      <Card href="/sell/#video">
-        <Icon name="video" size={26} class="text-copper-dark" />
-        <p class="mt-3 font-display text-[1.3rem]">Video package</p>
-        <p class="mt-2 text-muted text-[.95rem]">Every listing gets a professional video package in multiple formats, so your home is shown well online from the day it lists.</p>
-        <p class="mt-4 inline-flex items-center gap-1 text-copper-dark font-semibold text-[.9rem]">See the video package <Icon name="arrow-right" size={16} /></p>
-      </Card>
-    </div>
-    <p class="mt-6 text-[.95rem] text-muted">Own a home here and just want a number? <a href="/home-value/" class="text-copper-dark font-semibold">Request a free home value</a> — no obligation.</p>
-  </Section>
-
-  <Section tone="paper" labelledby="areas-h">
-    <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">Where we work</p>
-    <h2 id="areas-h" class="mt-2 text-[clamp(1.6rem,6vw,2.2rem)]">Communities across the Tooele Valley</h2>
-    <p class="mt-3 text-muted max-w-[640px]">Neutral guides to getting around, what the housing looks like, and public places to visit in each town we serve.</p>
-    <div class="mt-8 flex flex-wrap gap-3">
-      {COMMUNITIES.map((c) => (
-        <a href={`/communities/${c.slug}/`} class="inline-flex items-center gap-2 rounded-full border border-hairline bg-white px-4 py-2.5 text-[.95rem] font-medium text-ink no-underline hover:border-copper hover:text-copper-dark">
-          <Icon name="map-pin" size={16} /> {c.name}
-        </a>
-      ))}
-    </div>
-    <div class="mt-6">
-      <Button href="/communities/" variant="ghost">Explore all communities</Button>
+      <ListingCard listing={{
+        href: "/listings/521-e-gilmour-st-grantsville/",
+        image: "https://assets.utahrealestate.com/photos/640x480/2135169_871b90f3a3f3c9ddd9700724b179b692_6a60eedf29d38.jpg",
+        price: "$1,299,000",
+        address: "521 E Gilmour St",
+        city: "Grantsville",
+        beds: 7,
+        baths: 5,
+        status: "Parade of Homes #29",
+      }} />
+      <article class="flex flex-col rounded-[12px] border border-hairline bg-paper p-6">
+        <p class="text-[.72rem] font-semibold uppercase tracking-[.16em] text-muted">Previously marketed</p>
+        <p class="mt-3 font-display text-[1.5rem] text-ink">5673 N Sagewood Dr</p>
+        <p class="text-muted">Stansbury Park</p>
+        <dl class="mt-4 grid grid-cols-2 gap-y-1 text-[.95rem]">
+          <dt class="text-muted">Listed at</dt><dd class="font-semibold text-ink">$485,000</dd>
+          <dt class="text-muted">Bed / bath</dt><dd class="font-semibold text-ink">4 / 4</dd>
+          <dt class="text-muted">Size</dt><dd class="font-semibold text-ink">2,579 sq ft</dd>
+          <dt class="text-muted">Built</dt><dd class="font-semibold text-ink">2022</dd>
+        </dl>
+        <p class="mt-4 text-[.85rem] text-muted">Example of a recent team listing with the full video package. MLS# 2151309.</p>
+      </article>
+      <article class="flex flex-col justify-center rounded-[12px] bg-ink p-6 text-paper">
+        <p class="text-copper text-[.72rem] font-semibold uppercase tracking-[.16em]">Your home here</p>
+        <p class="mt-3 font-display text-[1.5rem] text-white">Thinking about listing this fall?</p>
+        <p class="mt-2 text-panel-text">Start with a number. We'll pull the comps and tell you what we'd list it for, no strings.</p>
+        <div class="mt-5"><Button href="/home-value/">Get a home value</Button></div>
+      </article>
     </div>
   </Section>
 
-  {GBP_REVIEW_URL && (
-    <Section tone="white" narrow labelledby="reviews-h">
-      <h2 id="reviews-h" class="text-[clamp(1.6rem,6vw,2.2rem)]">Reviews</h2>
-      <p class="mt-3 text-muted">Our clients leave reviews on Google. Read them there.</p>
-      <div class="mt-6"><Button href={GBP_REVIEW_URL} variant="primary">Read our reviews on Google</Button></div>
-    </Section>
-  )}
+  <!-- SELLERS BAND -->
+  <section class="relative bg-panel text-paper" aria-labelledby="sell-h">
+    <img src={COUNTY_PHOTOS.oquirrh.wide} alt="" width="1800" height="760" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover opacity-30" />
+    <div class="absolute inset-0 bg-gradient-to-r from-panel via-panel/85 to-panel/60" aria-hidden="true"></div>
+    <div class="relative w-[min(100%,72rem)] mx-auto px-5 py-14 md:py-20">
+      <p class="text-copper text-[.78rem] font-semibold uppercase tracking-[.18em]">Sellers</p>
+      <h2 id="sell-h" class="mt-2 text-white text-[clamp(1.7rem,4.5vw,2.4rem)]">Selling in the Tooele Valley</h2>
+      <p class="mt-3 max-w-[54ch] text-panel-text">Pricing, prep, video, and the negotiation. Here's how the team works a listing.</p>
+      <div class="mt-8 grid gap-4 md:grid-cols-3">
+        {sellerCards.map((c) => (
+          <a href={c.href} class="group flex flex-col rounded-[12px] border border-panel-border bg-ink/70 p-6 no-underline hover:border-copper">
+            <span class="inline-flex w-11 h-11 items-center justify-center rounded-[9px] bg-copper text-white"><Icon name={c.icon} size={22} /></span>
+            <span class="mt-4 font-display text-[1.3rem] text-white">{c.title}</span>
+            <span class="mt-2 text-panel-text text-[.95rem] leading-relaxed">{c.body}</span>
+            <span class="mt-4 inline-flex items-center gap-1 text-copper font-semibold text-[.9rem]">Learn more <Icon name="arrow-right" size={14} /></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- BUYERS BAND -->
+  <section class="bg-copper/10" aria-labelledby="buy-h">
+    <div class="w-[min(100%,72rem)] mx-auto px-5 py-14 md:py-20">
+      <p class="text-copper-dark text-[.78rem] font-semibold uppercase tracking-[.18em]">Buyers</p>
+      <h2 id="buy-h" class="mt-2 text-[clamp(1.7rem,4.5vw,2.4rem)]">Buying in the Tooele Valley</h2>
+      <p class="mt-3 max-w-[54ch] text-muted">We walk you through the whole process, from your first tour to the keys.</p>
+      <div class="mt-8 grid gap-4 md:grid-cols-3">
+        {buyerCards.map((c) => (
+          <a href={c.href} class="group flex flex-col rounded-[12px] border border-hairline bg-white p-6 no-underline hover:border-copper">
+            <span class={cardIconCls}><Icon name={c.icon} size={22} /></span>
+            <span class="mt-4 font-display text-[1.3rem] text-ink">{c.title}</span>
+            <span class="mt-2 text-muted text-[.95rem] leading-relaxed">{c.body}</span>
+            <span class="mt-4 inline-flex items-center gap-1 text-copper-dark font-semibold text-[.9rem]">Learn more <Icon name="arrow-right" size={14} /></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- MARKET REPORT + REVIEWS -->
+  <Section tone="paper" id="market" labelledby="mkt-h">
+    <div class="grid gap-10 lg:grid-cols-2">
+      <div>
+        <p class="text-copper-dark text-[.78rem] font-semibold uppercase tracking-[.18em]">Market stats</p>
+        <h2 id="mkt-h" class="mt-2 text-[clamp(1.6rem,4vw,2.1rem)]">Tooele County market report</h2>
+        <p class="mt-3 text-muted max-w-[50ch]">Median list price, days on market, active and new listings for the county, pulled from the MLS each month with the source and date on every number. We send it by email so it's never stale on a web page.</p>
+        <div class="mt-6 rounded-[12px] border border-hairline bg-white p-5">
+          <LeadForm src="market-report" heading="Get the monthly report" intent="both" button="Send me the report" />
+        </div>
+      </div>
+      <div>
+        <p class="text-copper-dark text-[.78rem] font-semibold uppercase tracking-[.18em]">Reviews</p>
+        <h2 class="mt-2 text-[clamp(1.6rem,4vw,2.1rem)]">What clients say</h2>
+        <p class="mt-3 text-muted max-w-[50ch]">We publish reviews only where clients wrote them, so you're reading the real thing.</p>
+        <div class="mt-6 rounded-[12px] border border-hairline bg-white p-6">
+          <div class="flex items-center gap-2 text-copper"><Icon name="star" size={18} /><Icon name="star" size={18} /><Icon name="star" size={18} /><Icon name="star" size={18} /><Icon name="star" size={18} /></div>
+          <p class="mt-3 text-ink">Read client reviews on the team's Google Business Profile, or tell us how a closing went.</p>
+          <div class="mt-5 flex flex-wrap gap-3">
+            {GBP_REVIEW_URL ? <Button href={GBP_REVIEW_URL}>Read Google reviews</Button> : <Button href="/reviews/">Reviews</Button>}
+            <Button href="/contact/" variant="ghost">Leave feedback</Button>
+          </div>
+        </div>
+        <div class="mt-4 grid grid-cols-2 gap-4">
+          {AGENTS.map((a) => (
+            <a href={a.phoneHref} class="rounded-[12px] border border-hairline bg-white p-4 no-underline">
+              <span class="block font-semibold text-ink">{a.name}</span>
+              <span class="block text-[.85rem] text-muted">{a.role}</span>
+              <span class="mt-1 inline-flex items-center gap-1 text-copper-dark font-semibold"><Icon name="phone" size={14} /> {a.phone}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <!-- SEO TEXT -->
+  <Section tone="white" narrow labelledby="seo-h">
+    <h2 id="seo-h" class="text-[clamp(1.4rem,3.5vw,1.8rem)]">{COUNTY} real estate</h2>
+    <div class="mt-4 space-y-4 text-muted leading-relaxed">
+      <p>The Laramie Dunn Team helps people buy and sell homes across the Tooele Valley: Grantsville, Stansbury Park, Tooele, Erda, Lake Point, and Stockton. Lisa Neil and Laramie Dunn are licensed Utah real estate agents with RealtyPath LLC, and between them they have decades in this valley and working relationships with the builders here.</p>
+      <p>Buyers get a search run in the Utah MLS against exactly what they asked for, new-listing alerts, and a walkthrough of the buyer-broker agreement Utah requires before an agent represents you. Sellers get a straight pricing conversation, prep advice, and a professional video package on every listing.</p>
+      <p>Use the search above to tell us the area and price range, browse the area guides, or call either agent directly. This site does not display MLS listings; every search is run for you by the team.</p>
+    </div>
+  </Section>
 
   <Section tone="panel" narrow id="contact">
     <LeadForm src="home" heading="Tell us what you're thinking about" intent="both" button="Start the conversation" />

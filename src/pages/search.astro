@@ -1,0 +1,231 @@
+---
+// search.astro — "search" criteria capture. No MLS data is queried or shown on this site (that needs an
+// IDX license through the brokerage). The form turns criteria into a lead the team runs in the MLS.
+// Prefills from ?area=&min=&max=&type= (hero search bar + footer specialty links).
+import Base from "../layouts/Base.astro";
+import Section from "../components/Section.astro";
+import Icon from "../components/Icon.astro";
+import { AGENTS, SERVICE_AREA, LEAD_ENDPOINT } from "../config/site";
+import { PRICE_STEPS, fmtPrice, SPECIALTY_SEARCHES, PROPERTY_TYPES } from "../content/searches";
+
+const sel = "min-h-[48px] w-full rounded-[9px] border border-hairline bg-white px-3 text-ink font-sans";
+const inp = sel;
+const lab = "block text-[.82rem] font-semibold text-ink mb-1";
+---
+<Base
+  breadcrumbs={[{ name: "Search homes", href: "/search/" }]}
+  title="Search Tooele County Homes · Laramie Dunn Team"
+  description="Tell the Laramie Dunn Team what you're looking for in Tooele County. We run your search in the Utah MLS and send new-listing alerts."
+  canonical="/search/"
+  callWidget={false}
+>
+  <Section tone="paper" labelledby="search-h">
+    <div class="grid gap-10 lg:grid-cols-[1fr_20rem]">
+      <div>
+        <p class="text-copper-dark text-[.78rem] font-semibold uppercase tracking-[.18em]">Search homes</p>
+        <h1 id="search-h" class="mt-2 text-[clamp(1.8rem,5vw,2.6rem)]">Tell us what you're looking for.</h1>
+        <p class="mt-3 max-w-[56ch] text-muted">We run your criteria in the Utah MLS, send you every match, and set up alerts so new listings reach you the day they hit. No account, no password.</p>
+
+        <form class="search-form mt-8 rounded-[12px] border border-hairline bg-white p-5 md:p-7" data-endpoint={LEAD_ENDPOINT} novalidate>
+          <fieldset class="grid gap-4 md:grid-cols-3">
+            <legend class="font-display text-[1.25rem] text-ink mb-3">Where and how much</legend>
+            <div>
+              <label class={lab} for="s-area">Area</label>
+              <select id="s-area" name="area" class={sel}>
+                <option value="">Anywhere in Tooele County</option>
+                {SERVICE_AREA.map((a) => <option value={a}>{a}</option>)}
+              </select>
+            </div>
+            <div>
+              <label class={lab} for="s-min">Min price</label>
+              <select id="s-min" name="min" class={sel}>
+                <option value="">No minimum</option>
+                {PRICE_STEPS.map((p) => <option value={p}>{fmtPrice(p)}</option>)}
+              </select>
+            </div>
+            <div>
+              <label class={lab} for="s-max">Max price</label>
+              <select id="s-max" name="max" class={sel}>
+                <option value="">No maximum</option>
+                {PRICE_STEPS.map((p) => <option value={p}>{fmtPrice(p)}</option>)}
+              </select>
+            </div>
+          </fieldset>
+
+          <fieldset class="mt-7 grid gap-4 md:grid-cols-3">
+            <legend class="font-display text-[1.25rem] text-ink mb-3">The home</legend>
+            <div>
+              <label class={lab} for="s-type">Property type</label>
+              <select id="s-type" name="type" class={sel}>
+                {PROPERTY_TYPES.map((t) => <option value={t.key}>{t.label}</option>)}
+              </select>
+            </div>
+            <div>
+              <label class={lab} for="s-beds">Bedrooms</label>
+              <select id="s-beds" name="beds" class={sel}>
+                <option value="">Any</option>
+                {[1, 2, 3, 4, 5, 6].map((n) => <option value={n}>{`${n}+`}</option>)}
+              </select>
+            </div>
+            <div>
+              <label class={lab} for="s-baths">Bathrooms</label>
+              <select id="s-baths" name="baths" class={sel}>
+                <option value="">Any</option>
+                {[1, 2, 3, 4, 5].map((n) => <option value={n}>{`${n}+`}</option>)}
+              </select>
+            </div>
+          </fieldset>
+
+          <fieldset class="mt-7">
+            <legend class="font-display text-[1.25rem] text-ink mb-3">Must-haves</legend>
+            <div class="grid gap-2 sm:grid-cols-2 md:grid-cols-3">
+              {SPECIALTY_SEARCHES.map((s) => (
+                <label class="flex items-start gap-3 rounded-[9px] border border-hairline px-3 py-2.5 cursor-pointer hover:border-copper">
+                  <input type="checkbox" name="must" value={s.key} class="mt-1 h-5 w-5 min-h-0 accent-copper" />
+                  <span><span class="block font-semibold text-ink text-[.95rem]">{s.label}</span><span class="block text-[.8rem] text-muted">{s.blurb}</span></span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <div class="mt-7">
+            <label class={lab} for="s-notes">Anything else</label>
+            <textarea id="s-notes" name="notes" rows="3" class={`${inp} py-3`} placeholder="Timeline, a specific subdivision, a builder you like, a view you want."></textarea>
+          </div>
+
+          <fieldset class="mt-7 grid gap-4 md:grid-cols-3">
+            <legend class="font-display text-[1.25rem] text-ink mb-3">Where to send matches</legend>
+            <div>
+              <label class={lab} for="s-name">Name</label>
+              <input id="s-name" name="name" type="text" autocomplete="name" required class={inp} />
+            </div>
+            <div>
+              <label class={lab} for="s-email">Email</label>
+              <input id="s-email" name="email" type="email" autocomplete="email" required class={inp} />
+            </div>
+            <div>
+              <label class={lab} for="s-phone">Phone <span class="font-normal text-muted">(optional, for texts)</span></label>
+              <input id="s-phone" name="phone" type="tel" autocomplete="tel" class={inp} />
+            </div>
+          </fieldset>
+
+          <div class="hidden" aria-hidden="true">
+            <label>Company <input type="text" name="company" tabindex="-1" autocomplete="off" /></label>
+          </div>
+          <input type="hidden" name="src" value="search" />
+          <input type="hidden" name="intent" value="buy" />
+          <input type="hidden" name="page" value="/search/" />
+          <input type="hidden" name="utm_source" data-attr="utm_source" />
+          <input type="hidden" name="utm_medium" data-attr="utm_medium" />
+          <input type="hidden" name="utm_campaign" data-attr="utm_campaign" />
+          <input type="hidden" name="utm_content" data-attr="utm_content" />
+          <input type="hidden" name="utm_term" data-attr="utm_term" />
+          <input type="hidden" name="ref" data-attr="ref" />
+          <input type="hidden" name="landing" data-attr="landing" />
+
+          <div class="mt-7 flex flex-wrap items-center gap-4">
+            <button type="submit" class="inline-flex items-center justify-center gap-2 min-h-[52px] px-7 rounded-[9px] bg-copper text-white font-semibold uppercase tracking-[.1em] text-[.8rem] hover:bg-copper-dark">
+              Run my search <Icon name="arrow-right" size={16} />
+            </button>
+            <p class="text-[.82rem] text-muted max-w-[40ch]">Lisa or Laramie replies with matches, usually the same day. Unsubscribe from alerts any time.</p>
+          </div>
+          <p class="search-form-msg mt-4 text-[.95rem] text-copper-dark" role="status" aria-live="polite"></p>
+        </form>
+
+        <div class="search-form-success hidden mt-8 rounded-[12px] border border-hairline bg-white p-7" role="status">
+          <p class="font-display text-[1.5rem] text-ink">Got it. We're on it.</p>
+          <p class="mt-2 text-muted">Your search is with the team. Expect the first batch of matches by email, and a text if you left a number.</p>
+          <p class="mt-4"><a href="/communities/" class="font-semibold text-copper-dark">Browse the area guides while you wait</a></p>
+        </div>
+      </div>
+
+      <aside class="space-y-4 lg:pt-16">
+        <div class="rounded-[12px] border border-hairline bg-white p-5">
+          <p class="font-display text-[1.2rem] text-ink">Why no listings on this page?</p>
+          <p class="mt-2 text-[.92rem] text-muted leading-relaxed">Public listing feeds need an IDX license through the brokerage. Until that's in place we'd rather run the search in the MLS ourselves than show you a stale copy. You get the real inventory, same day.</p>
+        </div>
+        <div class="rounded-[12px] border border-hairline bg-white p-5">
+          <p class="font-display text-[1.2rem] text-ink">Prefer to talk?</p>
+          <ul class="mt-3 space-y-2">
+            {AGENTS.map((a) => (
+              <li><a href={a.phoneHref} class="inline-flex items-center gap-2 no-underline"><Icon name="phone" size={16} class="text-copper-dark" /><span class="font-semibold text-ink">{a.name.split(" ")[0]}</span> <span class="text-copper-dark">{a.phone}</span></a></li>
+            ))}
+          </ul>
+        </div>
+        <div class="rounded-[12px] bg-ink p-5 text-paper">
+          <p class="font-display text-[1.2rem] text-white">Our current listing</p>
+          <p class="mt-2 text-[.92rem] text-panel-text">521 E Gilmour St, Grantsville. 7 bed, 5 bath, Parade of Homes #29.</p>
+          <a href="/listings/521-e-gilmour-st-grantsville/" class="mt-3 inline-flex items-center gap-1 font-semibold text-copper no-underline">See the listing <Icon name="arrow-right" size={14} /></a>
+        </div>
+      </aside>
+    </div>
+  </Section>
+</Base>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>(".search-form");
+  if (form) {
+    // Prefill from query string (hero search bar, footer specialty links).
+    const q = new URLSearchParams(location.search);
+    for (const k of ["area", "min", "max"]) {
+      const el = form.querySelector<HTMLSelectElement>(`[name="${k}"]`);
+      const v = q.get(k);
+      if (el && v && [...el.options].some((o) => o.value === v)) el.value = v;
+    }
+    const type = q.get("type");
+    if (type) {
+      const must = form.querySelector<HTMLInputElement>(`input[name="must"][value="${type}"]`);
+      if (must) must.checked = true;
+      const t = form.querySelector<HTMLSelectElement>('[name="type"]');
+      if (t && type === "condo-townhome") t.value = type;
+    }
+    // Attribution (same keys Base.astro stores in sessionStorage as ldt_attr).
+    try {
+      const attr = JSON.parse(sessionStorage.getItem("ldt_attr") || "{}");
+      form.querySelectorAll<HTMLInputElement>("[data-attr]").forEach((i) => { const v = attr[i.dataset.attr!]; if (v) i.value = v; });
+    } catch {}
+
+    const msg = form.querySelector<HTMLElement>(".search-form-msg")!;
+    const success = document.querySelector<HTMLElement>(".search-form-success")!;
+    const label = (name: string) => {
+      const el = form.querySelector<HTMLSelectElement>(`[name="${name}"]`);
+      return el && el.value ? el.options[el.selectedIndex].text : "";
+    };
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const name = String(fd.get("name") || "").trim();
+      const email = String(fd.get("email") || "").trim();
+      if (!name || !email) { msg.textContent = "Please add your name and email so we know where to send matches."; return; }
+      const must = fd.getAll("must").map((k) => form.querySelector<HTMLInputElement>(`input[name="must"][value="${k}"]`)?.parentElement?.querySelector("span span")?.textContent || String(k));
+      const criteria = [
+        `Area: ${label("area") || "Anywhere in Tooele County"}`,
+        `Price: ${label("min") || "no min"} to ${label("max") || "no max"}`,
+        `Type: ${label("type")}`,
+        `Beds: ${label("beds") || "any"} · Baths: ${label("baths") || "any"}`,
+        must.length ? `Must-haves: ${must.join(", ")}` : "",
+        String(fd.get("notes") || "").trim() ? `Notes: ${String(fd.get("notes")).trim()}` : "",
+      ].filter(Boolean).join("\n");
+      const payload: Record<string, string> = {
+        name, email, phone: String(fd.get("phone") || "").trim(),
+        intent: "buy", src: "search", page: "/search/", company: String(fd.get("company") || ""),
+        message: `MLS search request\n${criteria}`,
+        search_area: String(fd.get("area") || ""), search_min: String(fd.get("min") || ""), search_max: String(fd.get("max") || ""),
+        search_type: String(fd.get("type") || ""), search_beds: String(fd.get("beds") || ""), search_baths: String(fd.get("baths") || ""),
+        search_must: fd.getAll("must").join(","),
+      };
+      form.querySelectorAll<HTMLInputElement>("[data-attr]").forEach((i) => { if (i.value) payload[i.name] = i.value; });
+      const btn = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+      btn.disabled = true; msg.textContent = "Sending…";
+      try {
+        const r = await fetch(form.dataset.endpoint || "/api/lead", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+        if (!r.ok) throw new Error(String(r.status));
+        form.hidden = true; success.classList.remove("hidden"); success.scrollIntoView({ block: "start", behavior: "smooth" });
+      } catch {
+        msg.textContent = "That didn't go through. Call or text Lisa at 435-849-6130 and we'll take it by phone.";
+        btn.disabled = false;
+      }
+    });
+  }
+</script>

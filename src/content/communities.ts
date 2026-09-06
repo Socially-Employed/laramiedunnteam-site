@@ -2,6 +2,27 @@
 // NEUTRAL geography only: no demographic, crime, school-quality, or price statistics
 // (CONTENT_BRIEF §3 / site rules). Describe the place, never who lives there.
 // Landmarks listed are public places. No stat appears here unless the brief provided it (none did).
+// Photos: Wikimedia Commons, license verified 2026-09-06 (assets-src/README.md, /credits/). No people in frame.
+
+export type PhotoCredit = {
+  /** Original file title on Wikimedia Commons. */
+  file: string;
+  author: string;
+  license: "CC0" | "Public domain" | "CC BY-SA 4.0";
+  /** Commons file page (license + author of record). */
+  url: string;
+  /** Present only for licenses that require a license link (CC BY-SA). */
+  licenseUrl?: string;
+};
+
+export type CommunityPhoto = {
+  /** 1200×800 webp for tiles and page headers. */
+  src: string;
+  /** 640×427 webp for small tiles / srcset. */
+  small: string;
+  alt: string;
+  credit: PhotoCredit;
+};
 
 export type Community = {
   slug: string;
@@ -12,7 +33,10 @@ export type Community = {
   gettingAround: string;
   housing: string;
   thingsToDo: string[];
+  photo: CommunityPhoto;
 };
+
+const img = (slug: string) => ({ src: `/images/communities/${slug}-1200.webp`, small: `/images/communities/${slug}-640.webp` });
 
 export const COMMUNITIES: Community[] = [
   {
@@ -32,6 +56,16 @@ export const COMMUNITIES: Community[] = [
       "The Donner-Reed Museum in the historic downtown",
       "Trailheads into the Stansbury Mountains west of town",
     ],
+    photo: {
+      ...img("grantsville"),
+      alt: "The stone Donner-Reed Museum building in downtown Grantsville, Utah, under a clear sky",
+      credit: {
+        file: "Donner Reed Museum - Grantsville, Utah - 26 May 2025.jpg",
+        author: "Beneathtimp",
+        license: "CC0",
+        url: "https://commons.wikimedia.org/wiki/File:Donner_Reed_Museum_-_Grantsville,_Utah_-_26_May_2025.jpg",
+      },
+    },
   },
   {
     slug: "stansbury-park",
@@ -50,6 +84,16 @@ export const COMMUNITIES: Community[] = [
       "Stansbury Park Golf Course",
       "The Stansbury Park Observatory Complex",
     ],
+    photo: {
+      ...img("stansbury-park"),
+      alt: "The historic Benson Grist Mill, a wooden mill building with a water wheel, in Stansbury Park, Utah",
+      credit: {
+        file: "B-2. Ezra T. Benson Grist Mill (325 Hwy 138, Stansbury Park, UT) on the California National Historic Trail (2009).jpg",
+        author: "National Park Service staff",
+        license: "Public domain",
+        url: "https://commons.wikimedia.org/wiki/File:B-2._Ezra_T._Benson_Grist_Mill_(325_Hwy_138,_Stansbury_Park,_UT)_on_the_California_National_Historic_Trail_(2009)_(a6933bcf-2055-4909-9d7b-7a7b7cb6ca2e).jpg",
+      },
+    },
   },
   {
     slug: "tooele",
@@ -68,6 +112,16 @@ export const COMMUNITIES: Community[] = [
       "The Tooele Valley Railroad Museum",
       "The Deseret Peak Complex for events and recreation",
     ],
+    photo: {
+      ...img("tooele"),
+      alt: "Tooele City Hall, a brick civic building with a clock tower, on Main Street in Tooele, Utah",
+      credit: {
+        file: "Tooele Utah City Hall.jpeg",
+        author: "Ntsimp",
+        license: "Public domain",
+        url: "https://commons.wikimedia.org/wiki/File:Tooele_Utah_City_Hall.jpeg",
+      },
+    },
   },
   {
     slug: "erda",
@@ -86,6 +140,16 @@ export const COMMUNITIES: Community[] = [
       "Nearby access to the Deseret Peak Complex",
       "Foothill routes toward the Oquirrh Mountains",
     ],
+    photo: {
+      ...img("erda"),
+      alt: "Open fields in Erda, Utah, looking north toward the Great Salt Lake with mountains on the horizon",
+      credit: {
+        file: "Erda overlooking the Great Salt Lake.jpg",
+        author: "Jackpeck (English Wikipedia)",
+        license: "Public domain",
+        url: "https://commons.wikimedia.org/wiki/File:Erda_overlooking_the_Great_Salt_Lake.jpg",
+      },
+    },
   },
   {
     slug: "lake-point",
@@ -104,6 +168,17 @@ export const COMMUNITIES: Community[] = [
       "Adobe Rock, a local roadside landmark",
       "Interstate 80 access toward the Antelope Island area",
     ],
+    photo: {
+      ...img("lake-point"),
+      alt: "Aerial view of homes in Lake Point, Utah, with the snow-covered Oquirrh Mountains behind",
+      credit: {
+        file: "Lake Point.jpg",
+        author: "Rlittle09",
+        license: "CC BY-SA 4.0",
+        url: "https://commons.wikimedia.org/wiki/File:Lake_Point.jpg",
+        licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/",
+      },
+    },
   },
   {
     slug: "stockton",
@@ -122,5 +197,40 @@ export const COMMUNITIES: Community[] = [
       "The historic Stockton main street",
       "The Stockton Bar, a well-known geological landform",
     ],
+    photo: {
+      ...img("stockton"),
+      alt: "Stockton Town Hall, a small single-story civic building in Stockton, Utah",
+      credit: {
+        file: "Stockton Utah Town Hall.jpeg",
+        author: "Ntsimp",
+        license: "CC0",
+        url: "https://commons.wikimedia.org/wiki/File:Stockton_Utah_Town_Hall.jpeg",
+      },
+    },
   },
 ];
+
+/** County-wide photos used outside the six community guides (home tiles, bands). */
+export const COUNTY_PHOTOS: Record<"stansburyIsland" | "oquirrh", CommunityPhoto & { wide?: string }> = {
+  stansburyIsland: {
+    ...img("stansbury-island"),
+    alt: "A dirt trail along the shore of Stansbury Island in the Great Salt Lake, Tooele County, Utah",
+    credit: {
+      file: "Stansbury Island Trail.jpg",
+      author: "OquirrhMountainMan",
+      license: "CC0",
+      url: "https://commons.wikimedia.org/wiki/File:Stansbury_Island_Trail.jpg",
+    },
+  },
+  oquirrh: {
+    ...img("valley-oquirrh"),
+    wide: "/images/communities/valley-oquirrh-1800.webp",
+    alt: "Storm clouds over the Oquirrh Mountains in east Tooele County, Utah",
+    credit: {
+      file: "Oquirrh Mountains in East Tooele County, Utah, United States (Unsplash).jpg",
+      author: "Justin Luebke",
+      license: "CC0",
+      url: "https://commons.wikimedia.org/wiki/File:Oquirrh_Mountains_in_East_Tooele_County,_Utah,_United_States_(Unsplash).jpg",
+    },
+  },
+};

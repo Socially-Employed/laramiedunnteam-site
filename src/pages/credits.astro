@@ -1,0 +1,40 @@
+---
+// credits.astro — photo attribution. Required for CC BY-SA imagery (Lake Point); courtesy for the rest.
+import Base from "../layouts/Base.astro";
+import Section from "../components/Section.astro";
+import { COMMUNITIES, COUNTY_PHOTOS } from "../content/communities";
+
+const rows = [
+  ...COMMUNITIES.map((c) => ({ use: `${c.name} area guide and home-page tile`, photo: c.photo })),
+  { use: "Home-page county tile", photo: COUNTY_PHOTOS.stansburyIsland },
+  { use: "Home-page Sellers band background", photo: COUNTY_PHOTOS.oquirrh },
+];
+---
+<Base
+  breadcrumbs={[{ name: "Photo credits", href: "/credits/" }]}
+  title="Photo Credits · Laramie Dunn Team"
+  description="Attribution and licenses for the community photographs used on the Laramie Dunn Team website."
+  canonical="/credits/"
+>
+  <Section tone="paper" narrow>
+    <p class="text-copper-dark text-[.78rem] font-semibold uppercase tracking-[.18em]">About this site</p>
+    <h1 class="mt-2 text-[clamp(1.7rem,6vw,2.4rem)]">Photo credits</h1>
+    <div class="mt-6 space-y-6 text-[1.02rem] leading-relaxed">
+      <p>Community photographs on this site come from Wikimedia Commons and are used under the license each photographer chose. Images have been cropped and resized; no other changes were made. Listing photos are the team's own or the listing photographer's, used with permission.</p>
+      <ul class="space-y-4">
+        {rows.map((r) => (
+          <li class="rounded-[12px] border border-hairline bg-white p-4">
+            <p class="font-semibold text-ink">{r.use}</p>
+            <p class="text-[.92rem] text-muted mt-1">
+              <a href={r.photo.credit.url} rel="noopener">{r.photo.credit.file}</a> by {r.photo.credit.author}.
+              {r.photo.credit.licenseUrl
+                ? <span> Licensed <a href={r.photo.credit.licenseUrl} rel="license noopener">{r.photo.credit.license}</a>.</span>
+                : <span> {r.photo.credit.license}.</span>}
+            </p>
+          </li>
+        ))}
+      </ul>
+      <p>The home-page hero photograph is a stock image used under the Unsplash License (Roger Starnes Sr). Brand marks are © Laramie Dunn Team. RealtyPath is a trademark of its owner.</p>
+    </div>
+  </Section>
+</Base>
