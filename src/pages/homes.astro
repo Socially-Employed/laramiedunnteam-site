@@ -1,0 +1,80 @@
+---
+// homes.astro — hub for the ten specialty searches. Each card links to /homes/<slug>/, which explains the
+// property type and hands off to /search/?type=<key>. Copy lives in src/content/specialty-pages.ts.
+import Base from "../layouts/Base.astro";
+import Section from "../components/Section.astro";
+import Button from "../components/Button.astro";
+import LeadForm from "../components/LeadForm.astro";
+import Icon from "../components/Icon.astro";
+import JsonLd from "../components/JsonLd.astro";
+import { SPECIALTY_SEARCHES } from "../content/searches";
+import { SPECIALTY_PAGES } from "../content/specialty-pages";
+import { SITE_URL, COUNTY } from "../config/site";
+
+const items = SPECIALTY_PAGES.map((page) => ({
+  page,
+  search: SPECIALTY_SEARCHES.find((s) => s.key === page.slug)!,
+}));
+
+const itemList = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Specialty home searches in Tooele County",
+  itemListElement: items.map(({ page, search }, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: search.label,
+    url: `${SITE_URL}/homes/${page.slug}/`,
+  })),
+};
+
+const steps = [
+  { n: "1", h: "Tell us what you want", p: "Use the form on any page, or open the search page with the property type already selected." },
+  { n: "2", h: "We run it in the Utah MLS", p: "We set the filters, read the remarks on each result, and drop the listings that only match on paper." },
+  { n: "3", h: "Matches arrive by email", p: "You get the results by email and updates as new listings come on. This site does not display MLS listings." },
+];
+---
+<Base
+  breadcrumbs={[{ name: "Specialty searches", href: "/homes/" }]}
+  title="Specialty Home Searches, Tooele County"
+  description="Ten specialty home searches for Tooele County, Utah: acreage, new construction, basement apartments, golf and lake homes, garages, RV parking, and more."
+  canonical="/homes/"
+>
+  <JsonLd slot="head" data={itemList} />
+
+  <Section tone="paper" labelledby="hub-h">
+    <p class="text-copper-dark text-[.78rem] font-semibold uppercase tracking-[.18em]">{COUNTY}</p>
+    <h1 id="hub-h" class="mt-2 text-[clamp(1.8rem,5vw,2.6rem)]">Specialty home searches in Tooele County</h1>
+    <p class="mt-3 max-w-[56ch] text-muted">Each page below covers one type of property: where it shows up in the valley, how it is described in listings, and what to check before you write an offer. Pick one, then run the search or ask us to run it for you.</p>
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {items.map(({ page, search }) => (
+        <article class="rounded-[12px] border border-hairline bg-white p-5 flex flex-col">
+          <h2 class="text-[1.2rem]"><a href={`/homes/${page.slug}/`} class="no-underline text-ink hover:text-copper-dark">{search.label}</a></h2>
+          <p class="mt-2 text-muted text-[.95rem] grow">{search.blurb}</p>
+          <a href={`/homes/${page.slug}/`} class="mt-4 inline-flex items-center gap-1 font-semibold text-copper-dark no-underline" aria-label={`Read about ${search.label}`}>Read the guide <Icon name="arrow-right" size={14} /></a>
+        </article>
+      ))}
+    </div>
+  </Section>
+
+  <Section tone="white" labelledby="how-h">
+    <h2 id="how-h" class="text-[clamp(1.5rem,4vw,2rem)]">How a specialty search works</h2>
+    <div class="mt-6 grid gap-6 md:grid-cols-3">
+      {steps.map((s) => (
+        <div class="rounded-[12px] border border-hairline bg-paper p-5">
+          <p class="text-copper-dark text-[.78rem] font-semibold uppercase tracking-[.18em]">Step {s.n}</p>
+          <p class="mt-2 font-display text-[1.2rem]">{s.h}</p>
+          <p class="mt-2 text-muted text-[.95rem]">{s.p}</p>
+        </div>
+      ))}
+    </div>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <Button href="/search/">Open the search page</Button>
+      <Button href="/communities/" variant="ghost">Browse by community <Icon name="arrow-right" size={16} /></Button>
+    </div>
+  </Section>
+
+  <Section tone="panel" narrow>
+    <LeadForm src="homes" heading="Tell us what you're looking for" intent="buy" button="Run a search for me" />
+  </Section>
+</Base>

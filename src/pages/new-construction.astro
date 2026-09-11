@@ -1,0 +1,138 @@
+---
+// new-construction.astro — hub: how buying new differs from resale, where building is happening, the
+// Parade of Homes explainer, and the team's current Parade listing. Facts: CONTENT_BRIEF §9 addendum
+// (2026-09-11). Rails: no square footage or garage counts for 521; no contractor/"construction-literate"
+// claims; visible FAQ only (no FAQPage JSON-LD — Google retired the FAQ rich result in 2026).
+import Base from "../layouts/Base.astro";
+import Section from "../components/Section.astro";
+import Button from "../components/Button.astro";
+import LeadForm from "../components/LeadForm.astro";
+import ListingCard from "../components/ListingCard.astro";
+import Icon from "../components/Icon.astro";
+import JsonLd from "../components/JsonLd.astro";
+import { COMMUNITIES } from "../content/communities";
+import { SITE_URL, BRAND_NAME, COUNTY } from "../config/site";
+
+const building = ["grantsville", "erda", "stansbury-park", "tooele"].map((s) => COMMUNITIES.find((c) => c.slug === s)!);
+
+const parade = {
+  address: "521 E Gilmour St",
+  city: "Grantsville",
+  price: "$1,299,000",
+  beds: 7,
+  baths: 5,
+  status: "Parade Home #29",
+  image: "https://assets.utahrealestate.com/photos/640x480/2135169_871b90f3a3f3c9ddd9700724b179b692_6a60eedf29d38.jpg",
+  href: "/listings/521-e-gilmour-st-grantsville/",
+};
+
+const steps = [
+  { h: "Spec, under construction, or to-be-built", p: "A spec home is finished or nearly finished and priced as it stands. An under-construction home may still allow some selections. A to-be-built home starts with a lot and a plan, and the timeline runs in months." },
+  { h: "The contract", p: "Many builders use their own purchase agreement instead of the standard Utah form. We go through it with you before you sign: the deposit terms, the change-order process, and what happens if the completion date moves." },
+  { h: "Registering at the model home", p: "Builders' registration policies often require your agent to accompany you on the first visit, so bring us in before you register at the model home. That keeps your own representation in place from the first conversation." },
+  { h: "Selections and allowances", p: "Finishes are priced against allowances, and upgrades add up quickly. We help you sort the upgrades that are hard to change later from the ones that are simpler to do after closing." },
+  { h: "Inspections", p: "Two common inspection points on a new build are pre-drywall and final. A new home still deserves an independent inspection; a builder warranty covers repairs, but it does not replace a second set of eyes." },
+  { h: "Walkthrough and warranty", p: "Before closing you walk the home with the builder and list anything unfinished. After closing, keep the warranty paperwork and the punch list together so nothing gets lost." },
+];
+
+const faqs = [
+  { q: "Do I need my own agent to buy new construction?", a: "The sales agent at the model home works for the builder. Your own agent represents you, and builders' registration policies usually require that your agent be with you or named on your first visit." },
+  { q: "Can the price be negotiated?", a: "It depends on the builder and on how much inventory they are carrying. Builders often move on upgrades, closing costs, or financing incentives before they move on the list price." },
+  { q: "How long does a to-be-built home take?", a: "It depends on the builder, the plan, and the season. Ask for the builder's current schedule in writing, and plan for the completion date to move." },
+  { q: "Should I inspect a brand-new home?", a: "Yes. An independent inspection at pre-drywall and at final catches items the builder's own checks can miss, and it gives you a documented list for the warranty period." },
+];
+
+const description = "How buying new construction in Tooele County, Utah differs from resale, where builders are active, and what the Parade of Homes means for a listing.";
+
+const webPage = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "New construction in Tooele County",
+  url: `${SITE_URL}/new-construction/`,
+  description,
+  isPartOf: { "@type": "WebSite", name: BRAND_NAME, url: SITE_URL },
+};
+---
+<Base
+  breadcrumbs={[{ name: "New construction", href: "/new-construction/" }]}
+  title="New Construction Guide, Tooele County"
+  description={description}
+  canonical="/new-construction/"
+>
+  <JsonLd slot="head" data={webPage} />
+
+  <Section tone="paper" labelledby="nc-h">
+    <p class="text-copper-dark text-[.78rem] font-semibold uppercase tracking-[.18em]">Guide · {COUNTY}</p>
+    <h1 id="nc-h" class="mt-2 text-[clamp(1.8rem,5vw,2.6rem)]">New construction in Tooele County</h1>
+    <p class="mt-4 text-lg leading-relaxed max-w-[680px]">Buying a new home runs on the builder's paperwork and the builder's schedule. This guide covers how that differs from a resale purchase, where building is happening in the valley, and what it means when a home is shown on the Parade of Homes.</p>
+    <div class="mt-6 flex flex-wrap gap-3">
+      <Button href="/search/?type=new-construction">Search new construction</Button>
+      <Button href="/contact/" variant="ghost">Ask about a builder</Button>
+    </div>
+  </Section>
+
+  <Section tone="white" labelledby="how-h">
+    <h2 id="how-h" class="text-[clamp(1.5rem,4vw,2rem)]">How buying new differs from resale</h2>
+    <div class="mt-6 grid gap-6 md:grid-cols-2">
+      {steps.map((s, i) => (
+        <div class="rounded-[12px] border border-hairline bg-paper p-5">
+          <p class="text-copper-dark text-[.78rem] font-semibold uppercase tracking-[.18em]">{i + 1} of {steps.length}</p>
+          <p class="mt-2 font-display text-[1.2rem]">{s.h}</p>
+          <p class="mt-2 text-muted text-[.95rem]">{s.p}</p>
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  <Section tone="paper" labelledby="where-h">
+    <h2 id="where-h" class="text-[clamp(1.5rem,4vw,2rem)]">Where building is happening</h2>
+    <p class="mt-3 max-w-[56ch] text-muted">Newer subdivisions and builder lots are concentrated in four areas. Each links to the area guide.</p>
+    <div class="mt-8 grid gap-4 sm:grid-cols-2">
+      {building.map((c) => (
+        <article class="rounded-[12px] border border-hairline bg-white p-5">
+          <h3 class="text-[1.15rem]"><a href={`/communities/${c.slug}/`} class="no-underline text-ink hover:text-copper-dark">{c.name}</a></h3>
+          <p class="mt-2 text-muted text-[.95rem]">{c.housing}</p>
+        </article>
+      ))}
+    </div>
+    <p class="mt-6"><a href="/homes/new-construction/" class="inline-flex items-center gap-1 font-semibold text-copper-dark no-underline">The new construction search page <Icon name="arrow-right" size={14} /></a></p>
+  </Section>
+
+  <Section tone="white" narrow labelledby="parade-h">
+    <h2 id="parade-h" class="text-[clamp(1.5rem,4vw,2rem)]">What the Parade of Homes means</h2>
+    <p class="mt-4 text-[1.02rem] leading-relaxed">The Salt Lake Parade of Homes is the Salt Lake Home Builders Association's annual showcase of new homes. The 2026 Parade was the 80th anniversary edition and ran July 31 through August 15.</p>
+    <p class="mt-4 text-[1.02rem] leading-relaxed">Homes on the Parade are shown finished and furnished, so a Parade listing is one you can see complete, with the builder's selections already made. It also means the home has been open to the public, which is worth knowing when you compare it with a home that has only been shown privately.</p>
+    <p class="mt-4 text-[.9rem] text-muted">Parade details: <a href="https://www.slhba.com/">Salt Lake Home Builders Association</a>.</p>
+  </Section>
+
+  <Section tone="paper" labelledby="listing-h">
+    <h2 id="listing-h" class="text-[clamp(1.5rem,4vw,2rem)]">Our current Parade listing</h2>
+    <div class="mt-6 grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:items-start">
+      <ListingCard listing={parade} />
+      <div>
+        <p class="text-[1.02rem] leading-relaxed">521 E Gilmour St in Grantsville is a custom estate in the Heritage Farms subdivision, built by Heritage Homes on the Nunley plan and shown as Home #29 in the 2026 Salt Lake Parade of Homes. It has seven bedrooms and five bathrooms, and includes a separate-entrance basement apartment. Listed at $1,299,000.</p>
+        <p class="mt-4"><a href="/listings/521-e-gilmour-st-grantsville/" class="inline-flex items-center gap-1 font-semibold text-copper-dark no-underline">See the full listing <Icon name="arrow-right" size={14} /></a></p>
+        <p class="mt-4 text-[.85rem] text-muted">Listing information deemed reliable but not guaranteed; buyer to verify all figures.</p>
+      </div>
+    </div>
+  </Section>
+
+  <Section tone="white" narrow labelledby="faq-h">
+    <h2 id="faq-h" class="text-[clamp(1.5rem,4vw,2rem)]">Questions about buying new</h2>
+    <div class="mt-4 divide-y divide-hairline">
+      {faqs.map((f) => (
+        <details class="group py-4">
+          <summary class="flex cursor-pointer items-center justify-between gap-4 list-none font-semibold text-ink">
+            <span>{f.q}</span>
+            <Icon name="chevron-down" size={18} class="flex-none text-copper-dark transition-transform group-open:rotate-180" />
+          </summary>
+          <p class="mt-3 text-muted text-[.98rem] leading-relaxed">{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </Section>
+
+  <Section tone="panel" narrow>
+    <LeadForm src="new-construction" heading="Ask about a builder or a lot" intent="buy" button="Send my question" />
+  </Section>
+</Base>

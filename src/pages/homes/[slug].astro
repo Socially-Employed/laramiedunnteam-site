@@ -1,0 +1,95 @@
+---
+// homes/[slug].astro — one landing page per specialty search, generated from src/content/specialty-pages.ts.
+// Rails: describe the property type, never the buyer; no MLS figures; CTA goes to /search/?type=<key>.
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import Button from "../../components/Button.astro";
+import LeadForm from "../../components/LeadForm.astro";
+import Icon from "../../components/Icon.astro";
+import JsonLd from "../../components/JsonLd.astro";
+import { COMMUNITIES } from "../../content/communities";
+import { SPECIALTY_SEARCHES } from "../../content/searches";
+import { SPECIALTY_PAGES } from "../../content/specialty-pages";
+import { SITE_URL, BRAND_NAME, COUNTY } from "../../config/site";
+
+export function getStaticPaths() {
+  return SPECIALTY_PAGES.map((page) => ({ params: { slug: page.slug }, props: { page } }));
+}
+
+const { page } = Astro.props;
+const search = SPECIALTY_SEARCHES.find((s) => s.key === page.slug)!;
+const searchHref = `/search/?type=${page.slug}`;
+const label = search.label.toLowerCase();
+
+const communities = [
+  ...page.related.map((slug) => COMMUNITIES.find((c) => c.slug === slug)!),
+  ...COMMUNITIES.filter((c) => !page.related.includes(c.slug)),
+];
+
+const others = SPECIALTY_PAGES
+  .filter((p) => p.slug !== page.slug)
+  .map((p) => ({ slug: p.slug, label: SPECIALTY_SEARCHES.find((s) => s.key === p.slug)!.label }));
+
+const webPage = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: page.h1,
+  url: `${SITE_URL}/homes/${page.slug}/`,
+  description: page.description,
+  isPartOf: { "@type": "WebSite", name: BRAND_NAME, url: SITE_URL },
+};
+---
+<Base
+  breadcrumbs={[{ name: "Specialty searches", href: "/homes/" }, { name: search.label, href: `/homes/${page.slug}/` }]}
+  title={page.title}
+  description={page.description}
+  canonical={`/homes/${page.slug}/`}
+>
+  <JsonLd slot="head" data={webPage} />
+
+  <Section tone="paper" labelledby="page-h">
+    <p class="text-copper-dark text-[.78rem] font-semibold uppercase tracking-[.18em]">Specialty search · {COUNTY}</p>
+    <h1 id="page-h" class="mt-2 text-[clamp(1.8rem,5vw,2.6rem)]">{page.h1}</h1>
+    <p class="mt-4 text-lg leading-relaxed max-w-[680px]">{search.blurb}</p>
+    <div class="mt-6 flex flex-wrap gap-3">
+      <Button href={searchHref}>Search: {search.label}</Button>
+      <Button href="/contact/" variant="ghost">Ask the team</Button>
+    </div>
+  </Section>
+
+  <Section tone="white" narrow labelledby="about-h">
+    <h2 id="about-h" class="text-[clamp(1.5rem,4vw,2rem)]">What to know</h2>
+    {page.paragraphs.map((p) => <p class="mt-4 text-[1.02rem] leading-relaxed">{p}</p>)}
+    {page.hub && (
+      <p class="mt-6"><a href={page.hub.href} class="inline-flex items-center gap-1 font-semibold text-copper-dark no-underline">{page.hub.label} <Icon name="arrow-right" size={14} /></a></p>
+    )}
+  </Section>
+
+  <Section tone="paper" labelledby="comm-h">
+    <h2 id="comm-h" class="text-[clamp(1.5rem,4vw,2rem)]">Browse by community</h2>
+    <p class="mt-3 max-w-[56ch] text-muted">Where this type of property tends to show up, with the area guide for each town.</p>
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {communities.map((c) => (
+        <article class="rounded-[12px] border border-hairline bg-white p-5">
+          <p class="text-copper-dark text-[.72rem] font-semibold uppercase tracking-[.18em]">{page.related.includes(c.slug) ? "Start here" : "Area guide"}</p>
+          <h3 class="mt-1 text-[1.15rem]"><a href={`/communities/${c.slug}/`} class="no-underline text-ink hover:text-copper-dark">{c.name}</a></h3>
+          <p class="mt-2 text-muted text-[.95rem]">{c.housing}</p>
+        </article>
+      ))}
+    </div>
+  </Section>
+
+  <Section tone="panel" narrow>
+    <LeadForm src={`homes-${page.slug}`} heading={`Want ${label} matches by email?`} intent="buy" button="Run this search for me" />
+  </Section>
+
+  <Section tone="paper" labelledby="more-h">
+    <h2 id="more-h" class="text-[1.25rem]">Other specialty searches</h2>
+    <ul class="mt-4 flex flex-wrap gap-2 list-none p-0 m-0">
+      {others.map((o) => (
+        <li><a href={`/homes/${o.slug}/`} class="inline-block rounded-full border border-hairline bg-white px-4 py-2 text-[.92rem] text-ink no-underline hover:text-copper-dark">{o.label}</a></li>
+      ))}
+    </ul>
+    <p class="mt-6"><a href="/homes/" class="inline-flex items-center gap-1 font-semibold text-copper-dark no-underline">All specialty searches <Icon name="arrow-right" size={14} /></a></p>
+  </Section>
+</Base>
