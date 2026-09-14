@@ -1,6 +1,6 @@
 ---
 // Header.astro — two-tier header: utility bar (secondary links + both agents' numbers) over the
-// uppercase main nav. Brokerage lockup stays (RealtyPath must appear on every page).
+// uppercase main nav. L6 Editorial Masthead horizontal lockup; RealtyPath is carried in the footer (every page).
 import Icon from "./Icon.astro";
 import { AGENTS } from "../config/site";
 
@@ -45,7 +45,7 @@ const isActive = (href: string) => (href === "/" ? path === "/" : path.startsWit
   <!-- Main row -->
   <div class="w-[min(100%,80rem)] mx-auto px-5 h-[72px] flex items-center justify-between gap-5">
     <a href="/" class="inline-flex items-center no-underline shrink-0" aria-label="Laramie Dunn Team home">
-      <img src="/images/brand/ldt-horizontal-brokerage.svg" alt="Laramie Dunn Team · RealtyPath LLC" width="1021" height="100" class="w-[min(62vw,250px)] h-auto md:w-auto md:h-[40px] lg:h-[34px] xl:h-[40px] 2xl:h-[44px]" />
+      <img src="/images/brand/ldt-horizontal.svg" alt="Laramie Dunn Team" width="571" height="92" class="w-[min(60vw,232px)] h-auto md:w-auto md:h-[40px] lg:h-[37px] xl:h-[40px] 2xl:h-[44px]" />
     </a>
 
     <nav aria-label="Primary" class="hidden lg:block">
@@ -68,7 +68,7 @@ const isActive = (href: string) => (href === "/" ? path === "/" : path.startsWit
     <div class="flex items-center gap-3">
       <a href="/search/" class="hidden md:inline-flex lg:hidden items-center gap-2 no-underline text-ink font-semibold text-[.85rem]">Search homes</a>
       <details class="relative hidden md:block lg:hidden xl:block group shrink-0">
-        <summary class="list-none cursor-pointer inline-flex items-center gap-2 min-h-[44px] px-4 rounded-[9px] bg-copper text-white font-semibold text-[.9rem] whitespace-nowrap hover:bg-copper-dark [&::-webkit-details-marker]:hidden">
+        <summary class="list-none cursor-pointer inline-flex items-center gap-2 min-h-[44px] px-4 rounded-[9px] bg-copper-dark text-white font-semibold text-[.9rem] whitespace-nowrap hover:bg-copper [&::-webkit-details-marker]:hidden">
           <Icon name="phone" size={16} /> Call the team <Icon name="chevron-down" size={14} />
         </summary>
         <ul class="absolute right-0 mt-2 w-[240px] rounded-[12px] border border-hairline bg-white p-2 shadow-lift">
@@ -100,7 +100,7 @@ const isActive = (href: string) => (href === "/" ? path === "/" : path.startsWit
           </nav>
           <div class="mt-5 grid gap-3">
             {AGENTS.map((a, i) => (
-              <a href={a.phoneHref} class:list={["inline-flex items-center justify-center gap-2 min-h-[50px] rounded-[9px] font-semibold no-underline text-white", i === 0 ? "bg-copper" : "bg-ink"]}>
+              <a href={a.phoneHref} class:list={["inline-flex items-center justify-center gap-2 min-h-[50px] rounded-[9px] font-semibold no-underline text-white", i === 0 ? "bg-copper-dark" : "bg-ink"]}>
                 <Icon name="phone" size={18} /> {`Call ${a.name.split(" ")[0]} · ${a.phone}`}
               </a>
             ))}
