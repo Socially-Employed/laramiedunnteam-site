@@ -6,7 +6,7 @@ import Section from "../components/Section.astro";
 import Button from "../components/Button.astro";
 import Testimonial from "../components/Testimonial.astro";
 import Icon from "../components/Icon.astro";
-import { TESTIMONIALS, GBP_REVIEW_URL } from "../config/site";
+import { TESTIMONIALS, GBP_REVIEW_URL, GBP_PLACE_URL } from "../config/site";
 ---
 <Base
   breadcrumbs={[{ name: "Reviews", href: "/reviews/" }]}
@@ -36,8 +36,11 @@ import { TESTIMONIALS, GBP_REVIEW_URL } from "../config/site";
       {GBP_REVIEW_URL ? (
         <>
           <h2 class="text-[1.3rem] font-display">Read our reviews on Google</h2>
-          <p class="mt-2 text-muted">See what people have said about working with us.</p>
-          <div class="mt-4"><Button href={GBP_REVIEW_URL} variant="primary">Read our reviews on Google <Icon name="arrow-right" size={16} /></Button></div>
+          <p class="mt-2 text-muted">See what people have said about working with us. Bought or sold with us? Leaving a review takes about two minutes.</p>
+          <div class="mt-4 flex flex-wrap gap-3">
+            <Button href={GBP_PLACE_URL} variant="primary" target="_blank" rel="noopener">Read our reviews on Google <Icon name="arrow-right" size={16} /></Button>
+            <Button href={GBP_REVIEW_URL} variant="ghost" target="_blank" rel="noopener">Leave a review</Button>
+          </div>
         </>
       ) : (
         <>

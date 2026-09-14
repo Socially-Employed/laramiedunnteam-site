@@ -61,5 +61,6 @@ export const SOCIAL = {
 export const TESTIMONIALS: { quote: string; author: string; detail?: string; rating?: number }[] = [];
 
 export const LEAD_ENDPOINT = "/api/lead";
-export const GBP_REVIEW_URL = null; // NOT ON FILE — Google Business Profile review link
+export const GBP_REVIEW_URL = "https://g.page/r/CW1wLAbOVCKZEAI/review"; // Google "write a review" short link — captured 2026-09-14; canonical record: marketing/reputation/REVIEW_LINK.md
+export const GBP_PLACE_URL = "https://www.google.com/maps?cid=11034475280854708333"; // the same profile's Maps listing (read reviews) — CID form, verified 2026-09-14
 export const ANALYTICS = null; // none shipped (spec convention)

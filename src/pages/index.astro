@@ -11,7 +11,7 @@ import JsonLd from "../components/JsonLd.astro";
 import Icon from "../components/Icon.astro";
 import SearchBar from "../components/SearchBar.astro";
 import CommunityTile from "../components/CommunityTile.astro";
-import { AGENTS, BUSINESS_EMAIL, COUNTY, SITE_URL, SERVICE_AREA, GBP_REVIEW_URL } from "../config/site";
+import { AGENTS, BUSINESS_EMAIL, COUNTY, SITE_URL, SERVICE_AREA, GBP_REVIEW_URL, GBP_PLACE_URL } from "../config/site";
 import { COMMUNITIES, COUNTY_PHOTOS } from "../content/communities";
 import { SPECIALTY_SEARCHES } from "../content/searches";
 
@@ -189,7 +189,7 @@ const cardIconCls = "inline-flex w-11 h-11 items-center justify-center rounded-[
           <div class="flex items-center gap-2 text-copper"><Icon name="star" size={18} /><Icon name="star" size={18} /><Icon name="star" size={18} /><Icon name="star" size={18} /><Icon name="star" size={18} /></div>
           <p class="mt-3 text-ink">Read client reviews on the team's Google Business Profile, or tell us how a closing went.</p>
           <div class="mt-5 flex flex-wrap gap-3">
-            {GBP_REVIEW_URL ? <Button href={GBP_REVIEW_URL}>Read Google reviews</Button> : <Button href="/reviews/">Reviews</Button>}
+            {GBP_REVIEW_URL ? (<><Button href={GBP_PLACE_URL} target="_blank" rel="noopener">Read Google reviews</Button><Button href={GBP_REVIEW_URL} variant="ghost" target="_blank" rel="noopener">Leave a review</Button></>) : <Button href="/reviews/">Reviews</Button>}
             <Button href="/contact/" variant="ghost">Leave feedback</Button>
           </div>
         </div>
