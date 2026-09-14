@@ -21,7 +21,7 @@ const { listing } = Astro.props;
       <img src={listing.image} alt={`${listing.address}, ${listing.city}`} width="800" height="600" loading="lazy" class="w-full h-full object-cover" />
     )}
     {listing.status && (
-      <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-copper text-white text-[.7rem] font-bold uppercase tracking-[.05em]">{listing.status}</span>
+      <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-copper-dark text-white text-[.7rem] font-bold uppercase tracking-[.05em]">{listing.status}</span>
     )}
   </div>
   <div class="p-5">
