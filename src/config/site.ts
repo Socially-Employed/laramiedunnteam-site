@@ -34,7 +34,7 @@ export const AGENTS: Agent[] = [
     phone: "435-849-6130",
     phoneHref: "tel:+14358496130",
     email: "lisa.dunn.neil@gmail.com",
-    licenseNumber: null, // NOT ON FILE — do not invent
+    licenseNumber: "8666686-SA00", // Utah DOPL Sales Agent, Active — Mike supplied 2026-09-14 (CONTENT_BRIEF section 1)
     headshot: "/images/lisa-neil-800.webp",
   },
   {
@@ -43,7 +43,7 @@ export const AGENTS: Agent[] = [
     phone: "435-224-4000",
     phoneHref: "tel:+14352244000",
     email: "ldunn.ut@gmail.com",
-    licenseNumber: null, // NOT ON FILE — do not invent
+    licenseNumber: "5487330-SA00", // Utah DOPL Sales Agent, Active — Mike supplied 2026-09-14 (CONTENT_BRIEF section 1)
     headshot: null, // NOT ON FILE — do not invent
   },
 ];
