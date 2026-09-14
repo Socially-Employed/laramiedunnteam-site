@@ -1,0 +1,83 @@
+---
+// market.astro — the four Realtor.com-via-FRED figures for Tooele County (src/content/market.ts) with a
+// plain-English read on each. Rail: NO MLS-derived numbers on this page; the MLS report goes out by email.
+import Base from "../layouts/Base.astro";
+import Section from "../components/Section.astro";
+import Button from "../components/Button.astro";
+import LeadForm from "../components/LeadForm.astro";
+import StatBand from "../components/StatBand.astro";
+import Icon from "../components/Icon.astro";
+import JsonLd from "../components/JsonLd.astro";
+import { MARKET_ASOF, MARKET_UPDATED, MARKET_UPDATED_LABEL, MARKET_SOURCE, MARKET_SOURCE_URL, MARKET_TERMS_URL, MARKET_STATS, sourceLine } from "../content/market";
+import { SITE_URL, BRAND_NAME, COUNTY } from "../config/site";
+
+const h1 = `Tooele County housing market, ${MARKET_ASOF}`;
+const description = `Tooele County, Utah housing numbers for ${MARKET_ASOF}: median listing price, days on market, active and new listings, from Realtor.com via FRED.`;
+
+const reads = [
+  "These are listing-side numbers. They describe homes offered for sale, not homes that sold, so the median listing price is an asking price.",
+  "The figures are monthly and county-wide. They do not break out Grantsville, Stansbury Park, or Tooele; ask us for a town-level read from the MLS.",
+  "They count listings advertised on Realtor.com, which is not the same as the MLS total for the county.",
+  "The source series can be revised after first publication, so a later pull may differ slightly from what is shown here.",
+];
+
+const webPage = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: h1,
+  url: `${SITE_URL}/market/`,
+  description,
+  dateModified: MARKET_UPDATED,
+  isPartOf: { "@type": "WebSite", name: BRAND_NAME, url: SITE_URL },
+};
+---
+<Base
+  breadcrumbs={[{ name: "Market numbers", href: "/market/" }]}
+  title="Tooele County Housing Market"
+  description={description}
+  canonical="/market/"
+>
+  <JsonLd slot="head" data={webPage} />
+
+  <Section tone="paper" labelledby="mkt-h">
+    <p class="text-copper-dark text-[.78rem] font-semibold uppercase tracking-[.18em]">{COUNTY}</p>
+    <h1 id="mkt-h" class="mt-2 text-[clamp(1.8rem,5vw,2.6rem)]">{h1}</h1>
+    <p class="mt-4 text-lg leading-relaxed max-w-[680px]">Four county-wide numbers from Realtor.com, published through FRED, the St. Louis Fed's data service, with a plain-English read on each.</p>
+    <p class="mt-3 text-[.9rem] text-muted">Last updated {MARKET_UPDATED_LABEL} · Data month: {MARKET_ASOF}</p>
+  </Section>
+
+  <StatBand items={MARKET_STATS.map((s) => ({ label: s.label, value: s.value }))} />
+
+  <Section tone="white" labelledby="nums-h">
+    <h2 id="nums-h" class="text-[clamp(1.5rem,4vw,2rem)]">The numbers, one at a time</h2>
+    <div class="mt-6 grid gap-6 md:grid-cols-2">
+      {MARKET_STATS.map((s) => (
+        <article class="rounded-[12px] border border-hairline bg-paper p-5">
+          <h3 class="text-[1.15rem]">{s.label}</h3>
+          <p class="mt-1 font-display text-[2rem] text-copper-dark">{s.value}</p>
+          <p class="mt-2 text-muted text-[.95rem]">{s.read}</p>
+          <p class="mt-3 text-[.82rem]"><a href={s.url}>{sourceLine(s)}</a></p>
+        </article>
+      ))}
+    </div>
+  </Section>
+
+  <Section tone="paper" narrow labelledby="read-h">
+    <h2 id="read-h" class="text-[clamp(1.5rem,4vw,2rem)]">How to read this</h2>
+    <ul class="mt-4 space-y-3">
+      {reads.map((r) => (
+        <li class="flex gap-2 text-[1.02rem] leading-relaxed"><Icon name="check" size={18} class="text-copper-dark flex-none mt-1" /> <span>{r}</span></li>
+      ))}
+    </ul>
+    <p class="mt-6 text-[1.02rem] leading-relaxed">For sold prices and comparable sales on a specific home, we pull MLS data for you on request.</p>
+    <div class="mt-4 flex flex-wrap gap-3">
+      <Button href="/home-value/">Request a home value</Button>
+      <Button href="/communities/" variant="ghost">Browse the towns</Button>
+    </div>
+    <p class="mt-8 text-[.85rem] text-muted">Data: <a href={MARKET_SOURCE_URL}>{MARKET_SOURCE}</a>. FRED <a href={MARKET_TERMS_URL}>terms of use</a>. This page does not display MLS data.</p>
+  </Section>
+
+  <Section tone="panel" narrow>
+    <LeadForm src="market" heading="Get the monthly report by email" intent="both" button="Send me the report" />
+  </Section>
+</Base>

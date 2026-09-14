@@ -1,0 +1,164 @@
+---
+// guides/moving-to-tooele-county.astro — neutral relocation guide. Geography from src/content/communities.ts;
+// every other fact carries its source below and in CONTENT_BRIEF §9 addendum (2026-09-11). Rails: no town
+// rankings, no drive-time minutes, no demographic or audience language, no MLS figures.
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import Button from "../../components/Button.astro";
+import LeadForm from "../../components/LeadForm.astro";
+import Icon from "../../components/Icon.astro";
+import JsonLd from "../../components/JsonLd.astro";
+import { COMMUNITIES } from "../../content/communities";
+import { SITE_URL, BRAND_NAME, COUNTY } from "../../config/site";
+
+const description = "Moving to Tooele County, Utah: the six towns, the routes to Salt Lake County, the outdoors, and the offices to contact after you arrive.";
+
+const routes = [
+  { h: "Interstate 80", p: "The main route east into Salt Lake County. It runs along the north end of the Tooele Valley, where the valley meets the Great Salt Lake." },
+  { h: "State Route 36", p: "The valley's north-south spine. It leaves Interstate 80 at Lake Point and runs south through Stansbury Park, Erda, and Tooele to Stockton and on into Rush Valley." },
+  { h: "State Route 138", p: "Connects Grantsville east to State Route 36 and Interstate 80." },
+  { h: "Midvalley Highway", p: "A 4.5-mile road from State Route 138 to Interstate 80, opened by the Utah Department of Transportation in 2021 as a second link between the west side of the valley and the interstate." },
+  { h: "Transit", p: "Utah Transit Authority runs bus service between Tooele County and Salt Lake County. UTA On Demand covers rides within Tooele County; UTA lists 435-843-4114 for those rides." },
+];
+
+const places = [
+  { h: "Stansbury Lake", p: "A man-made lake in Stansbury Park, first built in the early 1970s and covering about 110 acres. The Stansbury Service Agency publishes its rules.", href: "https://stansburypark.gov/lake/", site: "stansburypark.gov" },
+  { h: "The Peak Sports and Entertainment Complex", p: "A Tooele County Parks and Recreation venue.", href: "https://tooelecountyparksandrec.org/the-peak-complex/", site: "tooelecountyparksandrec.org" },
+  { h: "Benson Grist Mill", p: "A historic site kept by Tooele County Parks and Recreation.", href: "https://tooelecountyparksandrec.org/benson-grist-mill/", site: "tooelecountyparksandrec.org" },
+  { h: "Tooele Valley Museum and Historic Park", p: "Tooele City's museum of the valley's history.", href: "https://museum.tooelecity.gov/", site: "museum.tooelecity.gov" },
+  { h: "Bonneville Salt Flats", p: "Public land managed by the Bureau of Land Management at the far west end of the county, along Interstate 80.", href: "https://www.blm.gov/visit/bonneville-salt-flats", site: "blm.gov" },
+];
+
+const events = [
+  { h: "Tooele County Fair", p: "Held July 30 through August 1 in 2026.", href: "https://tooelefair.com/" },
+  { h: "Tooele Arts Festival", p: "Held June 12 through 14 in 2026.", href: "https://tooeleartsfestival.org/" },
+  { h: "Fridays on Vine", p: "A Tooele City Arts Council series.", href: "https://www.tooelecityartscouncil.org/fov" },
+  { h: "Explore Tooele", p: "The county's visitor site, for a wider list of places and events.", href: "https://exploretooele.org/" },
+];
+
+const offices = [
+  { h: "Tooele County", p: "Property records through the Recorder (eRecording is available), records requests and voter registration through the Clerk, and planning questions for property outside city limits.", links: [{ label: "tooeleco.gov", href: "https://tooeleco.gov/" }, { label: "Recorder eRecording", href: "https://erecording.tooeleco.gov/eaglesoftware/web/login.jsp" }, { label: "Clerk records requests", href: "https://tooeleco.gov/departments/elected_officials/clerk/record_requests.php" }] },
+  { h: "Tooele City Recorder", p: "City records for addresses inside Tooele City.", links: [{ label: "tooelecity.gov", href: "https://www.tooelecity.gov/services/recorder/index.php" }] },
+  { h: "Grantsville City", p: "City services and permits for addresses inside Grantsville.", links: [{ label: "grantsvilleut.gov", href: "https://www.grantsvilleut.gov/" }] },
+  { h: "Stansbury Service Agency", p: "The lake and parks in Stansbury Park.", links: [{ label: "stansburypark.gov", href: "https://stansburypark.gov/" }] },
+  { h: "Stansbury Park Improvement District", p: "Water service in Stansbury Park.", links: [] },
+  { h: "Tooele County School District", p: "District calendars are posted on the district site.", links: [{ label: "District calendars", href: "https://www.tooeleschools.org/about-us/district-calendars" }] },
+  { h: "State of Utah", p: "Update your driver license and vehicle registration after the move.", links: [] },
+  { h: "Utilities", p: "Providers differ by town and by address. Ask the seller or the listing agent which providers serve the home before closing.", links: [] },
+];
+
+const sources = [
+  { label: "Stansbury Service Agency, Stansbury Lake", href: "https://stansburypark.gov/lake/" },
+  { label: "Tooele County Parks and Recreation", href: "https://tooelecountyparksandrec.org/" },
+  { label: "UDOT, Midvalley Highway opening (2021)", href: "https://connect.udot.utah.gov/2021/10/31/midvalley-highway-and-i-80-interchange-in-tooele-county-open/" },
+  { label: "UDOT, SR-36 and I-80", href: "https://udotinput.utah.gov/sr36andi80improved" },
+  { label: "UTA bus service", href: "https://www.rideuta.com/Services/Bus" },
+  { label: "UTA On Demand", href: "https://www.rideuta.com/Services/UTA-On-Demand" },
+  { label: "Bureau of Land Management, Bonneville Salt Flats", href: "https://www.blm.gov/visit/bonneville-salt-flats" },
+  { label: "Tooele County", href: "https://tooeleco.gov/" },
+];
+
+const webPage = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Moving to Tooele County",
+  url: `${SITE_URL}/guides/moving-to-tooele-county/`,
+  description,
+  isPartOf: { "@type": "WebSite", name: BRAND_NAME, url: SITE_URL },
+};
+---
+<Base
+  breadcrumbs={[{ name: "Guides", href: "/guides/" }, { name: "Moving to Tooele County", href: "/guides/moving-to-tooele-county/" }]}
+  title="Moving to Tooele County, Utah"
+  description={description}
+  canonical="/guides/moving-to-tooele-county/"
+>
+  <JsonLd slot="head" data={webPage} />
+
+  <Section tone="paper" labelledby="mv-h">
+    <p class="text-copper-dark text-[.78rem] font-semibold uppercase tracking-[.18em]">Guide · {COUNTY}</p>
+    <h1 id="mv-h" class="mt-2 text-[clamp(1.8rem,5vw,2.6rem)]">Moving to Tooele County</h1>
+    <p class="mt-4 text-lg leading-relaxed max-w-[680px]">Tooele County sits directly west of Salt Lake County, on the other side of the Oquirrh Mountains. The towns the team serves are in the Tooele Valley, between the Oquirrhs on the east and the Stansbury Mountains on the west. This guide covers the towns, the routes east, the outdoors, and the offices to contact once you arrive. It does not rank the towns; which one fits depends on what you want, and we are glad to talk it through.</p>
+    <div class="mt-6 flex flex-wrap gap-3">
+      <Button href="/communities/">Compare the towns</Button>
+      <Button href="/contact/" variant="ghost">Ask the team</Button>
+    </div>
+  </Section>
+
+  <Section tone="white" labelledby="towns-h">
+    <h2 id="towns-h" class="text-[clamp(1.5rem,4vw,2rem)]">The towns</h2>
+    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {COMMUNITIES.map((c) => (
+        <article class="rounded-[12px] border border-hairline bg-paper p-5">
+          <h3 class="text-[1.15rem]"><a href={`/communities/${c.slug}/`} class="no-underline text-ink hover:text-copper-dark">{c.name}</a></h3>
+          <p class="mt-2 text-muted text-[.95rem]">{c.intro}</p>
+        </article>
+      ))}
+    </div>
+  </Section>
+
+  <Section tone="paper" labelledby="routes-h">
+    <h2 id="routes-h" class="text-[clamp(1.5rem,4vw,2rem)]">Getting to Salt Lake County</h2>
+    <p class="mt-3 max-w-[56ch] text-muted">Commute times vary with the season and the hour, so drive the route yourself at the time you would actually travel.</p>
+    <div class="mt-6 grid gap-4 md:grid-cols-2">
+      {routes.map((r) => (
+        <div class="rounded-[12px] border border-hairline bg-white p-5">
+          <p class="font-display text-[1.15rem]">{r.h}</p>
+          <p class="mt-2 text-muted text-[.95rem]">{r.p}</p>
+        </div>
+      ))}
+    </div>
+    <p class="mt-4 text-[.85rem] text-muted">Road information: Utah Department of Transportation. Transit information: Utah Transit Authority. Links are in the sources below.</p>
+  </Section>
+
+  <Section tone="white" labelledby="out-h">
+    <h2 id="out-h" class="text-[clamp(1.5rem,4vw,2rem)]">Outdoors and things to do</h2>
+    <div class="mt-6 grid gap-4 md:grid-cols-2">
+      {places.map((p) => (
+        <div class="rounded-[12px] border border-hairline bg-paper p-5">
+          <p class="font-display text-[1.15rem]">{p.h}</p>
+          <p class="mt-2 text-muted text-[.95rem]">{p.p} <a href={p.href}>{p.site}</a></p>
+        </div>
+      ))}
+    </div>
+    <h3 class="mt-8 text-[1.25rem]">Annual events</h3>
+    <ul class="mt-3 grid gap-3 sm:grid-cols-2">
+      {events.map((e) => (
+        <li class="flex gap-2 text-[.98rem]"><Icon name="check" size={18} class="text-copper-dark flex-none mt-1" /> <span><a href={e.href}>{e.h}</a>: {e.p}</span></li>
+      ))}
+    </ul>
+  </Section>
+
+  <Section tone="paper" labelledby="offices-h">
+    <h2 id="offices-h" class="text-[clamp(1.5rem,4vw,2rem)]">Checklist: offices to contact</h2>
+    <p class="mt-3 max-w-[56ch] text-muted">Which offices apply depends on the address. City limits, not the postal town, decide it.</p>
+    <ul class="mt-6 grid gap-4 md:grid-cols-2">
+      {offices.map((o) => (
+        <li class="rounded-[12px] border border-hairline bg-white p-5 list-none">
+          <p class="font-display text-[1.15rem]">{o.h}</p>
+          <p class="mt-2 text-muted text-[.95rem]">{o.p}</p>
+          {o.links.length > 0 && (
+            <p class="mt-2 text-[.9rem]">{o.links.map((l, i) => <>{i > 0 && " · "}<a href={l.href}>{l.label}</a></>)}</p>
+          )}
+        </li>
+      ))}
+    </ul>
+  </Section>
+
+  <Section tone="white" narrow labelledby="src-h">
+    <h2 id="src-h" class="text-[1.25rem]">Sources</h2>
+    <ul class="mt-3 space-y-1 text-[.9rem] text-muted">
+      {sources.map((s) => <li><a href={s.href}>{s.label}</a></li>)}
+    </ul>
+    <p class="mt-4 text-[.85rem] text-muted">Town descriptions come from the site's community guides. Population and growth figures are deliberately left out; check the U.S. Census Bureau for current counts.</p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <Button href="/homes/" variant="ghost">Specialty searches <Icon name="arrow-right" size={16} /></Button>
+      <Button href="/market/" variant="ghost">Market numbers <Icon name="arrow-right" size={16} /></Button>
+      <Button href="/new-construction/" variant="ghost">New construction <Icon name="arrow-right" size={16} /></Button>
+    </div>
+  </Section>
+
+  <Section tone="panel" narrow>
+    <LeadForm src="guide-moving" heading="Have a question about the move?" intent="both" button="Ask the team" />
+  </Section>
+</Base>

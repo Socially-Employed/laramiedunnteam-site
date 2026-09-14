@@ -145,6 +145,14 @@ const lab = "block text-[.82rem] font-semibold text-ink mb-1";
           <p class="mt-2 text-[.92rem] text-muted leading-relaxed">Public listing feeds need an IDX license through the brokerage. Until that's in place we'd rather run the search in the MLS ourselves than show you a stale copy. You get the real inventory, same day.</p>
         </div>
         <div class="rounded-[12px] border border-hairline bg-white p-5">
+          <p class="font-display text-[1.2rem] text-ink">Browse by property type</p>
+          <p class="mt-2 text-[.92rem] text-muted leading-relaxed">Acreage, basement apartments, golf and lake homes, garages, RV parking, and more, each with a short guide.</p>
+          <ul class="mt-3 space-y-2 text-[.92rem]">
+            <li><a href="/homes/" class="inline-flex items-center gap-1 font-semibold text-copper-dark no-underline">Specialty searches <Icon name="arrow-right" size={14} /></a></li>
+            <li><a href="/new-construction/" class="inline-flex items-center gap-1 font-semibold text-copper-dark no-underline">New construction guide <Icon name="arrow-right" size={14} /></a></li>
+          </ul>
+        </div>
+        <div class="rounded-[12px] border border-hairline bg-white p-5">
           <p class="font-display text-[1.2rem] text-ink">Prefer to talk?</p>
           <ul class="mt-3 space-y-2">
             {AGENTS.map((a) => (

@@ -1,0 +1,55 @@
+---
+// guides.astro — index of the long-form guides and hubs on the site.
+import Base from "../layouts/Base.astro";
+import Section from "../components/Section.astro";
+import Button from "../components/Button.astro";
+import Icon from "../components/Icon.astro";
+import JsonLd from "../components/JsonLd.astro";
+import { SITE_URL, COUNTY } from "../config/site";
+
+const guides = [
+  { href: "/guides/moving-to-tooele-county/", title: "Moving to Tooele County", body: "The six towns, the routes to Salt Lake County, the outdoors, and the offices to contact after you arrive." },
+  { href: "/new-construction/", title: "New construction", body: "How buying new differs from resale, where building is happening, and what the Parade of Homes means for a listing." },
+  { href: "/market/", title: "Market numbers", body: "Four county-wide figures updated monthly, each with its source and a plain-English read." },
+  { href: "/communities/", title: "Community guides", body: "Grantsville, Stansbury Park, Tooele, Erda, Lake Point, and Stockton, town by town." },
+  { href: "/homes/", title: "Specialty searches", body: "Acreage, new construction, basement apartments, golf and lake homes, garages, RV parking, and more." },
+  { href: "/faq/", title: "Frequently asked questions", body: "Short answers about buying and selling in the Tooele Valley and about working with the team." },
+];
+
+const itemList = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Tooele County guides",
+  itemListElement: guides.map((g, i) => ({ "@type": "ListItem", position: i + 1, name: g.title, url: `${SITE_URL}${g.href}` })),
+};
+---
+<Base
+  breadcrumbs={[{ name: "Guides", href: "/guides/" }]}
+  title="Tooele County Guides"
+  description="Guides from the Laramie Dunn Team: moving to Tooele County, new construction, market numbers, community guides, and specialty searches."
+  canonical="/guides/"
+>
+  <JsonLd slot="head" data={itemList} />
+
+  <Section tone="paper" labelledby="guides-h">
+    <p class="text-copper-dark text-[.78rem] font-semibold uppercase tracking-[.18em]">{COUNTY}</p>
+    <h1 id="guides-h" class="mt-2 text-[clamp(1.8rem,5vw,2.6rem)]">Guides</h1>
+    <p class="mt-3 max-w-[56ch] text-muted">Longer reads, kept plain and kept current. Every fact on these pages carries its source.</p>
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {guides.map((g) => (
+        <article class="rounded-[12px] border border-hairline bg-white p-5 flex flex-col">
+          <h2 class="text-[1.2rem]"><a href={g.href} class="no-underline text-ink hover:text-copper-dark">{g.title}</a></h2>
+          <p class="mt-2 text-muted text-[.95rem] grow">{g.body}</p>
+          <a href={g.href} class="mt-4 inline-flex items-center gap-1 font-semibold text-copper-dark no-underline" aria-label={`Open: ${g.title}`}>Open <Icon name="arrow-right" size={14} /></a>
+        </article>
+      ))}
+    </div>
+    <div class="mt-10 rounded-[12px] bg-ink p-6 md:p-8 text-paper flex flex-wrap items-center justify-between gap-4">
+      <div>
+        <p class="font-display text-[1.4rem] text-white">Have a question these pages do not answer?</p>
+        <p class="mt-1 text-panel-text">Ask it directly. If it comes up often, it becomes the next guide.</p>
+      </div>
+      <Button href="/contact/">Ask the team</Button>
+    </div>
+  </Section>
+</Base>
