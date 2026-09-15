@@ -7,6 +7,7 @@ import Button from "../components/Button.astro";
 import LeadForm from "../components/LeadForm.astro";
 import YouTubeEmbed from "../components/YouTubeEmbed.astro";
 import Icon from "../components/Icon.astro";
+import { COUNTY } from "../config/site";
 
 const steps = [
   { n: "1", h: "Pricing conversation", b: "We look at what's actually selling near you and talk through a price that fits the home and the market — not a number picked to win the listing." },
@@ -56,10 +57,14 @@ const steps = [
       </div>
       <div>
         <Card>
-          <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">Showcase sample</p>
-          <p class="mt-2 font-display text-[1.3rem]">5673 N Sagewood Dr, Stansbury Park</p>
-          <p class="mt-1 text-muted">$485,000 · 4 bd · 4 ba · 2,579 sqft · built 2022 · MLS# 2151309</p>
-          <p class="mt-3 text-[.95rem] text-muted">A previously marketed home we produced a four-format video package for. Shown here as a sample of our marketing work.</p>
+          <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">What's in the package</p>
+          <ul class="mt-3 space-y-2 text-[.95rem]">
+            <li>Professional photography, published to the MLS and to your home's own page on this site</li>
+            <li>A walkthrough video tour, plus short vertical cuts for Facebook and Instagram</li>
+            <li>A 3D Matterport walkthrough on homes where it helps buyers decide</li>
+            <li>Targeted social ads to buyers in and around {COUNTY}</li>
+          </ul>
+          <p class="mt-4 text-[.9rem]"><a href="/listings/" class="text-copper-dark no-underline hover:underline">See every home we have on the market →</a></p>
         </Card>
       </div>
     </div>
