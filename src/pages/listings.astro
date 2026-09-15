@@ -1,57 +1,57 @@
 ---
-// listings.astro — index. 521 (active) + Sagewood (showcase / previously marketed).
+// listings.astro — index of every active team listing, fed by src/content/listings.ts (generated from URE's
+// public listing pages for our own listings). Nothing here is hand-typed; regenerate the content file to update.
 import Base from "../layouts/Base.astro";
 import Section from "../components/Section.astro";
-import Card from "../components/Card.astro";
 import Button from "../components/Button.astro";
 import ListingCard from "../components/ListingCard.astro";
 import Icon from "../components/Icon.astro";
 import { COUNTY } from "../config/site";
+import { LISTINGS, photoOf, fmtPrice, UPDATED } from "../content/listings";
 
-const heroPhoto = "https://assets.utahrealestate.com/photos/640x480/2135169_871b90f3a3f3c9ddd9700724b179b692_6a60eedf29d38.jpg";
+const homes = LISTINGS.filter((l) => l.kind !== "Land");
+const land = LISTINGS.filter((l) => l.kind === "Land");
+const card = (l: (typeof LISTINGS)[number]) => ({
+  address: l.address,
+  city: `${l.city}, UT`,
+  price: fmtPrice(l.price),
+  beds: l.beds ?? undefined,
+  baths: l.baths ?? undefined,
+  status: l.construction || (l.kind === "Land" ? "Land" : "For sale"),
+  image: l.photos[0] ? photoOf(l, l.photos[0], "640x480") : undefined,
+  href: l.href,
+});
+const towns = [...new Set(LISTINGS.map((l) => l.city))].join(", ");
 ---
 <Base
   breadcrumbs={[{ name: "Listings", href: "/listings/" }]}
   title="Listings · Laramie Dunn Team"
-  description="Current and previously marketed listings from the Laramie Dunn Team in Tooele County, Utah, including 521 E Gilmour St in Grantsville."
+  description={`Every active listing from the Laramie Dunn Team in ${COUNTY}: ${LISTINGS.length} homes and lots in ${towns}, with photos, details, and showing requests.`}
   stickyCta={true}
 >
   <Section tone="paper">
     <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">Listings</p>
     <h1 class="mt-2 text-[clamp(1.8rem,6vw,2.6rem)]">Our listings</h1>
-    <p class="mt-4 text-lg leading-relaxed max-w-[640px]">What we have on the market now, plus recent work that shows how we market a home.</p>
+    <p class="mt-4 text-lg leading-relaxed max-w-[640px]">Everything we have on the market right now in {towns}. {LISTINGS.length} listings, updated {UPDATED}.</p>
   </Section>
 
-  <Section tone="white" labelledby="active-h">
-    <h2 id="active-h" class="text-[clamp(1.4rem,5vw,1.8rem)]">For sale now</h2>
+  <Section tone="white" labelledby="homes-h">
+    <h2 id="homes-h" class="text-[clamp(1.4rem,5vw,1.8rem)]">Homes for sale</h2>
+    <p class="mt-2 text-muted max-w-[640px]">Includes new construction with Heritage Homes in Grantsville and Erda. "To be built" homes can still be customized; "under construction" homes have a completion date in sight.</p>
     <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      <ListingCard listing={{
-        address: "521 E Gilmour St",
-        city: "Grantsville, UT",
-        price: "$1,299,000",
-        beds: 7,
-        baths: 5,
-        status: "For sale",
-        image: heroPhoto,
-        href: "/listings/521-e-gilmour-st-grantsville/",
-      }} />
+      {homes.map((l) => <ListingCard listing={card(l)} />)}
     </div>
   </Section>
 
-  <Section tone="paper" labelledby="showcase-h">
-    <h2 id="showcase-h" class="text-[clamp(1.4rem,5vw,1.8rem)]">Marketing showcase</h2>
-    <p class="mt-2 text-muted max-w-[640px]">Previously marketed homes we produced video packages for — shown as samples of our marketing work.</p>
-    <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      <Card>
-        <span class="inline-block px-2.5 py-1 rounded-full bg-hairline text-ink text-[.7rem] font-bold uppercase tracking-[.05em]">Previously marketed</span>
-        <p class="mt-3 font-display text-[1.35rem] text-copper-dark">$485,000</p>
-        <p class="mt-1 font-semibold text-ink">5673 N Sagewood Dr</p>
-        <p class="text-muted text-[.9rem]">Stansbury Park, UT</p>
-        <p class="mt-3 text-[.9rem] text-muted">4 bd · 4 ba · 2,579 sqft · built 2022 · MLS# 2151309</p>
-        <p class="mt-3 text-[.9rem]"><a href="/sell/#video" class="text-copper-dark no-underline hover:underline">See our video package →</a></p>
-      </Card>
-    </div>
-  </Section>
+  {land.length > 0 && (
+    <Section tone="paper" labelledby="land-h">
+      <h2 id="land-h" class="text-[clamp(1.4rem,5vw,1.8rem)]">Land</h2>
+      <p class="mt-2 text-muted max-w-[640px]">Acreage in Pine Canyon for a custom build, with views and room for horses.</p>
+      <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {land.map((l) => <ListingCard listing={card(l)} />)}
+      </div>
+    </Section>
+  )}
 
   <Section tone="white" narrow>
     <div class="rounded-[16px] border border-hairline bg-paper p-6">
