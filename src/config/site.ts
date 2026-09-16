@@ -44,7 +44,7 @@ export const AGENTS: Agent[] = [
     phoneHref: "tel:+14352244000",
     email: "ldunn.ut@gmail.com",
     licenseNumber: "5487330-SA00", // Utah DOPL Sales Agent, Active — Mike supplied 2026-09-14 (CONTENT_BRIEF section 1)
-    headshot: null, // NOT ON FILE — do not invent
+    headshot: "/images/laramie-dunn-300.webp", // from epichomesutah.com/about-us (Mike 2026-09-15: "use the pictures for now and we'll replace later"); only 300x300 exists there
   },
 ];
 

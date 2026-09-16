@@ -55,13 +55,20 @@ const agentSchema = {
               {a.licenseNumber && <p class="text-muted text-[.85rem]">UT License #{a.licenseNumber}</p>}
             </div>
           </div>
-          {/* NEEDS MIKE: written bio for this agent (none on file). NEEDS MIKE: UT license number. */}
+          {/* Bios: source = the agents' own bios on epichomesutah.com/about-us (Mike 2026-09-15), rewritten in third person.
+              Experience dates follow CONTENT_BRIEF (Laramie since 1999, Lisa since 2018); the 500+ line is the approved MLS-derived stat. */}
           <div class="mt-4 space-y-2 text-[.95rem] text-muted">
             {a.name === "Laramie Dunn" && (
-              <p>Laramie has worked in real estate since 1999 and has closed more than 500 sales since 2000, most of them in the Tooele Valley, including new-construction relationships with local builders.</p>
+              <>
+                <p>Laramie has worked in real estate since 1999 and has closed more than 500 sales since 2000, most of them in the Tooele Valley. Much of that work has been with builders: helping them market their homes, and helping buyers find the floor plan that becomes the house they remember.</p>
+                <p>At RealtyPath she has ranked among the brokerage's top six agents year after year and has been its number one agent more than once. Her degree in art and illustration from Utah State University shows up in how she reads a plan and a lot. Away from work she has trained horses professionally, is originally from Canada, and is a proud parent of five and grandparent of sixteen.</p>
+              </>
             )}
             {a.name === "Lisa Neil" && (
-              <p>Lisa has worked in real estate since 2018, alongside her mother on the team, from first tours through closing.</p>
+              <>
+                <p>Lisa has worked in real estate since 2018, serving Tooele County alongside her mother on the team. She specializes in guiding clients through the home-building process with clarity, confidence, and care.</p>
+                <p>Real estate has been part of Lisa's life since childhood, growing up with a mother who was a longtime agent. Before entering the industry she worked as a nurse, which shaped her calm, detail-oriented approach and her commitment to the people she works for. Creative by nature and an avid reader, she helps clients feel informed and supported from first tour to closing.</p>
+              </>
             )}
             <p class="flex flex-wrap gap-x-4 gap-y-1">
               <a href={a.phoneHref} class="inline-flex items-center gap-1.5 text-copper-dark no-underline hover:underline"><Icon name="phone" size={15} /> {a.phone}</a>
