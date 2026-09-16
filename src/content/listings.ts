@@ -6,7 +6,7 @@ export const photo = (mls: string, h: string, size: '640x480' | '1024x768' | '20
 export interface ListingPhoto { h: string; alt: string; type: string; mls?: string }  // mls set only on a borrowed sister-listing rendering
 export const photoOf = (l: { mls: string }, p: ListingPhoto, size: '640x480' | '1024x768' | '2048x1536' = '1024x768') => photo(p.mls || l.mls, p.h, size);
 export interface Listing { mls: string; slug: string; address: string; city: string; zip: string; price: number; status: string; kind: string; style: string; yearBuilt: number | null; beds: number | null; baths: number | null; sqft: number | null; lotAcres: number | null; construction: string; remarks: string; photos: ListingPhoto[]; source: string; href: string }
-export const UPDATED = '2026-09-15';
+export const UPDATED = '2026-09-16';
 export const LISTINGS: Listing[] = [
  {
   "mls": "2135169",
@@ -811,7 +811,7 @@ export const LISTINGS: Listing[] = [
   "city": "Erda",
   "zip": "84074",
   "price": 788000,
-  "status": "Active",
+  "status": "Under Contract",
   "kind": "Single Family",
   "style": "Rambler/Ranch",
   "yearBuilt": 2026,

@@ -115,7 +115,7 @@ const paras = l.remarks.split(/(?<=[.!?])\s+(?=[A-Z])/).reduce<string[]>((acc, s
       <h2 id="more-h" class="text-[clamp(1.3rem,5vw,1.7rem)]">More from the team</h2>
       <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {others.map((o) => (
-          <ListingCard listing={{ address: o.address, city: `${o.city}, UT`, price: fmtPrice(o.price), beds: o.beds ?? undefined, baths: o.baths ?? undefined, status: o.construction || "For sale", image: o.photos[0] ? photoOf(o, o.photos[0], "640x480") : undefined, href: o.href }} />
+          <ListingCard listing={{ address: o.address, city: `${o.city}, UT`, price: fmtPrice(o.price), beds: o.beds ?? undefined, baths: o.baths ?? undefined, status: labelOf(o), image: o.photos[0] ? photoOf(o, o.photos[0], "640x480") : undefined, href: o.href }} />
         ))}
       </div>
     </Section>
