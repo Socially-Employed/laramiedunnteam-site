@@ -312,7 +312,7 @@ export const LISTINGS: Listing[] = [
   "city": "Erda",
   "zip": "84074",
   "price": 999000,
-  "status": "Active T/C",
+  "status": "Under Contract",
   "kind": "Single Family",
   "style": "Rambler/Ranch",
   "yearBuilt": 2004,
@@ -1179,3 +1179,6 @@ export const LISTINGS: Listing[] = [
  }
 ];
 export const fmtPrice = (n: number) => '$' + n.toLocaleString('en-US');
+// Status helpers. 'Under Contract' comes from overrides.json (Mike-stated); the MLS feed's 'Active T/C' (time clause) still shows as for sale.
+export const isUnderContract = (l: Pick<Listing, 'status'>) => /under contract|pending/i.test(l.status);
+export const statusLabel = (l: Pick<Listing, 'status' | 'construction' | 'kind'>) => isUnderContract(l) ? 'Under contract' : (l.construction || (l.kind === 'Land' ? 'Land' : 'For sale'));
