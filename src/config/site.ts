@@ -35,7 +35,7 @@ export const AGENTS: Agent[] = [
     phoneHref: "tel:+14358496130",
     email: "lisa.dunn.neil@gmail.com",
     licenseNumber: "8666686-SA00", // Utah DOPL Sales Agent, Active — Mike supplied 2026-09-14 (CONTENT_BRIEF section 1)
-    headshot: "/images/lisa-neil-epic-800.webp", // Epic Homes bio photo (Mike's pick 2026-09-15), 300px source upscaled 4x on CT900 then sized to 800 sq; replace with a real headshot when one arrives
+    headshot: "/images/lisa-neil-epic-300.webp", // Epic Homes bio photo (Mike's pick 2026-09-15), the 300px original UNTOUCHED - an AI upscale of it looked wrong (Mike, same night); the page shows a 96px circle so 300 is plenty. Replace with a real headshot when one arrives
   },
   {
     name: "Laramie Dunn",
