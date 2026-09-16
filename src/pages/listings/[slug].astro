@@ -10,7 +10,7 @@ import JsonLd from "../../components/JsonLd.astro";
 import Icon from "../../components/Icon.astro";
 import ListingCard from "../../components/ListingCard.astro";
 import { SITE_URL } from "../../config/site";
-import { LISTINGS, photoOf, fmtPrice, UPDATED } from "../../content/listings";
+import { LISTINGS, photoOf, fmtPrice, UPDATED, statusLabel as labelOf, isUnderContract } from "../../content/listings";
 
 export function getStaticPaths() {
   return LISTINGS.filter((l) => l.mls !== "2135169").map((l) => ({ params: { slug: l.slug }, props: { listing: l } }));
@@ -25,7 +25,8 @@ if (l.beds) facts.push({ value: String(l.beds), label: "Bedrooms" });
 if (l.baths) facts.push({ value: String(l.baths), label: "Bathrooms" });
 if (l.sqft) facts.push({ value: l.sqft.toLocaleString("en-US"), label: "Sq ft" });
 if (l.lotAcres) facts.push({ value: l.lotAcres.toFixed(2), label: "Acres" });
-const statusLabel = l.construction ? l.construction : "For sale";
+const statusLabel = labelOf(l);
+const underContract = isUnderContract(l);
 const coListed = l.mls !== "2164327" && l.mls !== "2182884"; // the two Pine Canyon lots are Laramie's alone
 const schema = {
   "@context": "https://schema.org",
@@ -36,7 +37,7 @@ const schema = {
   ...(l.beds ? { numberOfBedrooms: l.beds } : {}),
   ...(l.baths ? { numberOfBathroomsTotal: l.baths } : {}),
   address: { "@type": "PostalAddress", streetAddress: l.address, addressLocality: l.city, addressRegion: "UT", postalCode: l.zip, addressCountry: "US" },
-  offers: { "@type": "Offer", price: String(l.price), priceCurrency: "USD", availability: "https://schema.org/InStock" },
+  offers: { "@type": "Offer", price: String(l.price), priceCurrency: "USD", availability: underContract ? "https://schema.org/LimitedAvailability" : "https://schema.org/InStock" },
 };
 const paras = l.remarks.split(/(?<=[.!?])\s+(?=[A-Z])/).reduce<string[]>((acc, s) => {
   const last = acc[acc.length - 1];
@@ -98,7 +99,8 @@ const paras = l.remarks.split(/(?<=[.!?])\s+(?=[A-Z])/).reduce<string[]>((acc, s
         <p class="font-display text-[1.2rem]">{coListed ? "Listed by Laramie Dunn & Lisa Neil" : "Listing agent: Laramie Dunn"}</p>
         <p class="mt-1 text-muted text-[.9rem]">RealtyPath LLC (Tooele Valley)</p>
         {l.construction && <p class="mt-4 text-[.95rem]">New construction · {l.construction.toLowerCase()}. Ask us about plan options and timelines.</p>}
-        <div class="mt-5"><Button href="#showing" variant="primary">Request a showing <Icon name="arrow-right" size={16} /></Button></div>
+        {underContract && <p class="mt-4 text-[.95rem]"><span class="inline-block px-2.5 py-1 rounded-full bg-copper-dark text-white text-[.7rem] font-bold uppercase tracking-[.05em]">Under contract</span> <span class="block mt-2">This home is under contract. Ask us about backup offers or similar homes coming up.</span></p>}
+        <div class="mt-5"><Button href="#showing" variant="primary">{underContract ? "Ask about this home" : "Request a showing"} <Icon name="arrow-right" size={16} /></Button></div>
         <p class="mt-4 text-[.8rem] text-muted"><a href={l.source} target="_blank" rel="noopener nofollow" class="text-copper-dark no-underline hover:underline">View on UtahRealEstate.com →</a></p>
       </div>
     </div>

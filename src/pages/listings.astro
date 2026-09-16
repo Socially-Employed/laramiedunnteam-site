@@ -7,7 +7,7 @@ import Button from "../components/Button.astro";
 import ListingCard from "../components/ListingCard.astro";
 import Icon from "../components/Icon.astro";
 import { COUNTY } from "../config/site";
-import { LISTINGS, photoOf, fmtPrice, UPDATED } from "../content/listings";
+import { LISTINGS, photoOf, fmtPrice, UPDATED, statusLabel } from "../content/listings";
 
 const homes = LISTINGS.filter((l) => l.kind !== "Land");
 const land = LISTINGS.filter((l) => l.kind === "Land");
@@ -17,7 +17,7 @@ const card = (l: (typeof LISTINGS)[number]) => ({
   price: fmtPrice(l.price),
   beds: l.beds ?? undefined,
   baths: l.baths ?? undefined,
-  status: l.construction || (l.kind === "Land" ? "Land" : "For sale"),
+  status: statusLabel(l),
   image: l.photos[0] ? photoOf(l, l.photos[0], "640x480") : undefined,
   href: l.href,
 });

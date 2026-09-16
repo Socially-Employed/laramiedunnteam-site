@@ -14,7 +14,7 @@ import CommunityTile from "../components/CommunityTile.astro";
 import { AGENTS, BUSINESS_EMAIL, BRAND_NAME, COUNTY, SITE_URL, SERVICE_AREA, GBP_REVIEW_URL, GBP_PLACE_URL } from "../config/site";
 import { COMMUNITIES, COUNTY_PHOTOS } from "../content/communities";
 import { SPECIALTY_SEARCHES } from "../content/searches";
-import { LISTINGS, photoOf, fmtPrice } from "../content/listings";
+import { LISTINGS, photoOf, fmtPrice, statusLabel } from "../content/listings";
 // Second and third featured cards: the next two priciest active listings after 521 (content file is price-sorted).
 const featured = LISTINGS.filter((l) => l.mls !== "2135169").slice(0, 1);
 
@@ -130,7 +130,7 @@ const cardIconCls = "inline-flex w-11 h-11 items-center justify-center rounded-[
           city: l.city,
           beds: l.beds ?? undefined,
           baths: l.baths ?? undefined,
-          status: l.construction || "For sale",
+          status: statusLabel(l),
         }} />
       ))}
       <article class="flex flex-col justify-center rounded-[12px] bg-ink p-6 text-paper">
