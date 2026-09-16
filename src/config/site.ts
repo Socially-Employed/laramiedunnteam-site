@@ -3,8 +3,8 @@
 
 export const SITE_URL = "https://laramiedunnteam.com"; // Production domain (set by deploy/cutover.sh 2026-09-14). Preview hosts stay noindex via the Worker.
 export const BRAND_NAME = "Laramie Dunn Team";
-export const BROKERAGE = "RealtyPath LLC (Tooele Valley)";
-export const BRAND_STRING = "Laramie Dunn Team · RealtyPath LLC (Tooele Valley)";
+export const BROKERAGE = "RealtyPath LLC";
+export const BRAND_STRING = "Laramie Dunn Team · RealtyPath LLC";
 
 export const SERVICE_AREA = [
   "Grantsville",

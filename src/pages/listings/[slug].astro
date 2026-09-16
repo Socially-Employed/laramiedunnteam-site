@@ -97,7 +97,7 @@ const paras = l.remarks.split(/(?<=[.!?])\s+(?=[A-Z])/).reduce<string[]>((acc, s
       </div>
       <div class="rounded-[16px] border border-hairline bg-white p-6">
         <p class="font-display text-[1.2rem]">{coListed ? "Listed by Laramie Dunn & Lisa Neil" : "Listing agent: Laramie Dunn"}</p>
-        <p class="mt-1 text-muted text-[.9rem]">RealtyPath LLC (Tooele Valley)</p>
+        <p class="mt-1 text-muted text-[.9rem]">RealtyPath LLC</p>
         {l.construction && <p class="mt-4 text-[.95rem]">New construction · {l.construction.toLowerCase()}. Ask us about plan options and timelines.</p>}
         {underContract && <p class="mt-4 text-[.95rem]"><span class="inline-block px-2.5 py-1 rounded-full bg-copper-dark text-white text-[.7rem] font-bold uppercase tracking-[.05em]">Under contract</span> <span class="block mt-2">This home is under contract. Ask us about backup offers or similar homes coming up.</span></p>}
         <div class="mt-5"><Button href="#showing" variant="primary">{underContract ? "Ask about this home" : "Request a showing"} <Icon name="arrow-right" size={16} /></Button></div>
@@ -115,7 +115,7 @@ const paras = l.remarks.split(/(?<=[.!?])\s+(?=[A-Z])/).reduce<string[]>((acc, s
       <h2 id="more-h" class="text-[clamp(1.3rem,5vw,1.7rem)]">More from the team</h2>
       <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {others.map((o) => (
-          <ListingCard listing={{ address: o.address, city: `${o.city}, UT`, price: fmtPrice(o.price), beds: o.beds ?? undefined, baths: o.baths ?? undefined, status: o.construction || "For sale", image: o.photos[0] ? photoOf(o, o.photos[0], "640x480") : undefined, href: o.href }} />
+          <ListingCard listing={{ address: o.address, city: `${o.city}, UT`, price: fmtPrice(o.price), beds: o.beds ?? undefined, baths: o.baths ?? undefined, status: labelOf(o), image: o.photos[0] ? photoOf(o, o.photos[0], "640x480") : undefined, href: o.href }} />
         ))}
       </div>
     </Section>
