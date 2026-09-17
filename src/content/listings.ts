@@ -880,6 +880,168 @@ export const LISTINGS: Listing[] = [
   "href": "/listings/952-e-shilow-rd-131-erda/"
  },
  {
+  "mls": "2178350",
+  "slug": "184-e-ax-handle-dr-grantsville",
+  "address": "184 E Ax Handle Dr",
+  "city": "Grantsville",
+  "zip": "84029",
+  "price": 759900,
+  "status": "Active",
+  "kind": "Single Family",
+  "style": "Rambler/Ranch",
+  "yearBuilt": 2026,
+  "beds": 3,
+  "baths": 3,
+  "sqft": 3900,
+  "lotAcres": 0.5,
+  "construction": "Under Construction",
+  "remarks": "",
+  "photos": [
+   {
+    "h": "988e524cafc517a8ea266c35f61b8f2d_6a7cda69c3d9d",
+    "alt": "Additional content",
+    "type": "Exterior"
+   },
+   {
+    "h": "8b2e9080ce4e4af9ba5f459cdb393523_6aa4c21d9ac95",
+    "alt": "Additional content",
+    "type": "Exterior"
+   },
+   {
+    "h": "7859bdbf6533aa5ac34625e0150518e8_6aa4c21d8ffb6",
+    "alt": "Additional content",
+    "type": "Garage"
+   },
+   {
+    "h": "425ba04cb61d079fbb546d317039bd61_6aa4c2206d16b",
+    "alt": "Vaulted ceiling, recessed lighting, horizontal panel accent wall, wood-finish mantel, linear fireplace",
+    "type": "Living Room"
+   },
+   {
+    "h": "9cfdde608434ebb9748a1d0fcf71b08a_6aa4c222a7463",
+    "alt": "Entryway with a solid panel door, transom window, and a window for natural light",
+    "type": "Stairs"
+   },
+   {
+    "h": "95476ce72260783bc2fbdb163fd49054_6aa4c2267b7ca",
+    "alt": "Built-in shelving unit providing organized storage",
+    "type": "Closet"
+   },
+   {
+    "h": "2d01d23ba7b2765eaa7354eb96de2b56_6aa4c22767fce",
+    "alt": "Recessed lighting, tile shower surround, built-in bathtub, window with mountain backdrop, and two adjacent closet openings",
+    "type": "Bathroom"
+   },
+   {
+    "h": "441f2b467189eb45bc077ebcd20f2f9d_6aa4c22a13db8",
+    "alt": "Built-in shelving units, adjustable hanging rods, and painted walls",
+    "type": "Closet"
+   },
+   {
+    "h": "27368e72d663e301efc623ce646bf727_6aa4c22ad62dc",
+    "alt": "Walk-in shower with vertical tile surround, horizontal accent window, and built-in corner shelving",
+    "type": "Bathroom"
+   },
+   {
+    "h": "d1d81c5abb4b1cea1bb4282437eb5eff_6aa4c230d3c78",
+    "alt": "Built-in shelving, wood-finish cabinetry, and white trim details",
+    "type": "Closet"
+   },
+   {
+    "h": "3f35bc9437fe0f0c066807657c87ab1a_6aa4c233994cd",
+    "alt": "Built-in cabinetry, single window, and a lower cabinet",
+    "type": "Laundry Room"
+   },
+   {
+    "h": "d961eccd6bb942472072f87559e4533a_6aa4c2345bde6",
+    "alt": "White bathtub with a chrome-finish faucet, surrounded by light-toned rectangular wall tiles, and built-in shelving",
+    "type": "Bathroom"
+   },
+   {
+    "h": "8dd42126b10e4a00b1b690b56676219e_6aa4c2399b3ab",
+    "alt": "Additional content",
+    "type": "Closet"
+   },
+   {
+    "h": "6c3394e2f2ebc4d0972bd76357be5edd_6aa4c239d369c",
+    "alt": "Built-in closet shelving, integrated hanging rod, and trim details",
+    "type": "Closet"
+   },
+   {
+    "h": "408ffecefdb47f433098f137def96f4f_6aa4c23be84a0",
+    "alt": "Built-in shelving with a wood-finish counter",
+    "type": "Pantry"
+   },
+   {
+    "h": "5654e2caa446382a1020d0d9e8e65233_6aa4c23c4197a",
+    "alt": "Built-in shelving with a dark wood-finish countertop",
+    "type": "Storage"
+   },
+   {
+    "h": "65d026f68ba9992d2de590e1356dcfc1_6aa4c23e97df8",
+    "alt": "Kitchen featuring wood-finish flooring, recessed lighting, wood ceiling beams, wood-finish cabinetry, and an island with an integrated sink",
+    "type": "Kitchen"
+   },
+   {
+    "h": "a3aad11caf8eb4f22a960a57ce3b1e7c_6aa4c23ee5213",
+    "alt": "Sloping ceiling, shiplap-clad fireplace with integrated linear electric insert, wood mantel, recessed lighting, and multiple windows",
+    "type": "Living Room"
+   },
+   {
+    "h": "af21e96c9019d9241a36c4e4f6e91051_6aa4c240c973e",
+    "alt": "Built-in white cabinetry with a dark wood-finish bench, integrated cubbies, and overhead shelving",
+    "type": "Mud Room"
+   },
+   {
+    "h": "994097b206de50430a179d26b5f4250a_6aa4c2412a52e",
+    "alt": "Additional content",
+    "type": "Bathroom"
+   },
+   {
+    "h": "75bc919b9fa8c6fb7b444085ec673986_6aa4c243dbf68",
+    "alt": "Additional content",
+    "type": "Bathroom"
+   },
+   {
+    "h": "32f6aa40fa6051b7986341a883279075_6aa4c21fe10a8",
+    "alt": "Additional content",
+    "type": "Other"
+   },
+   {
+    "h": "c74c45953db023ca11a406c56a42bbfb_6aa4c222e04af",
+    "alt": "Dual vanity base with integrated storage",
+    "type": "Other"
+   },
+   {
+    "h": "9e8c92542132d4bdacd6913af09b3a92_6aa4c22525721",
+    "alt": "Additional content",
+    "type": "Other"
+   },
+   {
+    "h": "5c8d29bcf4bfa047cc354cdb284212a8_6aa4c22d012ad",
+    "alt": "Recessed ceiling lighting, decorative wall paneling, pitched ceiling, baseboard trim",
+    "type": "Other"
+   },
+   {
+    "h": "23f89721cc06a66fb4a83ea27a0f04b4_6aa4c22d84083",
+    "alt": "Vaulted ceiling, recessed lighting, decorative wall paneling, large windows",
+    "type": "Other"
+   },
+   {
+    "h": "dab49bcca2da0cd4341d29ccdc591c87_6aa4c22f59297",
+    "alt": "Additional content",
+    "type": "Other"
+   },
+   {
+    "h": "1cef20b494fa355418e00d5ab2457099_6aa4c23212516",
+    "alt": "Neutral painted walls",
+    "type": "Other"
+   }
+  ],
+  "source": "https://www.utahrealestate.com/2178350",
+  "href": "/listings/184-e-ax-handle-dr-grantsville/"
+ },
+ {
   "mls": "2176021",
   "slug": "193-e-swather-way-109-grantsville",
   "address": "193 E Swather Way #109",
