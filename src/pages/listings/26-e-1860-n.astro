@@ -1,0 +1,137 @@
+---
+// 26 E 1860 N, Tooele detail page. HARD RULE: never show square footage or garage-stall
+// counts (CONTENT_BRIEF §4). Photos are our own (Ashley Banna, licensed for this listing),
+// served from /public. Meta Pixel is added HERE only (site is otherwise pixel-free) so the
+// Meta Leads campaign can optimize for the Lead conversion event and retarget visitors.
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import FactStrip from "../../components/FactStrip.astro";
+import Button from "../../components/Button.astro";
+import LeadForm from "../../components/LeadForm.astro";
+import JsonLd from "../../components/JsonLd.astro";
+import Icon from "../../components/Icon.astro";
+import { SITE_URL } from "../../config/site";
+
+// Photos in MLS order (01 = daytime front / hero). Served from public/images/listings/26-1860n/.
+const PHOTOS = [
+  "01-2S0A5140-2.jpg", "02-TWfront.jpg", "03-2S0A5134.jpg", "04-2S0A5146-2.jpg",
+  "05-2S0A5152.jpg", "06-2S0A5155.jpg", "07-2S0A5158.jpg", "08-2S0A5161.jpg",
+  "09-2S0A5164.jpg", "10-2S0A5167.jpg", "11-2S0A5170.jpg", "12-2S0A5176.jpg",
+  "13-2S0A5179.jpg", "14-2S0A5182.jpg", "15-2S0A5209.jpg", "16-2S0A5206.jpg",
+  "17-2S0A5212.jpg", "18-2S0A5218-2.jpg", "19-2S0A5221-2.jpg", "20-2S0A5230.jpg",
+  "21-2S0A5233.jpg", "22-2S0A5236.jpg", "23-2S0A5239.jpg", "24-2S0A5242-2.jpg",
+  "25-2S0A5248.jpg", "26-2S0A5245.jpg", "27-2S0A5197-2.jpg", "28-2S0A5188-2.jpg",
+  "29-2S0A5191-2.jpg", "30-DJI_20260916161251_0029_D.jpg", "31-TWside.jpg",
+  "32-DJI_20260916161007_0005_D-2.jpg", "33-DJI_20260916161027_0008_D-2.jpg",
+  "34-DJI_20260916161120_0017_D-2.jpg", "35-DJI_20260916161131_0020_D-2.jpg",
+  "36-DJI_20260916161151_0023_D-2.jpg",
+];
+const IMG = (f: string) => `/images/listings/26-1860n/${f}`;
+const ogPhoto = new URL(IMG(PHOTOS[0]), SITE_URL).href;
+
+const listingSchema = {
+  "@context": "https://schema.org",
+  "@type": "SingleFamilyResidence",
+  name: "26 E 1860 N, Tooele, UT",
+  url: new URL("/listings/26-e-1860-n/", SITE_URL).href,
+  image: ogPhoto,
+  numberOfBedrooms: 3,
+  numberOfBathroomsTotal: 3,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "26 E 1860 N",
+    addressLocality: "Tooele",
+    addressRegion: "UT",
+    postalCode: "84074",
+    addressCountry: "US",
+  },
+  offers: {
+    "@type": "Offer",
+    price: "429900",
+    priceCurrency: "USD",
+    availability: "https://schema.org/InStock",
+  },
+};
+---
+<Base
+  breadcrumbs={[{ name: "Listings", href: "/listings/" }, { name: "26 E 1860 N, Tooele", href: "/listings/26-e-1860-n/" }]}
+  title="26 E 1860 N, Tooele UT — Renovated & Move-In Ready"
+  description="26 E 1860 N, Tooele — a fully renovated two-story, move-in ready. New kitchen, flooring, roof, and fenced yard. $429,900. See photos and request a showing."
+  canonical="/listings/26-e-1860-n/"
+  ogImage={ogPhoto}
+  type="article"
+  stickyCta={true}
+>
+  <JsonLd slot="head" data={listingSchema} />
+  <script is:inline slot="head">
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1819839412337196');
+    fbq('track', 'PageView');
+    document.addEventListener('ldt:lead', function(){ if (window.fbq) fbq('track', 'Lead'); });
+  </script>
+
+  <noscript>
+    <img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=1819839412337196&ev=PageView&noscript=1" />
+  </noscript>
+
+  <Section tone="paper">
+    <p class="text-[.72rem] uppercase tracking-[.14em] text-copper-dark font-semibold">For sale · Tooele</p>
+    <h1 class="mt-2 text-[clamp(1.8rem,6vw,2.6rem)]">26 E 1860 N</h1>
+    <p class="mt-1 text-muted text-lg">Overlake · Tooele, UT 84074</p>
+  </Section>
+
+  <FactStrip items={[
+    { value: "$429,900", label: "Price" },
+    { value: "3", label: "Bedrooms" },
+    { value: "2.5", label: "Bathrooms" },
+  ]} />
+
+  <Section tone="paper" labelledby="tour-h">
+    <h2 id="tour-h" class="text-[clamp(1.5rem,5vw,2rem)]">Full video walkthrough</h2>
+    <div class="mt-6 mx-auto max-w-[400px]">
+      <video controls playsinline preload="none" poster="/media/26-1860n/tour-poster.jpg" class="w-full rounded-[16px] border border-hairline bg-ink aspect-[9/16] object-cover">
+        <source src="/media/26-1860n/tour.mp4" type="video/mp4" />
+        <a href="/media/26-1860n/tour.mp4">Watch the video tour</a>.
+      </video>
+    </div>
+  </Section>
+
+  <Section tone="white" labelledby="gallery-h">
+    <h2 id="gallery-h" class="sr-only">Photo gallery</h2>
+    <div class="grid gap-3 grid-cols-2 md:grid-cols-3">
+      {PHOTOS.map((f, i) => (
+        <a href={IMG(f)} target="_blank" rel="noopener" class="block overflow-hidden rounded-[12px] border border-hairline bg-hairline">
+          <img src={IMG(f)} alt={`Photo ${i + 1} of 26 E 1860 N, Tooele`} width="1200" height="800" loading={i === 0 ? "eager" : "lazy"} class="w-full h-full object-cover aspect-[3/2] hover:opacity-95" />
+        </a>
+      ))}
+    </div>
+    <p class="mt-3 text-[.8rem] text-muted">Select a photo to view it larger.</p>
+  </Section>
+
+  <Section tone="paper" labelledby="about-h">
+    <div class="grid gap-8 md:grid-cols-2 md:items-start">
+      <div>
+        <h2 id="about-h" class="text-[clamp(1.5rem,5vw,2rem)]">About this home</h2>
+        <div class="mt-4 space-y-4 text-[1.02rem] leading-relaxed">
+          <p>26 E 1860 N is a fully renovated two-story in the Overlake area of north Tooele — move-in ready. The kitchen is all new: shaker cabinets, stone countertops, a tile backsplash, and stainless appliances, opening to a bright dining and living area with new luxury vinyl plank flooring and a waterfall-edge island.</p>
+          <p>New carpet in the bedrooms, refreshed baths with new tiled showers, and a clean single-tone white interior throughout. Major updates include a brand-new roof and a new garage door. Outside, there's new sod front, side, and back with a working sprinkler system and a fully fenced backyard.</p>
+          <p>The owner is a licensed Utah real estate agent. Listing information deemed reliable but not guaranteed; buyer to verify all figures.</p>
+        </div>
+      </div>
+      <div class="rounded-[16px] border border-hairline bg-white p-6">
+        <p class="font-display text-[1.2rem]">Listing agent: Laramie Dunn</p>
+        <p class="mt-1 text-muted text-[.9rem]">RealtyPath LLC</p>
+        <p class="mt-4 text-[.95rem]">Vacant and easy to show — electronic key box. Call or text to book a time.</p>
+        <div class="mt-5"><Button href="#showing" variant="primary">Request a showing <Icon name="arrow-right" size={16} /></Button></div>
+      </div>
+    </div>
+  </Section>
+
+  <Section tone="panel" narrow id="showing">
+    <LeadForm src="listing-26-1860n" heading="Request a showing" intent="buy" button="Request a showing" compact={true} />
+  </Section>
+</Base>

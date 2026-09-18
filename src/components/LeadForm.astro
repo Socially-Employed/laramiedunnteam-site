@@ -2,6 +2,9 @@
 // LeadForm.astro — progressive-enhancement lead form.
 // No-JS: native POST to LEAD_ENDPOINT. JS: fetch JSON + inline success/error.
 // Honeypot `company` is off-screen. `src` identifies the originating page.
+// On successful submit it also dispatches a `ldt:lead` DOM event so a page can
+// fire an analytics/conversion event (e.g. Meta Pixel Lead) without this
+// component depending on any tracker.
 import { LEAD_ENDPOINT } from "../config/site";
 import Button from "./Button.astro";
 export interface Props {
@@ -12,8 +15,10 @@ export interface Props {
   address?: boolean;
   /** Submit button label — outcome verb, page-specific. */
   button?: string;
+  /** Compact single-listing form: name + phone (required) + email only; hides the intent select and message (lowest friction for a showing request). */
+  compact?: boolean;
 }
-const { src, heading = "Get in touch", intent = "other", address = false, button = "Send" } = Astro.props;
+const { src, heading = "Get in touch", intent = "other", address = false, button = "Send", compact = false } = Astro.props;
 const uid = "lf-" + Math.random().toString(36).slice(2, 8);
 ---
 <div class="lead-form-root rounded-[16px] border border-panel-border bg-panel text-panel-text p-6 md:p-8 shadow-[var(--shadow-lift)]" data-endpoint={LEAD_ENDPOINT}>
@@ -39,22 +44,28 @@ const uid = "lf-" + Math.random().toString(36).slice(2, 8);
       <input name="email" type="email" required autocomplete="email" class="w-full rounded-[8px] border border-panel-border bg-white text-ink px-3 py-2.5" />
     </label>
     <label class="flex flex-col gap-1.5 text-[.86rem] font-semibold">
-      <span>Phone <span class="font-normal text-panel-text">(optional)</span></span>
-      <input name="phone" type="tel" autocomplete="tel" class="w-full rounded-[8px] border border-panel-border bg-white text-ink px-3 py-2.5" />
+      <span>Phone {!compact && <span class="font-normal text-panel-text">(optional)</span>}</span>
+      <input name="phone" type="tel" required={compact} autocomplete="tel" class="w-full rounded-[8px] border border-panel-border bg-white text-ink px-3 py-2.5" />
     </label>
-    <label class="flex flex-col gap-1.5 text-[.86rem] font-semibold md:col-span-2">
-      I'm interested in
-      <select name="intent" class="w-full rounded-[8px] border border-panel-border bg-white text-ink px-3 py-2.5">
-        <option value="buy" selected={intent === "buy"}>Buying</option>
-        <option value="sell" selected={intent === "sell"}>Selling</option>
-        <option value="both" selected={intent === "both"}>Buying and selling</option>
-        <option value="other" selected={intent === "other"}>Something else</option>
-      </select>
-    </label>
-    <label class="flex flex-col gap-1.5 text-[.86rem] font-semibold md:col-span-2">
-      <span>Message <span class="font-normal text-panel-text">(optional)</span></span>
-      <textarea name="message" rows="3" class="w-full rounded-[8px] border border-panel-border bg-white text-ink px-3 py-2.5"></textarea>
-    </label>
+    {compact ? (
+      <input type="hidden" name="intent" value={intent} />
+    ) : (
+      <label class="flex flex-col gap-1.5 text-[.86rem] font-semibold md:col-span-2">
+        I'm interested in
+        <select name="intent" class="w-full rounded-[8px] border border-panel-border bg-white text-ink px-3 py-2.5">
+          <option value="buy" selected={intent === "buy"}>Buying</option>
+          <option value="sell" selected={intent === "sell"}>Selling</option>
+          <option value="both" selected={intent === "both"}>Buying and selling</option>
+          <option value="other" selected={intent === "other"}>Something else</option>
+        </select>
+      </label>
+    )}
+    {!compact && (
+      <label class="flex flex-col gap-1.5 text-[.86rem] font-semibold md:col-span-2">
+        <span>Message <span class="font-normal text-panel-text">(optional)</span></span>
+        <textarea name="message" rows="3" class="w-full rounded-[8px] border border-panel-border bg-white text-ink px-3 py-2.5"></textarea>
+      </label>
+    )}
 
     <!-- honeypot -->
     <div class="absolute -left-[9999px] -top-[9999px] h-px w-px overflow-hidden" aria-hidden="true">
@@ -109,9 +120,11 @@ const uid = "lf-" + Math.random().toString(36).slice(2, 8);
         if (!res.ok) throw new Error("bad status " + res.status);
         form.hidden = true;
         if (success) success.hidden = false;
+        // Let the page know a lead converted (Meta Pixel Lead, etc.). No-op if nothing listens.
+        document.dispatchEvent(new CustomEvent("ldt:lead", { detail: { src: (form.querySelector('input[name="src"]') as HTMLInputElement | null)?.value || "" } }));
       } catch (err) {
         if (msg) msg.textContent = "Something went wrong — please call or text us instead.";
-        if (btn) btn.disabled = false;
+        if (btn) { btn.disabled = false; }
       }
     });
   });
