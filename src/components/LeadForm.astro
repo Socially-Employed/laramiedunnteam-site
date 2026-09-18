@@ -19,6 +19,9 @@ export interface Props {
   compact?: boolean;
 }
 const { src, heading = "Get in touch", intent = "other", address = false, button = "Send", compact = false } = Astro.props;
+// Compact showing-request forms require a real phone (>=7 digits) so whitespace-only input —
+// which native `required` + type="tel" otherwise accept — is rejected (QA finding 2026-09-17).
+const phonePattern = compact ? "([^0-9]*[0-9]){7,}[^0-9]*" : undefined;
 const uid = "lf-" + Math.random().toString(36).slice(2, 8);
 ---
 <div class="lead-form-root rounded-[16px] border border-panel-border bg-panel text-panel-text p-6 md:p-8 shadow-[var(--shadow-lift)]" data-endpoint={LEAD_ENDPOINT}>
@@ -45,7 +48,7 @@ const uid = "lf-" + Math.random().toString(36).slice(2, 8);
     </label>
     <label class="flex flex-col gap-1.5 text-[.86rem] font-semibold">
       <span>Phone {!compact && <span class="font-normal text-panel-text">(optional)</span>}</span>
-      <input name="phone" type="tel" required={compact} autocomplete="tel" class="w-full rounded-[8px] border border-panel-border bg-white text-ink px-3 py-2.5" />
+      <input name="phone" type="tel" required={compact} pattern={phonePattern} title={compact ? "Enter a phone number with at least 7 digits" : undefined} autocomplete="tel" class="w-full rounded-[8px] border border-panel-border bg-white text-ink px-3 py-2.5" />
     </label>
     {compact ? (
       <input type="hidden" name="intent" value={intent} />
@@ -118,10 +121,15 @@ const uid = "lf-" + Math.random().toString(36).slice(2, 8);
           body: JSON.stringify(payload),
         });
         if (!res.ok) throw new Error("bad status " + res.status);
+        const data = await res.json().catch(() => ({} as any));
         form.hidden = true;
         if (success) success.hidden = false;
-        // Let the page know a lead converted (Meta Pixel Lead, etc.). No-op if nothing listens.
-        document.dispatchEvent(new CustomEvent("ldt:lead", { detail: { src: (form.querySelector('input[name="src"]') as HTMLInputElement | null)?.value || "" } }));
+        // Fire the conversion event ONLY for a server-confirmed real lead (the API returns an `id`).
+        // The honeypot path returns {ok:true} with no id, so bot hits never count as a Meta Pixel
+        // Lead and never pollute the ad's Lead-optimization (QA finding 2026-09-17).
+        if (data && data.id) {
+          document.dispatchEvent(new CustomEvent("ldt:lead", { detail: { src: (form.querySelector('input[name="src"]') as HTMLInputElement | null)?.value || "" } }));
+        }
       } catch (err) {
         if (msg) msg.textContent = "Something went wrong — please call or text us instead.";
         if (btn) { btn.disabled = false; }
