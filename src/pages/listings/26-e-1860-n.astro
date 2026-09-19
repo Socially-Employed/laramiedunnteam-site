@@ -13,10 +13,10 @@ import Icon from "../../components/Icon.astro";
 import CallTextButtons from "../../components/CallTextButtons.astro";
 import { SITE_URL, AGENTS } from "../../config/site";
 
-// Laramie Dunn is the agent of record for this listing (locked 2026-09-17), so every
-// call/text on this page routes to her, not to the two-agent team default.
-const LISTING_AGENT = AGENTS.find((a) => a.name === "Laramie Dunn")!;
-const SMS_BODY = "Hi Laramie, I'd like to see 26 E 1860 N in Tooele.";
+// Laramie Dunn is the agent of record for this listing (locked 2026-09-17) and stays named
+// as such below. Calls/texts from the Meta ad go to LISA's phone -- Mike's call 2026-09-18.
+const CONTACT_AGENT = AGENTS.find((a) => a.name === "Lisa Neil")!;
+const SMS_BODY = "Hi Lisa, I'd like to see 26 E 1860 N in Tooele.";
 const CONTACT_CTX = "listing-26-1860n";
 
 // Photos in MLS order (01 = daytime front / hero). Served from public/images/listings/26-1860n/.
@@ -68,7 +68,7 @@ const listingSchema = {
   ogImage={ogPhoto}
   type="article"
   stickyCta={true}
-  stickyAgent="Laramie"
+  stickyAgent="Lisa"
   stickySmsBody={SMS_BODY}
   contactContext={CONTACT_CTX}
 >
@@ -99,8 +99,8 @@ const listingSchema = {
     <p class="mt-1 text-muted text-lg">Overlake · Tooele, UT 84074</p>
     <div class="mt-5"><Button href="#showing" variant="primary">Request a showing <Icon name="arrow-right" size={16} /></Button></div>
     <div class="mt-4 max-w-[420px]">
-      <p class="text-[.9rem] text-muted">Vacant and easy to show. Call or text the listing agent directly:</p>
-      <CallTextButtons agent={LISTING_AGENT} smsBody={SMS_BODY} context={CONTACT_CTX} class="mt-3" />
+      <p class="text-[.9rem] text-muted">Vacant and easy to show. Call or text us directly:</p>
+      <CallTextButtons agent={CONTACT_AGENT} smsBody={SMS_BODY} context={CONTACT_CTX} class="mt-3" />
     </div>
   </Section>
 
@@ -147,7 +147,7 @@ const listingSchema = {
         <p class="font-display text-[1.2rem]">Listing agent: Laramie Dunn</p>
         <p class="mt-1 text-muted text-[.9rem]">RealtyPath LLC</p>
         <p class="mt-4 text-[.95rem]">Vacant and easy to show — electronic key box. Call or text to book a time.</p>
-        <CallTextButtons agent={LISTING_AGENT} smsBody={SMS_BODY} context={CONTACT_CTX} class="mt-5" />
+        <CallTextButtons agent={CONTACT_AGENT} smsBody={SMS_BODY} context={CONTACT_CTX} class="mt-5" />
         <div class="mt-4"><Button href="#showing" variant="ghost" class="w-full">Request a showing <Icon name="arrow-right" size={16} /></Button></div>
       </div>
     </div>
