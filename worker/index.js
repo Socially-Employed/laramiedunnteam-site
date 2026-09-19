@@ -3,6 +3,8 @@
 // - POST /api/lead: validates, stores a full copy in R2 (LDT_LEADS bucket), then forwards a mapped copy
 //   to the Team Hub lead endpoint so the existing ntfy relay pushes it to Lisa's phone.
 // - GET /api/health: liveness.
+// - POST /api/tap/call|text: records one anonymous tap in R2 (taps/<Denver-date>/<uuid>.json)
+//   so tap-to-call / tap-to-text contact is countable. No PII, no identifier. Always 204.
 // Hub contract (upload-worker/src/index.js L55-95): name<=120, phone<=40, email<=160, budget<=40,
 // timeline<=40, src<=60; honeypot field `company`; needs name + (phone|email). It does NOT accept
 // a free-text message, so the message (or the property address, when given) is truncated into
@@ -115,6 +117,36 @@ export default {
       return handleLead(req, env, ctx);
     }
     if (url.pathname === "/api/health") return Response.json({ ok: true, ts: Date.now() });
+    // Tap counter for the paid-ad landing pages. The Call/Text buttons sendBeacon here when
+    // tapped, because a tel:/sms: tap hands off to the dialer and is otherwise invisible to
+    // everyone except Meta. One tiny record per tap in R2; the daily cron counts them.
+    //
+    // Deliberately stores NO PII and no identifier: the browser cannot know who is calling, so
+    // this records only WHAT was tapped and WHEN. The day folder uses America/Denver, not UTC,
+    // so an evening tap lands on the day Mike thinks it happened.
+    //
+    // Always answers 204 -- the beacon must never see an error, and a bad actor must never learn
+    // whether the write happened. Writes are skipped for anything that is not a same-origin POST,
+    // which keeps casual curl spam out of the bucket without needing a rate-limit binding.
+    if (url.pathname === "/api/tap/call" || url.pathname === "/api/tap/text") {
+      if (req.method === "POST" && env.LDT_LEADS) {
+        const fetchSite = req.headers.get("sec-fetch-site") || "";
+        const ref = req.headers.get("referer") || "";
+        let sameOrigin = fetchSite === "same-origin";
+        if (!sameOrigin && ref) { try { sameOrigin = new URL(ref).hostname === url.hostname; } catch {} }
+        if (sameOrigin) {
+          const method = url.pathname.endsWith("/text") ? "text" : "call";
+          const day = new Date().toLocaleDateString("en-CA", { timeZone: "America/Denver" });
+          const rec = { method, ts: new Date().toISOString(), page: clip(ref, 200) };
+          ctx.waitUntil(
+            env.LDT_LEADS.put(`taps/${day}/${method}-${crypto.randomUUID()}.json`, JSON.stringify(rec), {
+              httpMetadata: { contentType: "application/json" },
+            }).catch((e) => console.error("tap put failed", String(e)))
+          );
+        }
+      }
+      return new Response(null, { status: 204 });
+    }
     if (url.pathname.startsWith("/api/")) return new Response("Not Found", { status: 404 });
     const res = await env.ASSETS.fetch(req);
     const h = new Headers(res.headers);

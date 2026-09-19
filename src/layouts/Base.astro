@@ -79,9 +79,13 @@ const breadcrumbSchema = trail && {
       document.addEventListener("click", (e) => {
         const el = (e.target as HTMLElement | null)?.closest("[data-contact]") as HTMLElement | null;
         if (!el) return;
+        const method = el.dataset.contact === "text" ? "text" : "call";
+        // Fire-and-forget count. sendBeacon is built to survive the page being navigated away,
+        // which is exactly what a tel:/sms: tap does. Never blocks or delays the dial.
+        try { navigator.sendBeacon("/api/tap/" + method); } catch {}
         document.dispatchEvent(
           new CustomEvent("ldt:contact", {
-            detail: { method: el.dataset.contact, context: el.dataset.context || "" },
+            detail: { method, context: el.dataset.context || "" },
           }),
         );
       });
