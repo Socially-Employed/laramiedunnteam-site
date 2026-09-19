@@ -1,8 +1,34 @@
 ---
-// StickyCta.astro — mobile-only sticky call bar, both agents. Hides when a LeadForm is on screen (IntersectionObserver).
+// StickyCta.astro — mobile-only sticky contact bar. Hides when a LeadForm is on screen (IntersectionObserver).
+//
+// Two modes:
+//   default        — both agents, one tap-to-call each (site-wide behaviour).
+//   agent="…"      — ONE agent, tap-to-call + tap-to-text. Used on listing pages so the
+//                    agent of record gets the inquiry and phone traffic can text, not just call.
+// 2026-09-18: added the text half. The old bar labelled Lisa's button "Call or text" but the
+// href was tel: only, so nothing on the site could ever start a text message.
 import { AGENTS } from "../config/site";
 import Icon from "./Icon.astro";
+
+export interface Props {
+  /** First name of the single agent to feature (case-insensitive). Omit for the two-agent bar. */
+  agent?: string;
+  /** Prefilled text message for the single-agent mode. */
+  smsBody?: string;
+  /** Label reported with the ldt:contact event, e.g. "listing-26-1860n". */
+  context?: string;
+}
+const { agent, smsBody = "", context = "" } = Astro.props;
 const [lisa, laramie] = AGENTS;
+
+const solo = agent ? AGENTS.find((a) => a.name.toLowerCase().startsWith(agent.toLowerCase())) : null;
+const soloFirst = solo?.name.split(" ")[0] ?? "";
+// `?&body=` is the form both iOS and Android accept; if the body is ignored the composer
+// still opens to the right number.
+const soloSms = solo ? (smsBody ? `${solo.smsHref}?&body=${encodeURIComponent(smsBody)}` : solo.smsHref) : "";
+
+const pill =
+  "flex items-center justify-center gap-1.5 px-3 py-3 rounded-full text-[.88rem] font-bold no-underline whitespace-nowrap shadow-[0_7px_25px_rgba(0,0,0,.3)]";
 ---
 <aside aria-label="Quick contact">
 <div
@@ -10,8 +36,17 @@ const [lisa, laramie] = AGENTS;
   class="sticky-cta md:hidden fixed left-0 right-0 z-50 px-3 grid grid-cols-2 gap-2"
   style="bottom:max(10px,env(safe-area-inset-bottom));transform:translateY(170%);transition:transform .28s ease;"
 >
-  <a href={lisa.phoneHref} class="flex items-center justify-center gap-1.5 px-3 py-3 rounded-full bg-copper-dark text-white text-[.88rem] font-bold no-underline whitespace-nowrap shadow-[0_7px_25px_rgba(0,0,0,.3)]"><Icon name="phone" size={15} /> Call or text Lisa</a>
-  <a href={laramie.phoneHref} class="flex items-center justify-center gap-1.5 px-3 py-3 rounded-full bg-ink text-white text-[.88rem] font-bold no-underline whitespace-nowrap shadow-[0_7px_25px_rgba(0,0,0,.3)]"><Icon name="phone" size={15} /> Call Laramie</a>
+  {solo ? (
+    <>
+      <a href={solo.phoneHref} class={`${pill} bg-copper-dark text-white`} data-contact="call" data-context={context}><Icon name="phone" size={15} /> Call {soloFirst}</a>
+      <a href={soloSms} class={`${pill} bg-ink text-white`} data-contact="text" data-context={context}><Icon name="message-square" size={15} /> Text {soloFirst}</a>
+    </>
+  ) : (
+    <>
+      <a href={lisa.phoneHref} class={`${pill} bg-copper-dark text-white`} data-contact="call" data-context={context}><Icon name="phone" size={15} /> Call Lisa</a>
+      <a href={laramie.phoneHref} class={`${pill} bg-ink text-white`} data-contact="call" data-context={context}><Icon name="phone" size={15} /> Call Laramie</a>
+    </>
+  )}
 </div>
 </aside>
 

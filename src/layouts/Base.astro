@@ -15,12 +15,18 @@ export interface Props {
   ogImage?: string;
   type?: string;
   stickyCta?: boolean;
+  /** Feature ONE agent in the sticky bar with call + text (first name). Listing pages use the agent of record. */
+  stickyAgent?: string;
+  /** Prefilled text message for the sticky bar's Text button. */
+  stickySmsBody?: string;
+  /** Label reported with the ldt:contact event, e.g. "listing-26-1860n". */
+  contactContext?: string;
   /** Desktop "questions? call or text" card, bottom-right. Off on pages that are themselves a contact surface. */
   callWidget?: boolean;
   /** Trail below Home, e.g. [{ name: "Communities", href: "/communities/" }, { name: "Erda", href: "/communities/erda/" }]. */
   breadcrumbs?: { name: string; href: string }[];
 }
-const { title, description, canonical, ogImage, type, stickyCta = false, callWidget = true, breadcrumbs } = Astro.props;
+const { title, description, canonical, ogImage, type, stickyCta = false, stickyAgent, stickySmsBody, contactContext, callWidget = true, breadcrumbs } = Astro.props;
 const trail = breadcrumbs ? [{ name: "Home", href: "/" }, ...breadcrumbs] : null;
 const breadcrumbSchema = trail && {
   "@context": "https://schema.org",
@@ -64,8 +70,22 @@ const breadcrumbSchema = trail && {
       <slot />
     </main>
     <Footer />
-    {stickyCta && <StickyCta />}
+    {stickyCta && <StickyCta agent={stickyAgent} smsBody={stickySmsBody} context={contactContext} />}
     {callWidget && <CallWidget />}
+    <script>
+      // Every tap-to-call / tap-to-text control on the site carries data-contact ("call" | "text").
+      // One delegated listener re-broadcasts it as `ldt:contact` so a page can forward the tap to
+      // its pixel. Never blocks the tel:/sms: navigation.
+      document.addEventListener("click", (e) => {
+        const el = (e.target as HTMLElement | null)?.closest("[data-contact]") as HTMLElement | null;
+        if (!el) return;
+        document.dispatchEvent(
+          new CustomEvent("ldt:contact", {
+            detail: { method: el.dataset.contact, context: el.dataset.context || "" },
+          }),
+        );
+      });
+    </script>
     <script>
       // First-touch attribution for the lead form: utm_* from the URL, the referrer and the landing page,
       // kept in sessionStorage for this visit only. Nothing is sent anywhere until a form is submitted.
