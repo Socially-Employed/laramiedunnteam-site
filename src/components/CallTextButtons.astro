@@ -1,0 +1,50 @@
+---
+// CallTextButtons.astro — in-page tap-to-call + tap-to-text pair for one agent.
+// Built 2026-09-18 for the 26 E 1860 N Meta campaign: 75% of the ad traffic is on a
+// phone and the form was the only way to act (the 521 campaign converted 0 of 796 paid
+// visitors with a form-only page — CONTENT_BRIEF §125), so give phone traffic a phone action.
+// Every tap carries data-contact; Base.astro re-broadcasts it as `ldt:contact`, which the
+// listing page turns into a Meta `Contact` event, so taps are visible in Ads Manager.
+import Icon from "./Icon.astro";
+import type { Agent } from "../config/site";
+
+export interface Props {
+  agent: Agent;
+  /** Prefilled text message, e.g. "Hi Laramie, I'd like to see 26 E 1860 N." */
+  smsBody?: string;
+  /** Label reported with the ldt:contact event, e.g. "listing-26-1860n". */
+  context?: string;
+  /** "row" side-by-side (default), "stack" full-width stacked. */
+  layout?: "row" | "stack";
+  class?: string;
+}
+const { agent, smsBody = "", context = "", layout = "row", class: cls = "" } = Astro.props;
+const first = agent.name.split(" ")[0];
+
+// RFC 5724 body param. `?&body=` is the form that both iOS and Android accept;
+// if a handset ignores the body it still opens the composer to the right number.
+const smsHref = smsBody ? `${agent.smsHref}?&body=${encodeURIComponent(smsBody)}` : agent.smsHref;
+
+const wrap = layout === "stack" ? "grid gap-2" : "flex flex-wrap gap-2";
+const btn =
+  "inline-flex flex-1 items-center justify-center gap-2 min-h-[50px] px-[18px] py-3 rounded-[9px] font-semibold no-underline transition-colors whitespace-nowrap";
+---
+<div class={`${wrap} ${cls}`}>
+  <a
+    href={agent.phoneHref}
+    class={`${btn} bg-copper-dark text-white hover:bg-copper shadow-[0_8px_24px_rgba(0,0,0,.18)]`}
+    data-contact="call"
+    data-context={context}
+  >
+    <Icon name="phone" size={16} /> Call {first}
+  </a>
+  <a
+    href={smsHref}
+    class={`${btn} bg-ink text-white hover:bg-panel`}
+    data-contact="text"
+    data-context={context}
+  >
+    <Icon name="message-square" size={16} /> Text {first}
+  </a>
+</div>
+<p class="mt-2 text-[.85rem] text-muted">{agent.name} · <span class="text-copper-dark font-semibold">{agent.phone}</span></p>

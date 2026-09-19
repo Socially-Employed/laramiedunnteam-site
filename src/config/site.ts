@@ -23,6 +23,8 @@ export type Agent = {
   phone: string;
   phoneHref: string;
   email: string;
+  /** sms: link for tap-to-text. Cross-platform form is `sms:+1...?&body=` (iOS + Android). */
+  smsHref: string;
   licenseNumber: string | null;
   headshot: string | null;
 };
@@ -33,6 +35,7 @@ export const AGENTS: Agent[] = [
     role: "Licensed Utah real estate agent",
     phone: "435-849-6130",
     phoneHref: "tel:+14358496130",
+    smsHref: "sms:+14358496130",
     email: "lisa.dunn.neil@gmail.com",
     licenseNumber: "8666686-SA00", // Utah DOPL Sales Agent, Active — Mike supplied 2026-09-14 (CONTENT_BRIEF section 1)
     headshot: "/images/lisa-neil-epic-300.webp", // Epic Homes bio photo (Mike's pick 2026-09-15), the 300px original UNTOUCHED - an AI upscale of it looked wrong (Mike, same night); the page shows a 96px circle so 300 is plenty. Replace with a real headshot when one arrives
@@ -42,6 +45,7 @@ export const AGENTS: Agent[] = [
     role: "Licensed Utah real estate agent",
     phone: "435-224-4000",
     phoneHref: "tel:+14352244000",
+    smsHref: "sms:+14352244000",
     email: "ldunn.ut@gmail.com",
     licenseNumber: "5487330-SA00", // Utah DOPL Sales Agent, Active — Mike supplied 2026-09-14 (CONTENT_BRIEF section 1)
     headshot: "/images/laramie-dunn-300.webp", // from epichomesutah.com/about-us (Mike 2026-09-15: "use the pictures for now and we'll replace later"); only 300x300 exists there
